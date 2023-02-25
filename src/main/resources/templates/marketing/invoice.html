@@ -10,9 +10,10 @@
     <!-- Font awesome local -->
     <script th:src="@{/fontawesome/2302251f1c.js}" crossorigin="anonymous"></script>
     <!--custom css for header-->
-    <link rel="stylesheet" type="text/css" th:href="@{/custom-css/vr-staff/header.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/custom-css/marketing/header.css}">
     <!--custom css for vr-->
-    <link rel="stylesheet" type="text/css" th:href="@{/custom-css/vr-staff/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/custom-css/marketing/style.css}">
+
 </head>
 <body class="body">
 <!--Header starts-->
@@ -36,26 +37,74 @@
     </div>
 </div>
 
-<!-- Content Body Start here-->
-<div class="container">
-    <div class="row justify-content-md-center">
-        <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="content-body">
-                <div class="col-xxl-3 col-xl-3 col-md-4 col-sm-6 col-xs-10 offset-xxl-9 offset-xl-9 offset-md-8 offset-sm-6 offset-xs-2">
-
-                </div>
-
-                <div class="view-panel">
 
 
+<div class="container-fluid py-4 mx-auto" id="print-content" style="background-color: white; width: 8.5in; height: 11in; margin: 1in;">
+    <div class="row">
+        <div class="col-12 text-center mb-3">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <img src="https://dummyimage.com/100x100/000/fff" alt="Logo" class="mr-3">
+                    <h3 class="mt-2 mx-4">Invoice Title</h3>
+                    <div>Invoice No: <span id="invoice-number">123</span></div>
                 </div>
             </div>
         </div>
     </div>
+
+
+    <div class="row mb-4">
+        <div class="col-6">
+            <h5>Sold To:</h5>
+            <div>Customer Name</div>
+            <div>TIN: 123-456-789</div>
+            <div>Address: Customer Address</div>
+            <div>Business Style: Retail</div>
+        </div>
+        <div class="col-6 text-right">
+            <div>Date: 2023-02-25</div>
+            <div>Terms: 30 Days</div>
+            <div>P.O. No.: 123</div>
+            <div>Contact Person: John Doe</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Quantity</th>
+                    <th>Item</th>
+                    <th>Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Item 1</td>
+                    <td>100</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Item 2</td>
+                    <td>200</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Item 3</td>
+                    <td>300</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
+
+
 <!-- Logout Modal -->
 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="logoutModalLabel">Logout</h5>
@@ -75,9 +124,10 @@
 </div>
 
 <!-- Bootstrap JavaScript -->
-<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
 <!-- custom table js -->
 <script th:src="@{/custom-js/vr-staff/vr-table.js}"></script>
+
 </body>
-</html>s
+</html>
