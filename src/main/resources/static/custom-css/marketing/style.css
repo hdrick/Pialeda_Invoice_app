@@ -1,10 +1,15 @@
-
     .header-con{
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
         z-index: 9999;
+    }
+    #content{
+    border: solid 1px red;
+    width: 100px;
+    height: 100px;
+    color: black;
     }
 /*Table */
     .search-panel
@@ -64,4 +69,90 @@
     .pagination a:hover:not(.active)
     {
         background-color: #ddd;
+    }
+    /*end of Table */
+    #supp-details{
+    }
+    #supp-name{
+        margin: 0;
+    }
+    #supp-name p{
+        margin: 0;
+    }
+    #supp-addrs{
+        margin: 0;
+        font-size: 12px;
+    }
+    #supp-tin{
+        margin: 0;
+        font-size: 12px;
+    }
+
+    /*start of client info and date,PO,CP */
+    #st-con{
+        display: flex;
+    }
+    #tin-con{
+        display: flex;
+    }
+    #addrs-con{
+        display: flex;
+    }
+    #bs-con{
+        display: flex;
+    }
+
+    #d-con{
+        display: flex;
+    }
+    #tm-con{
+        display: flex;
+    }
+    #po-con{
+        display: flex;
+    }
+    #cp-con{
+        display: flex;
+    }
+
+
+
+#inv-con{
+    display: flex;
+    flex-direction: column;
+
+}
+#s-invo-con{
+    display: flex;
+    flex-direction: column;
+}
+
+#header{
+
+}
+#header2{
+
+}
+#body{
+    flex-grow: 1;
+    height: 50%;
+
+}
+#footer{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+
+
+    height: 10%;
+}
+    #bx-1{
+        display: flex;
+        align-items: flex-end;
+    }
+    #bx-2{
+        display: flex;
+        flex-direction: column;
+
     }

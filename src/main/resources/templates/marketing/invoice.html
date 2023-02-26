@@ -13,7 +13,6 @@
     <link rel="stylesheet" type="text/css" th:href="@{/custom-css/marketing/header.css}">
     <!--custom css for vr-->
     <link rel="stylesheet" type="text/css" th:href="@{/custom-css/marketing/style.css}">
-
 </head>
 <body class="body">
 <!--Header starts-->
@@ -37,68 +36,110 @@
     </div>
 </div>
 
-
-
-<div class="container-fluid py-4 mx-auto" id="print-content" style="background-color: white; width: 8.5in; height: 11in; margin: 1in;">
-    <div class="row">
+<div id="inv-con" class="container-fluid py-4 mx-auto" style="background-color: white; width: 8.5in; height: 11in; margin: 1in;">
+    <div id="header">
         <div class="col-12 text-center mb-3">
-            <div class="d-flex align-items-center justify-content-between">
-                <div class="d-flex align-items-center">
+            <div class="align-items-center justify-content-between">
+                <div class="d-flex align-items-center" style="justify-content: space-between;">
                     <img src="https://dummyimage.com/100x100/000/fff" alt="Logo" class="mr-3">
-                    <h3 class="mt-2 mx-4">Invoice Title</h3>
-                    <div>Invoice No: <span id="invoice-number">123</span></div>
+                    <!--<h1>LOGO</h1>-->
+                    <div id="supp-details">
+                        <!-- Supplier Name-->
+                        <h3 id="supp-name" class="mt-2 mx-4"><p>AXENCARE CORP.</p></h3>
+                        <!-- Supplier Address-->
+                        <p id="supp-addrs">28th Floor Antel Global Corporate Center, Julia Vargas Ave., Ortigas Center
+                            San Antonio, 1605 City of Passig NCR, Second District Philippines</p>
+                        <!-- Supplier TIN-->
+                        <p id="supp-tin" >VAT Reg. TIN 608-127289-00000</p>
+                    </div>
+                    <div style="font-weight: bolder;">
+                        <div id="s-invo-con">
+                            <label style="width: 150px;">SALES INVOICE:</label>
+                            <span id="invoice-number" style="color: red;">INV-2022-00123</span>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-    <div class="row mb-4">
-        <div class="col-6">
-            <h5>Sold To:</h5>
-            <div>Customer Name</div>
-            <div>TIN: 123-456-789</div>
-            <div>Address: Customer Address</div>
-            <div>Business Style: Retail</div>
-        </div>
-        <div class="col-6 text-right">
-            <div>Date: 2023-02-25</div>
-            <div>Terms: 30 Days</div>
-            <div>P.O. No.: 123</div>
-            <div>Contact Person: John Doe</div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Quantity</th>
-                    <th>Item</th>
-                    <th>Price</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Item 1</td>
-                    <td>100</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Item 2</td>
-                    <td>200</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Item 3</td>
-                    <td>300</td>
-                </tr>
-                </tbody>
-            </table>
+    <div id="header2">
+        <div class="row mb-4">
+            <div class="col-6">
+                <div id="st-con">
+                    <div id="st-title" style="font-weight: bolder; margin-right: 6%;">Sold to:</div>
+                    <div id="st-value">XYZ Corporation</div>
+                </div>
+                <div id="tin-con">
+                    <div id="tin-title" style="font-weight: bolder; margin-right: 12.5%;">TIN:</div>
+                    <div id="tin-value">123-456-789</div>
+                </div>
+                <div id="addrs-con">
+                    <div id="addrs-title" style="font-weight: bolder; margin-right: 4%;">Address:</div>
+                    <div id="addrs-value">123 Main Street, Suite 100, Anytown, USA 12345</div>
+                </div>
+                <div id="bs-con">
+                    <div id="bs-title" style="font-weight: bolder; margin-right: 1%;">Bus. Style:</div>
+                    <div id="bs-value">Limited Liability Company (LLC)</div>
+                </div>
+            </div>
+            <div class="col-6 text-right">
+                <div id="d-con">
+                    <div id="d-title" style="font-weight: bolder; margin-right: 15%;">Date:</div>
+                    <div id="d-value">February 26, 2023</div>
+                </div>
+                <div id="tm-con">
+                    <div id="tm-title" style="font-weight: bolder; margin-right: 13%;">Terms:</div>
+                    <div id="tm-value">Net 30</div>
+                </div>
+                <div id="po-con">
+                    <div id="po-title" style="font-weight: bolder; margin-right: 9%;">P.O. No.:</div>
+                    <div id="po-value">2023-ABC-789</div>
+                </div>
+                <div id="cp-con">
+                    <div id="cp-title" style="font-weight: bolder; margin-right: 1%;">Con. Person:</div>
+                    <div id="cp-value">Jane Doe, Accounts Payable Manager</div>
+                </div>
+            </div>
         </div>
     </div>
+    <div id="body">
+        <div class="row">
+            <div class="col-12">
+                <table class="table" border="1">
+                    <thead>
+                    <tr>
+                        <th style="font-size: 12px; width: 8.75%; text-align: center;">QTY</th>
+                        <th style="font-size: 12px; width: 8.75%; text-align: center;">UNIT</th>
+                        <th style="font-size: 12px; width: 50%; text-align: center;">ARTICLES</th>
+                        <th style="font-size: 12px; width: 15%; text-align: center;">UNIT PRICE</th>
+                        <th style="font-size: 12px; width: 8.75%; text-align: center;">AMOUNT</th>
+                    </tr>
+                    </thead>
+                    <tbody id="table-body">
+                    <tr>
 
+                    </tr>
+                    </tbody>
+                </table>
+                <button id="add-row-btn" class="btn btn-primary">Add Row</button>
+            </div>
+            <div class="col-12" style="position: relative; left: 550px; ">
+                <!--                <div><span style="font-weight: bolder">Total Amount Due:</span> <span>P1600</span></div>-->
+                <!--                <div><span style="font-weight: bolder">Cash:</span> <span>P2000</span></div>-->
+                <!--                <div><span style="font-weight: bolder">Change:</span> <span>P400</span></div>-->
+            </div>
+        </div>
+    </div>
+    <div id="footer">
+        <div id="bx-1">
+            <label style="margin-right: 10px;">By:</label>
+            <div style="width: 200px; height: 1px; background-color: black;"></div>
+        </div>
+        <div id="bx-2">
+            <label style="font-size: 10px; margin-right: 25px;">Cashier/Authorized Representative</label>
+        </div>
+    </div>
 </div>
 
 
@@ -127,7 +168,55 @@
 <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
 <!-- custom table js -->
-<script th:src="@{/custom-js/vr-staff/vr-table.js}"></script>
+<!--<script th:src="@{/custom-js/vr-staff/vr-table.js}"></script>-->
+<script>
+  const tableBody = document.getElementById('table-body');
+  const addRowBtn = document.getElementById('add-row-btn');
+  let rowCounter = 1;
 
+  // Add row
+  addRowBtn.addEventListener('click', () => {
+    if (rowCounter < 10) {
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+                        <td style="text-align: center;">
+                            <input type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none;">
+                        </td>
+                        <td style="text-align: center;">
+                            <input type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none;">
+                        </td>
+                        <td style="text-align: center;">
+                            <input type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none;">
+                        </td>
+                        <td style="text-align: center;">
+                            <input type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none;">
+                        </td>
+                        <td style="text-align: center;">
+                            <input type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none;">
+                        </td>
+      `;
+      tableBody.appendChild(newRow);
+      rowCounter++;
+
+      // Attach event listener to new row's delete button
+      const deleteRowBtn = newRow.querySelector('.delete-row-btn');
+      deleteRowBtn.addEventListener('click', () => {
+        const row = deleteRowBtn.closest('tr');
+        row.remove();
+        rowCounter--;
+      });
+    } else {
+      alert('Maximum row limit reached!');
+    }
+  });
+
+  // Attach event listener to initial row's delete button
+  const deleteRowBtn = tableBody.querySelector('.delete-row-btn');
+  deleteRowBtn.addEventListener('click', () => {
+    const row = deleteRowBtn.closest('tr');
+    row.remove();
+    rowCounter--;
+  });
+</script>
 </body>
 </html>
