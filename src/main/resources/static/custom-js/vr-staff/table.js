@@ -72,7 +72,8 @@ function paginateTable(table, itemsPerPage) {
         $(this).addClass('active');
     });
 
-    $('td').click(function() {
+    $('td').on('click',function(event) {
+     event.preventDefault();
       var value = $(this).text();
       $.ajax({
           url: "/vr/1 ",
