@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import pialeda.app.Invoice.model.Invoice;
+import pialeda.app.Invoice.service.ClientService;
 import pialeda.app.Invoice.service.InvoiceService;
+import pialeda.app.Invoice.service.SupplierService;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,11 +22,18 @@ public class VRController {
 
     @Autowired
     private InvoiceService invoiceService;
+    @Autowired
+    private ClientService clientService;
+    @Autowired
+    private SupplierService supplierService;
 
     @GetMapping("vr/user")
     public String invoice(Model model) {
         model.addAttribute("invoiceList", invoiceService.getAllInvoice());
         model.addAttribute("invoice", new Invoice());
+
+        model.addAttribute("clientList", clientService.getAllClient());
+        model.addAttribute("supplierList", supplierService.getAllSupplier());
         return "vr-staff/vr";
     }
 

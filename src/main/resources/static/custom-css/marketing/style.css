@@ -1,0 +1,159 @@
+  #content{
+      border: solid 1px red;
+      width: 100px;
+      height: 100px;
+      color: black;
+ }
+ /*Table */
+  .search-panel {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      width: 100%;
+ }
+  .search-text {
+      padding: 6px 4px 5px 18px;
+      font-size: 14px;
+ }
+  .search-field {
+      border-radius: 8px;
+      height: 30px;
+      border: 1px solid #aaa;
+      font-size: 14px;
+ }
+  #pagination {
+      display: flex;
+      justify-content: center;
+      height: 40px;
+ }
+  .btn-light {
+      margin: 0;
+      max-height: 40px;
+ }
+  .pagination {
+      display: inline-block;
+      position: relative;
+      top: 9px;
+ }
+  .pagination a {
+      color: black;
+      padding: 8px 16px;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color .3s;
+      max-height: 40px;
+ }
+  .pagination a.active {
+      background-color: #4CAF50;
+      color: white;
+ }
+  .pagination a:hover:not(.active) {
+      background-color: #ddd;
+ }
+ /*end of Table */
+  #supp-details{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+ }
+  #supp-name{
+      margin: 0;
+ }
+  #supp-name p{
+      margin: 0;
+ }
+  #supp-addrs{
+      margin: 0;
+      font-size: 12px;
+      width: 80%;
+ }
+  #supp-tin{
+      margin: 0;
+      font-size: 12px;
+ }
+ /*start of client info and date,PO,CP */
+  #st-con{
+      display: flex;
+ }
+  #tin-con{
+      display: flex;
+ }
+  #addrs-con{
+      display: flex;
+ }
+  #bs-con{
+      display: flex;
+ }
+  #d-con{
+      display: flex;
+ }
+  #tm-con{
+      display: flex;
+ }
+  #po-con{
+      display: flex;
+ }
+  #cp-con{
+      display: flex;
+ }
+  #inv-con{
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      padding: 1%;
+ }
+  #s-invo-con{
+      display: flex;
+      flex-direction: column;
+ }
+  #header{
+ }
+  #header2{
+ }
+  #body{
+      flex-grow: 1;
+      height: 50%;
+ }
+  #footer{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: flex-end;
+      height: 10%;
+ }
+  #bx-1{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+ }
+  #bx-2{
+      display: flex;
+      flex-direction: column;
+ }
+  .main-con2{
+      display: flex;
+ }
+  .main-bx1{
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+ }
+  .main-bx1 #my-client,#my-supplier ,#btn-addSupplier,#btn-addClient{
+      width: 150px;
+      margin: 2.5%;
+ }
+  .main-bx2{
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+ }
+  .main-bx2 #btn-Gen,#btn-Create{
+      width: 150px;
+      margin: 2.5%;
+ }
+
+   /* Remove outline when <span> is focused */
+   span[contenteditable="true"]:focus {
+     outline: none;
+   }

@@ -44,7 +44,8 @@ public class MarketingController {
     }
 
 
-    @GetMapping("/getClientInfo")
+    @GetMapping("/" +
+            "")
     @ResponseBody
     public Client getClientInfo(@RequestParam("name") String name) {
         Client client = clientService.findByName(name);

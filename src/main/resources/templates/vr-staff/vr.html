@@ -35,6 +35,7 @@
     .left-panel select
     {
         width: auto;
+        margin-right: 24px;
     }
     .search-text
     {
@@ -140,12 +141,15 @@
         <div class="row">
           <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 left-panel">
             <select class="form-select" aria-label="Default select example">
-              <option selected>Filter</option>
-              <option value="1">Client</option>
-              <option value="2">Supplier</option>
+              <option value="0" selected>Filter by Client</option>
+              <option th:each="client : ${clientList}" th:value="${client.name}" th:text="${client.name}"></option>
+            </select>
+            <select class="form-select" onchange="getSupplier(this)" aria-label="Default select example">
+              <option value="0" selected>Filter by Client</option>
+              <option th:each="supplier : ${supplierList}" th:value="${supplier.name}" th:text="${supplier.name}"></option>
             </select>
             <select class="form-select" id="filterByMonth" aria-label="Default select example">
-              <option selected>Filter by Month</option>
+              <option value="0"selected>Filter by Month</option>
               <option value="1">January</option>
               <option value="2">February</option>
               <option value="3">March</option>
@@ -234,6 +238,7 @@
 <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<script th:src="@{/custom-js/vr-staff/utils.js}"></script>
 <script th:src="@{/custom-js/vr-staff/table.js}"></script>
 <script th:src="@{/custom-js/vr-staff/search.js}"></script>
 <script th:src="@{/custom-js/vr-staff/excel.js}"></script>

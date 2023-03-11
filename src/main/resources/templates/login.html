@@ -29,15 +29,17 @@
         <div class="row justify-content-md-center">
             <div class="col-xxl-6 col-xl-9 col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="login-con">
-                    <form method="POST" id="loginForm">
+                    <form method="POST" id="loginForm" th:action="@{/loginUser}" th:object="${login}">
                         <div class="form-title"><h1>LOGIN</h1></div>
 
                         <div class="form-username">
-                            <input type="text" class="form-input" placeholder="Email">
+                            <input type="text" class="form-input" placeholder="Email"
+                                   th:field="*{email}" required th:autofocus="true">
                         </div>
 
                         <div class="form-password">
-                            <input  type="password" class="form-input" placeholder="Password">
+                            <input  type="password" class="form-input" placeholder="Password"
+                                    th:field="*{password}" required>
                         </div>
 
                         <div class="form-btn">
