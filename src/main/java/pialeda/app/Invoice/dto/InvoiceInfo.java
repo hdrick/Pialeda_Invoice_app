@@ -1,29 +1,10 @@
-package pialeda.app.Invoice.model;
+package pialeda.app.Invoice.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Column;
-import javax.persistence.GenerationType;
-
-@Entity
-@Table(name="invoice")
-public class Invoice {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Column(nullable = false, name="supplier_invoice_number")
+public class InvoiceInfo {
     private String invoiceNum;
-    @Column(nullable = false, name="invoice_purchase_order_number")
     private String poNum;
-    @Column(nullable = false, name="invoice_date_created")
     private String dateCreated;
-    @Column(nullable = false, name="invoice_client_contact_person")
     private String clientContactPerson;
-
     private String supplierName;
     private String supplierAddress;
     private String supplierTin;
@@ -37,31 +18,11 @@ public class Invoice {
     private double grandTotal;
     private String cashier;
 
-    public Invoice(){}
-    public Invoice(String invoiceNum, String poNum, String dateCreated, String clientContactPerson, String supplierName, String supplierAddress, String supplierTin, String clientName, String clientTin, String clientAddress, String clientBusStyle, String clientTerms, double grandTotal, String cashier) {
-        this.invoiceNum = invoiceNum;
-        this.poNum = poNum;
-        this.dateCreated = dateCreated;
-        this.clientContactPerson = clientContactPerson;
-        this.supplierName = supplierName;
-        this.supplierAddress = supplierAddress;
-        this.supplierTin = supplierTin;
-        this.clientName = clientName;
-        this.clientTin = clientTin;
-        this.clientAddress = clientAddress;
-        this.clientBusStyle = clientBusStyle;
-        this.clientTerms = clientTerms;
-        this.grandTotal = grandTotal;
-        this.cashier = cashier;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    private int qty;
+    private String unit;
+    private String articles;
+    private double unitPrice;
+    private double amount;
 
     public String getInvoiceNum() {
         return invoiceNum;
@@ -174,6 +135,44 @@ public class Invoice {
     public void setCashier(String cashier) {
         this.cashier = cashier;
     }
+
+    public int getQty() {
+        return qty;
+    }
+
+    public void setQty(int qty) {
+        this.qty = qty;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getArticles() {
+        return articles;
+    }
+
+    public void setArticles(String articles) {
+        this.articles = articles;
+    }
+
+    public double getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(double unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
 }
-
-

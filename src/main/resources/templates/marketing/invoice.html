@@ -36,6 +36,7 @@
             </div>
         </div>
     </div>
+    <form th:action="@{/createInvoice}" th:object="${invoiceInfo}" method="POST">
     <div class="main-con2" style="margin-top: 8%;">
         <div class="main-bx1">
             <!--Client List  -->
@@ -53,32 +54,37 @@
             <!--Client button  -->
             <button id="btn-addClient" class="btn btn-success" data-toggle="modal" data-target="#clientModal">Client</button>
         </div>
+
         <div id="inv-con" class="" style="background-color: white; width: 8.5in; height: 11in; margin-bottom: 0.5in;">
             <!--Supplier information  -->
             <div id="header">
                 <div class="col-12 text-center mb-3">
                     <div class="align-items-center justify-content-between">
                         <div class="d-flex align-items-center" style="justify-content: space-between;">
-<!--&lt;!&ndash;                            <img src="https://dummyimage.com/100x100/000/fff" alt="Logo" class="mr-3">&ndash;&gt;-->
-<!--                            <img  th:src="@{/icon/LOGO.png}" alt="Logo" style="width: 20%; height: 20%;">-->
-                            <h1>Supplier</h1>
+
+                            <!--&lt;!&ndash;                            <img src="https://dummyimage.com/100x100/000/fff" alt="Logo" class="mr-3">&ndash;&gt;-->
+                            <!--                            <img  th:src="@{/icon/LOGO.png}" alt="Logo" style="width: 20%; height: 20%;">-->
+                            <h2 id="logo-suppName" class="mt-2 mx-4" contenteditable="true">Supplier</h2>
                             <div id="supp-details">
                                 <!-- Supplier Name-->
-<!--                                <h3 id="supp-name" class="mt-2 mx-4">AXENCARE CORP.</h3>-->
+                                <!--                                <h3 id="supp-name" class="mt-2 mx-4">AXENCARE CORP.</h3>-->
                                 <h3 id="supp-name" class="mt-2 mx-4" contenteditable="true">Supplier Name</h3>
-
+                                <input type="text" th:field="*{supplierName}" id="supp-name-input">
                                 <!-- Supplier Address-->
-<!--                                <p id="supp-addrs" >28th Floor Antel Global Corporate Center, Julia Vargas Ave., Ortigas Center-->
-<!--                                    San Antonio, 1605 City of Passig NCR, Second District Philippines</p>-->
+                                <!--                                <p id="supp-addrs" >28th Floor Antel Global Corporate Center, Julia Vargas Ave., Ortigas Center-->
+                                <!--                                    San Antonio, 1605 City of Passig NCR, Second District Philippines</p>-->
                                 <span id="supp-addrs" >Supplier Address</span>
+                                <input type="hidden" th:field="*{supplierAddress}" id="supp-addrs-input">
                                 <!-- Supplier TIN-->
-<!--                                <p id="supp-tin" >VAT Reg. TIN 608-127289-00000</p>-->
+                                <!--                                <p id="supp-tin" >VAT Reg. TIN 608-127289-00000</p>-->
                                 <span id="supp-tin" >Supplier TIN</span>
+                                <input type="hidden" th:field="*{supplierTin}" id="supp-tin-input">
                             </div>
                             <div style="font-weight: bolder;">
                                 <div id="s-invo-con">
                                     <label style="width: 150px;">SALES INVOICE:</label>
-                                    <span id="invoice-number" style="color: red;"></span>
+                                    <span  id="invoice-number" style="color: red;"></span>
+                                    <input type="hidden" th:field="*{invoiceNum}" id="invoice-number-input">
                                 </div>
 
                             </div>
@@ -93,36 +99,45 @@
                         <div id="st-con">
                             <div id="st-title" style="font-weight: bolder; margin-right: 6%;">Sold to:</div>
                             <div id="st-value"><span id="client-name" contenteditable="true"></span></div>
+                            <input type="hidden" th:field="*{clientName}" id="client-name-input">
                         </div>
                         <div id="tin-con">
                             <div id="tin-title" style="font-weight: bolder; margin-right: 12.5%;">TIN:</div>
-                            <div id="tin-value"><span id="client-tin" contenteditable="true"></span></div>
+                            <div id="tin-value"><span  id="client-tin" contenteditable="true"></span></div>
+                            <input type="hidden" th:field="*{clientTin}" id="client-tin-input">
                         </div>
                         <div id="addrs-con">
                             <div id="addrs-title" style="font-weight: bolder; margin-right: 4%;">Address:</div>
-                            <div id="addrs-value"><span id="client-address" contenteditable="true"></span></div>
+                            <div id="addrs-value"><span  id="client-address" contenteditable="true"></span></div>
+                            <input type="hidden" th:field="*{clientAddress}" id="client-address-input">
                         </div>
                         <div id="bs-con">
                             <div id="bs-title" style="font-weight: bolder; margin-right: 1%;">Bus. Style:</div>
-                            <div id="bs-value"><span id="client-busStyle" contenteditable="true"></span></div>
+                            <div id="bs-value"><span  id="client-busStyle" contenteditable="true"></span></div>
+                            <input type="hidden" th:field="*{clientBusStyle}" id="client-busStyle-input">
                         </div>
+
                     </div>
                     <div class="col-6 text-right">
                         <div id="d-con">
                             <div id="d-title" style="font-weight: bolder; margin-right: 15%;">Date:</div>
-                            <div id="d-value"><span id="client-date" contenteditable="true"></span></div>
+                            <div id="d-value"><span  id="client-date" contenteditable="true"></span></div>
+                            <input type="hidden" th:field="*{dateCreated}" id="client-date-input">
                         </div>
                         <div id="tm-con">
                             <div id="tm-title" style="font-weight: bolder; margin-right: 13%;">Terms:</div>
-                            <div id="tm-value"><span id="client-terms" contenteditable="true"></span></div>
+                            <div id="tm-value"><span  id="client-terms" contenteditable="true"></span></div>
+                            <input type="hidden" th:field="*{clientTerms}" id="client-terms-input">
                         </div>
                         <div id="po-con">
                             <div id="po-title" style="font-weight: bolder; margin-right: 9%;">P.O. No.:</div>
                             <div id="po-value"><span id="client-poNumber"></span></div>
+                            <input type="hidden"  th:field="*{poNum}" id="client-poNumber-input">
                         </div>
                         <div id="cp-con">
                             <div id="cp-title" style="font-weight: bolder; margin-right: 1%;">Con. Person:</div>
-                            <div id="cp-value"><span id="client-conPerson" contenteditable="true"></span></div>
+                            <div id="cp-value"><span  id="client-conPerson" contenteditable="true"></span></div>
+                            <input type="hidden"  th:field="*{clientContactPerson}" id="client-conPerson-input">
                         </div>
                     </div>
                 </div>
@@ -156,6 +171,7 @@
                                 </td>
                                 <td style="text-align: center; padding-left: 0; padding-right: 0">
                                     <span id="amount-1" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span>
+                                    <input type="hidden" class="compute_amount_input" th:field="*{amount}" id="amount-1-input">
                                 </td>
                             </tr>
                             <tr>
@@ -173,6 +189,7 @@
                                 </td>
                                 <td style="text-align: center; padding-left: 0; padding-right: 0">
                                     <span id="amount-2" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span>
+                                    <input type="hidden" class="compute_amount_input" th:field="*{amount}" id="amount-2-input">
                                 </td>
                             </tr>
                             <tr>
@@ -190,6 +207,7 @@
                                 </td>
                                 <td style="text-align: center; padding-left: 0; padding-right: 0">
                                     <span id="amount-3" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span>
+                                    <input type="hidden" class="compute_amount_input" th:field="*{amount}" id="amount-3-input">
                                 </td>
                             </tr>
                             <tr>
@@ -207,6 +225,7 @@
                                 </td>
                                 <td style="text-align: center; padding-left: 0; padding-right: 0">
                                     <span id="amount-4" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span>
+                                    <input type="hidden" class="compute_amount_input" th:field="*{amount}" id="amount-4-input">
                                 </td>
                             </tr>
                             <tr>
@@ -224,6 +243,7 @@
                                 </td>
                                 <td style="text-align: center; padding-left: 0; padding-right: 0">
                                     <span id="amount-5" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span>
+                                    <input type="hidden" class="compute_amount_input" th:field="*{amount}" id="amount-5-input">
                                 </td>
                             </tr>
                             <tr>
@@ -241,6 +261,7 @@
                                 </td>
                                 <td style="text-align: center; padding-left: 0; padding-right: 0">
                                     <span id="amount-6" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span>
+                                    <input type="hidden" class="compute_amount_input" th:field="*{amount}" id="amount-6-input">
                                 </td>
                             </tr>
                             <tr>
@@ -258,6 +279,7 @@
                                 </td>
                                 <td style="text-align: center; padding-left: 0; padding-right: 0">
                                     <span id="amount-7" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span>
+                                    <input type="hidden" class="compute_amount_input" th:field="*{amount}" id="amount-7-input">
                                 </td>
                             </tr>
                             <tr>
@@ -275,6 +297,7 @@
                                 </td>
                                 <td style="text-align: center; padding-left: 0; padding-right: 0">
                                     <span id="amount-8" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span>
+                                    <input type="hidden" class="compute_amount_input" th:field="*{amount}" id="amount-8-input">
                                 </td>
                             </tr>
                             <tr>
@@ -292,6 +315,7 @@
                                 </td>
                                 <td style="text-align: center; padding-left: 0; padding-right: 0">
                                     <span id="amount-9" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span>
+                                    <input type="hidden" class="compute_amount_input" th:field="*{amount}" id="amount-9-input">
                                 </td>
                             </tr>
                             <tr>
@@ -305,24 +329,29 @@
                                     <input type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
                                 </td>
                                 <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="unit_price10" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_unit_price form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
+                                    <input id="unit_price10" type="text"   class="compute_unit_price form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
                                 </td>
                                 <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <span id="amount-10" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span>
+                                    <span id="amount-10" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span><br>
+                                    <input type="hidden" class="compute_amount_input" th:field="*{amount}" id="amount-10-input">
                                 </td>
                             </tr>
-
-                            </tbody>
                         </table>
+                        </tbody>
                     </div>
                     <div class="col-12" style="display: flex; justify-content: end; padding-right: 50px;">
-                        <div><span style="font-weight: bolder">Total Amount Due:</span> <span id="grandTotal" style="color:red;font-weight:bolder;">₱ 0.00</span></div>
+                        <div>
+                            <span style="font-weight: bolder">Total Amount Due:</span>
+                            <span id="grandTotal" style="color:red;font-weight:bolder;">₱ 0.00</span>
+                            <input type="hidden" th:field="*{grandTotal}" id="grandTotal-input">
+                        </div>
                     </div>
                 </div>
             </div>
             <div id="footer">
                 <div id="bx-1">
-                    <span contenteditable="true"></span>
+                    <span  id="cashier-name" contenteditable="true"></span>
+                    <input type="hidden" th:field="*{cashier}" id="cashier-name-input">
                     <div style="width: 200px; height: 1px; background-color: black;"></div>
                 </div>
                 <div id="bx-2">
@@ -331,10 +360,11 @@
             </div>
         </div>
         <div class="main-bx2">
-            <button id="btn-Gen" class="btn btn-success" onclick="generateInvNum()">Generate</button>
+            <a id="btn-Gen" class="btn btn-success" onclick="generateInvNum()">Generate</a>
             <input id="btn-Create" type="submit" class="btn btn-success" value="Create Invoice">
         </div>
     </div>
+    </form>
 </div>
 <!-- Client Modal -->
 <div class="modal fade" id="clientModal" tabindex="-1" role="dialog" aria-labelledby="clientModalLabel" aria-hidden="true" style="margin-top: 4%;">

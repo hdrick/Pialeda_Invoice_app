@@ -1,15 +1,14 @@
 package pialeda.app.Invoice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pialeda.app.Invoice.model.Invoice;
+import pialeda.app.Invoice.model.InvoiceProductInfo;
 import pialeda.app.Invoice.repository.InvoiceRepository;
-import pialeda.app.Invoice.repository.UserRepository;
+import pialeda.app.Invoice.dto.InvoiceInfo;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,5 +47,28 @@ public class InvoiceService {
         return filter;
     }
 
+    public void createInvoice(InvoiceInfo invoiceInfo){
+        Invoice invoice = new Invoice();
+        List<InvoiceProductInfo> productList = new ArrayList<>();
 
+        invoice.setInvoiceNum(invoiceInfo.getInvoiceNum());
+        invoice.setPoNum(invoiceInfo.getPoNum());
+        invoice.setDateCreated(invoiceInfo.getDateCreated());
+        invoice.setClientContactPerson(invoiceInfo.getClientContactPerson());
+
+        invoice.setSupplierName(invoiceInfo.getSupplierName());
+        invoice.setSupplierAddress(invoiceInfo.getSupplierAddress());
+        invoice.setSupplierTin(invoiceInfo.getSupplierTin());
+
+        invoice.setClientName(invoiceInfo.getClientName());
+        invoice.setClientTin(invoiceInfo.getClientTin());
+        invoice.setClientAddress(invoiceInfo.getClientAddress());
+        invoice.setClientBusStyle(invoiceInfo.getClientBusStyle());
+        invoice.setClientTerms(invoiceInfo.getClientTerms());
+
+        invoice.setGrandTotal(invoiceInfo.getGrandTotal());
+        invoice.setCashier(invoiceInfo.getCashier());
+
+        invoiceRepository.save(invoice);
+    }
 }

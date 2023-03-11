@@ -1,4 +1,6 @@
 const invoiceNum = document.getElementById('invoice-number');
+const invoiceNumInput = document.getElementById('invoice-number-input');
+
 const btnGen = document.getElementById('btn-Gen');
 
 function generateInvNum() {
@@ -22,6 +24,7 @@ function generateInvNum() {
     }
     const result = f1 + currentYearLast2Digit + currentDay + currentMonth + "-" + randomNumber + randomNumber2;
     invoiceNum.textContent = result;
+    invoiceNumInput.value = result;
     generatePONumber();
 }
 
@@ -44,10 +47,19 @@ function getClientInfo() {
         },
         success: function(data) {
             $('#client-name').text(data.name);
+            $('#client-name-input').val(data.name);
+
             $('#client-tin').text(data.tin);
-            $('#client-address').text(data.address);
+            $('#client-tin-input').val(data.tin);
+
+            $('#client-address').text(data.address+", "+data.cityAddress);
+            $('#client-address-input').val(data.address+", "+data.cityAddress);
+
+            $('#client-conPerson-input').val(data.agent);
             $('#client-conPerson').text(data.agent);
+
             $('#client-date').text(formattedDate);
+            $('#client-date-input').val(formattedDate);
         }
     });
 }
@@ -61,8 +73,16 @@ function getSupplierInfo(){
             name: supplierName
         },
         success: function(data) {
+            $('#logo-suppName').text(data.name);
+
+            //for input and display
+            $('#supp-name-input').val(data.name);
             $('#supp-name').text(data.name);
+
+            $('#supp-addrs-input').val(data.address+", "+data.cityAddress);
             $('#supp-addrs').text(data.address+", "+data.cityAddress);
+
+            $('#supp-tin-input').val(data.tin);
             $('#supp-tin').text("VAT Reg. TIN "+data.tin);
         }
     });
@@ -74,6 +94,7 @@ function getSupplierInfo(){
 
 function generatePONumber() {
     const poNum = document.getElementById('client-poNumber');
+    const poNumInput = document.getElementById('client-poNumber-input');
     const timestamp = new Date().getTime(); // Get the current timestamp in milliseconds
     const randomNum = Math.floor(Math.random() * 10000); // Generate a random number between 0 and 9999
     const poNumber = `PO-${timestamp}-${randomNum}`; // Combine the timestamp and random number to create the PO number
@@ -84,14 +105,16 @@ function generatePONumber() {
         console.warn(`Duplicate PO number detected: ${poNumber}`);
     }
 
-    const result = poNum.textContent = poNumber;
-    return result;
+    poNum.textContent = poNumber;
+    poNumInput.value = poNumber;
 }
 
 const quantity = document.querySelectorAll('.compute_qty');
 const unitPrice = document.querySelectorAll('.compute_unit_price');
 const amount = document.querySelectorAll('.compute_amount');
+
 const totalAmountDue = document.getElementById('grandTotal');
+const totalAmountDueInput = document.getElementById('grandTotal-input');
 
 // Loop through each row of the table
 for (let i = 0; i < quantity.length; i++) {
@@ -104,8 +127,10 @@ for (let i = 0; i < quantity.length; i++) {
 function updateAmount() {
     let rowAmount = 0;
 
+
     // Loop through each row of the table
     for (let i = 0; i < quantity.length; i++) {
+    const amountInput = document.querySelectorAll('.compute_amount_input');
 
         // Get the quantity and unit price values for the current row
         const qty = parseFloat(quantity[i].value) || 0;
@@ -116,10 +141,37 @@ function updateAmount() {
 
         // Update the amount for the current row
         amount[i].textContent = amt.toLocaleString();
+                if (amountInput[i]) {
+                    amountInput[i].value = amt.toFixed(2);
+                };
 
         // Add the amount for the current row to the total amount due
         rowAmount += amt;
     }
     // Update the total amount due
     totalAmountDue.textContent = "₱ " + rowAmount.toLocaleString();
+    totalAmountDueInput.value = rowAmount.toFixed(2);
 }
+
+const clientBusStyleSpan = document.getElementById('client-busStyle');
+const clientBusStyleInput = document.getElementById('client-busStyle-input');
+
+    clientBusStyleSpan.addEventListener('input', function() {
+      clientBusStyleInput.value = clientBusStyleSpan.textContent;
+    });
+
+const clientTerms = document.getElementById('client-terms');
+const clientTermsInput = document.getElementById('client-terms-input');
+
+    clientTerms.addEventListener('input', function() {
+      clientTermsInput.value = clientTerms.textContent;
+    });
+
+const cashierName = document.getElementById('cashier-name');
+const cashierNameInput = document.getElementById('cashier-name-input');
+
+    cashierName.addEventListener('input', function() {
+      cashierNameInput.value = cashierName.textContent;
+    });
+
+
