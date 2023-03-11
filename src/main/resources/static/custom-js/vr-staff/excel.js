@@ -1,4 +1,4 @@
-    (function($) {
+$(document).ready(function() {
   $.saveAs = function(blob, filename) {
     saveAs(blob, filename);
   };

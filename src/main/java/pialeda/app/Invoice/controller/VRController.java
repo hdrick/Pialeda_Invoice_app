@@ -46,11 +46,6 @@ public class VRController {
         return new ResponseEntity<>(keyword, HttpStatus.OK);
     }
 
-    @GetMapping("vr/filter")
-    @ResponseBody
-    public List<Invoice> filter() {
-        return invoiceService.getClientNameOrSupplierName("sadas", "boysen");
-    }
     @GetMapping("vr/all-invoice")
     @ResponseBody
     public List<Invoice> getAll() {

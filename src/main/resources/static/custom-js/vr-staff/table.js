@@ -1,4 +1,4 @@
-$(function() {
+$(document).ready(function() {
 
 function paginateTable(table, itemsPerPage) {
   // Get table rows and calculate number of pages
