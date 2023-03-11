@@ -174,4 +174,8 @@ const cashierNameInput = document.getElementById('cashier-name-input');
       cashierNameInput.value = cashierName.textContent;
     });
 
+}
+
+
+
 
