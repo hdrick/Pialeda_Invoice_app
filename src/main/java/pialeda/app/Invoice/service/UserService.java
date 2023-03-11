@@ -37,10 +37,10 @@ public class UserService {
         userRepo.deleteById(id);
     }
 
-    public String authenticate(Login login) throws AuthenticationException {
-        User user = userRepo.findByEmail(login.getEmail());
-
-        if(user !=null && user.getPassword().equals(login.getPassword())){
+    public String authenticate(String email) throws AuthenticationException {
+        User user = userRepo.findByEmail(email);
+        System.out.println(user);
+        if(user !=null && user.getPassword().equals(user.getPassword())){
             return user.getRole();
         }else{
             throw new AuthenticationException("Invalid email or password");

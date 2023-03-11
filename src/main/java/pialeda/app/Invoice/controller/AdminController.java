@@ -16,10 +16,10 @@ public class AdminController {
     private UserService userService;
 
     //    ADMIN
-    @GetMapping("admin-dashboard")
-    public String dashboard(){
-        return "admin/dashboard";
-    }
+//    @GetMapping("admin-dashboard")
+//    public String dashboard(){
+//        return "admin/dashboard";
+//    }
 
     @GetMapping("admin-users")
     public String users(Model model){
