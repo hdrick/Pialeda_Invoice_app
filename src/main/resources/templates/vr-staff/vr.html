@@ -176,22 +176,29 @@
           <table class="table table-sm table-bordered" id="my-table">
             <thead class="table-dark">
             <tr>
-              <th>Client Name</th>
-              <th>Address</th>
-              <th>TIN #</th>
-              <th>Supplier Name</th>
+
               <th>Invoice #</th>
+              <th>Purchase Order #</th>
+              <th>Client Name</th>
+              <th>Client TIN</th>
+              <th>Supplier Name</th>
+              <th>Supplier TIN</th>
+              <th>Amount Due</th>
+              <th>Cashier</th>
               <th>Date</th>
             </tr>
             </thead>
             <tbody id="table-body">
             <tr  class="table-row" th:each="invoice: ${invoiceList}">
-              <td th:text="${invoice.clientName}"></td>
-              <td th:text="${invoice.clientAddress}"></td>
-              <td th:text="${invoice.tinNum}"></td>
-              <td th:text="${invoice.supplierName}"></td>
               <td th:text="${invoice.invoiceNum}"></td>
-              <td th:text="${invoice.date}"></td>
+              <td th:text="${invoice.poNum}"></td>
+              <td th:text="${invoice.clientName}"></td>
+              <td th:text="${invoice.clientTin}"></td>
+              <td th:text="${invoice.supplierName}"></td>
+              <td th:text="${invoice.supplierTin}"></td>
+              <td th:text="${invoice.grandTotal}"></td>
+              <td th:text="${invoice.cashier}"></td>
+              <td th:text="${invoice.dateCreated}"></td>
             </tr>
 
             </tbody>
