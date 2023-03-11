@@ -37,16 +37,6 @@ public class InvoiceService {
         return invoiceRepository.findByClientNameContainingIgnoreCase(query);
     }
 
-    public List<Invoice> getAddress(String add)
-    {
-        return invoiceRepository.findByClientName(add);
-    }
-
-    public List<Invoice> getClientNameOrSupplierName(String client, String supplier) {
-        List<Invoice> filter = invoiceRepository.findByClientNameOrSupplierNameContaining(client, supplier);
-        return filter;
-    }
-
     public void createInvoice(InvoiceInfo invoiceInfo){
         Invoice invoice = new Invoice();
         List<InvoiceProductInfo> productList = new ArrayList<>();
