@@ -40,14 +40,14 @@
     <div class="main-con2" style="margin-top: 8%;">
         <div class="main-bx1">
             <!--Client List  -->
-            <select id="my-client" onchange="getClientInfo()">
+            <select id="my-client" onchange="getClientInfo()" style="font-weight: bolder;">
                 <option value="" selected>Select Client</option>
-                <option th:each="client : ${clientList}" th:value="${client.name}" th:text="${client.name}"></option>
+                <option th:each="client : ${clientList}" th:value="${client.name}" th:text="${client.name}" style="font-weight: bolder;"></option>
             </select>
             <!--Supplier List  -->
-            <select id="my-supplier" onchange="getSupplierInfo()">
+            <select id="my-supplier" onchange="getSupplierInfo()" style="font-weight: bolder;">
                 <option value="" selected>Select Supplier</option>
-                <option th:each="supplier : ${supplierList}" th:value="${supplier.name}" th:text="${supplier.name}"></option>
+                <option th:each="supplier : ${supplierList}" th:value="${supplier.name}" th:text="${supplier.name}" style="font-weight: bolder;"></option>
             </select>
             <!--Supplier button  -->
             <a id="btn-addSupplier" class="btn btn-success" data-toggle="modal" data-target="#supplierModal">Supplier</a>
@@ -60,11 +60,11 @@
             <div id="header">
                 <div class="col-12 text-center mb-3">
                     <div class="align-items-center justify-content-between">
-                        <div class="d-flex align-items-center" style="justify-content: space-between;">
+                        <div class="d-flex align-items-center hstyle" style="justify-content: space-between;">
 
                             <!--&lt;!&ndash;                            <img src="https://dummyimage.com/100x100/000/fff" alt="Logo" class="mr-3">&ndash;&gt;-->
                             <!--                            <img  th:src="@{/icon/LOGO.png}" alt="Logo" style="width: 20%; height: 20%;">-->
-                            <h2 id="logo-suppName" class="mt-2 mx-4" contenteditable="true">Supplier</h2>
+                            <h2 id="logo-suppName" class="mt-2 mx-4" contenteditable="true" style="font-size: 18px; width: 10%;">Supplier</h2>
                             <div id="supp-details">
                                 <!-- Supplier Name-->
                                 <h3 id="supp-name" class="mt-2 mx-4" contenteditable="true">Supplier Name</h3>
@@ -93,22 +93,22 @@
                 <div class="row mb-4">
                     <div class="col-6">
                         <div id="st-con">
-                            <div id="st-title" style="font-weight: bolder; margin-right: 6%;">Sold to:</div>
+                            <div id="st-title" style="font-weight: bolder; margin-right: 6%; color:green;">Sold to:</div>
                             <div id="st-value"><span id="client-name" contenteditable="true"></span></div>
                             <input type="hidden" th:field="*{invoiceInfo.clientName}" id="client-name-input">
                         </div>
                         <div id="tin-con">
-                            <div id="tin-title" style="font-weight: bolder; margin-right: 12.5%;">TIN:</div>
+                            <div id="tin-title" style="font-weight: bolder; margin-right: 12.5%; color:green;">TIN:</div>
                             <div id="tin-value"><span  id="client-tin" contenteditable="true"></span></div>
                             <input type="hidden" th:field="*{invoiceInfo.clientTin}" id="client-tin-input">
                         </div>
                         <div id="addrs-con">
-                            <div id="addrs-title" style="font-weight: bolder; margin-right: 4%;">Address:</div>
+                            <div id="addrs-title" style="font-weight: bolder; margin-right: 4%; color:green;">Address:</div>
                             <div id="addrs-value"><span  id="client-address" contenteditable="true"></span></div>
                             <input type="hidden" th:field="*{invoiceInfo.clientAddress}" id="client-address-input">
                         </div>
                         <div id="bs-con">
-                            <div id="bs-title" style="font-weight: bolder; margin-right: 1%;">Bus. Style:</div>
+                            <div id="bs-title" style="font-weight: bolder; margin-right: 1%; color:green;">Bus. Style:</div>
                             <div id="bs-value"><span  id="client-busStyle" contenteditable="true"></span></div>
                             <input type="hidden" th:field="*{invoiceInfo.clientBusStyle}" id="client-busStyle-input">
                         </div>
@@ -116,22 +116,22 @@
                     </div>
                     <div class="col-6 text-right">
                         <div id="d-con">
-                            <div id="d-title" style="font-weight: bolder; margin-right: 15%;">Date:</div>
+                            <div id="d-title" style="font-weight: bolder; margin-right: 15%; color:green;">Date:</div>
                             <div id="d-value"><span  id="client-date" contenteditable="true"></span></div>
                             <input type="hidden" th:field="*{invoiceInfo.dateCreated}" id="client-date-input">
                         </div>
                         <div id="tm-con">
-                            <div id="tm-title" style="font-weight: bolder; margin-right: 13%;">Terms:</div>
+                            <div id="tm-title" style="font-weight: bolder; margin-right: 13%; color:green;">Terms:</div>
                             <div id="tm-value"><span  id="client-terms" contenteditable="true"></span></div>
                             <input type="hidden" th:field="*{invoiceInfo.clientTerms}" id="client-terms-input">
                         </div>
                         <div id="po-con">
-                            <div id="po-title" style="font-weight: bolder; margin-right: 9%;">P.O. No.:</div>
+                            <div id="po-title" style="font-weight: bolder; margin-right: 9%; color:green;">P.O. No.:</div>
                             <div id="po-value"><span id="client-poNumber"></span></div>
                             <input type="hidden"  th:field="*{invoiceInfo.poNum}" id="client-poNumber-input">
                         </div>
                         <div id="cp-con">
-                            <div id="cp-title" style="font-weight: bolder; margin-right: 1%;">Con. Person:</div>
+                            <div id="cp-title" style="font-weight: bolder; margin-right: 1%; color:green;">Con. Person:</div>
                             <div id="cp-value"><span  id="client-conPerson" contenteditable="true"></span></div>
                             <input type="hidden"  th:field="*{invoiceInfo.clientContactPerson}" id="client-conPerson-input">
                         </div>
