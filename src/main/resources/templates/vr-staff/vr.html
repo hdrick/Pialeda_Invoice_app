@@ -123,9 +123,9 @@
   </div>
 
   <div class="right-con">
-    <div>
+    <div th:if="${session.name != null}">
       <i class="fa-solid fa-user"></i>
-      <a class="m-2" >VR-Staff</a>
+      <a class="m-2" ><span th:text="${session.name}"></span</a>
       <a href="#" class="" data-toggle="modal" data-target="#logoutModal">
         <i class="fas fa-sign-out-alt"></i>
       </a>
