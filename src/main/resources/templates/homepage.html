@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>My App</title>
+</head>
+<body>
+<div th:if="${session.name == null}">
+  <p>Please <a href="/login">login</a> to access the home page.</p>
+</div>
+<div th:if="${session.name != null}">
+  <<p>Welcome, <span th:text="${session.name}"></span>!</p>
+  <p>You are now logged in.</p>
+  <!-- add more content here for the home page -->
+</div>
+</body>
+</html>

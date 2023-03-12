@@ -3,11 +3,11 @@ package pialeda.app.Invoice.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import pialeda.app.Invoice.dto.Login;
 import pialeda.app.Invoice.model.User;
 import pialeda.app.Invoice.repository.UserRepository;
 
 import javax.naming.AuthenticationException;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Service
@@ -50,5 +50,21 @@ public class UserService {
         }else{
             throw new AuthenticationException("Invalid email or password");
         }
+    }
+
+    public String accountValidation(String email, String pass, HttpSession session)
+    {
+        User emailExists = userRepo.findByEmail(email);
+        if (emailExists != null)
+        {
+            boolean password = bCryptPasswordEncoder.matches(pass, emailExists.getPassword());
+            if (password == true)
+            {
+                session.setAttribute("name", emailExists.getFirstName());
+                return "welcome "+emailExists.getFirstName();
+            }
+            return "wrong password";
+        }
+        return "wrong email";
     }
 }
