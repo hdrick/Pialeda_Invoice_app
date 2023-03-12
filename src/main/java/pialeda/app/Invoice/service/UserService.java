@@ -1,6 +1,7 @@
 package pialeda.app.Invoice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pialeda.app.Invoice.dto.Login;
 import pialeda.app.Invoice.model.User;
@@ -14,12 +15,16 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepo;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public List<User> getAllUser(){
         return userRepo.findAll();
     }
 
     public void createUser(User user){
+        String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
         this.userRepo.save(user);
     }
 
