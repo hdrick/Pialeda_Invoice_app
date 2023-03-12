@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pialeda.app.Invoice.dto.ClientInfo;
-import pialeda.app.Invoice.dto.InvoiceInfo;
-import pialeda.app.Invoice.dto.SupplierInfo;
+import pialeda.app.Invoice.dto.*;
 import pialeda.app.Invoice.model.Client;
 import pialeda.app.Invoice.model.Supplier;
 import pialeda.app.Invoice.service.ClientService;
@@ -32,14 +30,20 @@ public class MarketingController {
 
         model.addAttribute("clientInfo", new ClientInfo());
         model.addAttribute("supplierInfo", new SupplierInfo());
-        model.addAttribute("invoiceInfo", new InvoiceInfo());
+
+        InvoiceWrapper wrapper = new InvoiceWrapper();
+        wrapper.setInvoiceInfo(new InvoiceInfo());
+        wrapper.setInvoiceProdInfo(new InvoiceProdInfo());
+        model.addAttribute("wrapper", wrapper);
+
+//        model.addAttribute("invoiceInfo", new InvoiceInfo());
+//        model.addAttribute("invoiceProdInfo", new InvoiceProdInfo());
         return "marketing/invoice";
     }
 
     @PostMapping("/createInvoice")
-    public String createInvoice(@ModelAttribute("invoiceInfo") InvoiceInfo invoiceInfo, Model model){
-
-        invoiceService.createInvoice(invoiceInfo);
+    public String createInvoice(@ModelAttribute("wrapper") InvoiceWrapper wrapper, Model model){
+        invoiceService.createInvoice(wrapper);
         return "redirect:/marketing-invoice";
     }
 

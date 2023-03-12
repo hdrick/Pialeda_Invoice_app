@@ -1,3 +1,4 @@
+
 const invoiceNum = document.getElementById('invoice-number');
 const invoiceNumInput = document.getElementById('invoice-number-input');
 
@@ -108,7 +109,7 @@ function generatePONumber() {
     poNum.textContent = poNumber;
     poNumInput.value = poNumber;
 }
-
+//////////////////////////////
 const quantity = document.querySelectorAll('.compute_qty');
 const unitPrice = document.querySelectorAll('.compute_unit_price');
 const amount = document.querySelectorAll('.compute_amount');
@@ -140,10 +141,8 @@ function updateAmount() {
         const amt = qty * price;
 
         // Update the amount for the current row
-        amount[i].textContent = amt.toLocaleString();
-                if (amountInput[i]) {
-                    amountInput[i].value = amt.toFixed(2);
-                };
+        amount[i].value = amt.toFixed(2);
+
 
         // Add the amount for the current row to the total amount due
         rowAmount += amt;
@@ -173,6 +172,7 @@ const cashierNameInput = document.getElementById('cashier-name-input');
     cashierName.addEventListener('input', function() {
       cashierNameInput.value = cashierName.textContent;
     });
+
 
 
 

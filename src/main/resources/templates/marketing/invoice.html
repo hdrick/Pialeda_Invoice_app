@@ -36,7 +36,7 @@
             </div>
         </div>
     </div>
-    <form th:action="@{/createInvoice}" th:object="${invoiceInfo}" method="POST">
+    <form th:action="@{/createInvoice}" th:object="${wrapper}" method="POST">
     <div class="main-con2" style="margin-top: 8%;">
         <div class="main-bx1">
             <!--Client List  -->
@@ -67,24 +67,20 @@
                             <h2 id="logo-suppName" class="mt-2 mx-4" contenteditable="true">Supplier</h2>
                             <div id="supp-details">
                                 <!-- Supplier Name-->
-                                <!--                                <h3 id="supp-name" class="mt-2 mx-4">AXENCARE CORP.</h3>-->
                                 <h3 id="supp-name" class="mt-2 mx-4" contenteditable="true">Supplier Name</h3>
-                                <input type="hidden" th:field="*{supplierName}" id="supp-name-input">
+                                <input type="hidden" th:field="*{invoiceInfo.supplierName}" id="supp-name-input">
                                 <!-- Supplier Address-->
-                                <!--                                <p id="supp-addrs" >28th Floor Antel Global Corporate Center, Julia Vargas Ave., Ortigas Center-->
-                                <!--                                    San Antonio, 1605 City of Passig NCR, Second District Philippines</p>-->
                                 <span id="supp-addrs" >Supplier Address</span>
-                                <input type="hidden" th:field="*{supplierAddress}" id="supp-addrs-input">
+                                <input type="hidden" th:field="*{invoiceInfo.supplierAddress}" id="supp-addrs-input">
                                 <!-- Supplier TIN-->
-                                <!--                                <p id="supp-tin" >VAT Reg. TIN 608-127289-00000</p>-->
                                 <span id="supp-tin" >Supplier TIN</span>
-                                <input type="hidden" th:field="*{supplierTin}" id="supp-tin-input">
+                                <input type="hidden" th:field="*{invoiceInfo.supplierTin}" id="supp-tin-input">
                             </div>
                             <div style="font-weight: bolder;">
                                 <div id="s-invo-con">
                                     <label style="width: 150px;">SALES INVOICE:</label>
                                     <span  id="invoice-number" style="color: red;"></span>
-                                    <input type="hidden" th:field="*{invoiceNum}" id="invoice-number-input">
+                                    <input type="hidden" th:field="*{invoiceInfo.invoiceNum}" id="invoice-number-input">
                                 </div>
 
                             </div>
@@ -99,22 +95,22 @@
                         <div id="st-con">
                             <div id="st-title" style="font-weight: bolder; margin-right: 6%;">Sold to:</div>
                             <div id="st-value"><span id="client-name" contenteditable="true"></span></div>
-                            <input type="hidden" th:field="*{clientName}" id="client-name-input">
+                            <input type="hidden" th:field="*{invoiceInfo.clientName}" id="client-name-input">
                         </div>
                         <div id="tin-con">
                             <div id="tin-title" style="font-weight: bolder; margin-right: 12.5%;">TIN:</div>
                             <div id="tin-value"><span  id="client-tin" contenteditable="true"></span></div>
-                            <input type="hidden" th:field="*{clientTin}" id="client-tin-input">
+                            <input type="hidden" th:field="*{invoiceInfo.clientTin}" id="client-tin-input">
                         </div>
                         <div id="addrs-con">
                             <div id="addrs-title" style="font-weight: bolder; margin-right: 4%;">Address:</div>
                             <div id="addrs-value"><span  id="client-address" contenteditable="true"></span></div>
-                            <input type="hidden" th:field="*{clientAddress}" id="client-address-input">
+                            <input type="hidden" th:field="*{invoiceInfo.clientAddress}" id="client-address-input">
                         </div>
                         <div id="bs-con">
                             <div id="bs-title" style="font-weight: bolder; margin-right: 1%;">Bus. Style:</div>
                             <div id="bs-value"><span  id="client-busStyle" contenteditable="true"></span></div>
-                            <input type="hidden" th:field="*{clientBusStyle}" id="client-busStyle-input">
+                            <input type="hidden" th:field="*{invoiceInfo.clientBusStyle}" id="client-busStyle-input">
                         </div>
 
                     </div>
@@ -122,22 +118,22 @@
                         <div id="d-con">
                             <div id="d-title" style="font-weight: bolder; margin-right: 15%;">Date:</div>
                             <div id="d-value"><span  id="client-date" contenteditable="true"></span></div>
-                            <input type="hidden" th:field="*{dateCreated}" id="client-date-input">
+                            <input type="hidden" th:field="*{invoiceInfo.dateCreated}" id="client-date-input">
                         </div>
                         <div id="tm-con">
                             <div id="tm-title" style="font-weight: bolder; margin-right: 13%;">Terms:</div>
                             <div id="tm-value"><span  id="client-terms" contenteditable="true"></span></div>
-                            <input type="hidden" th:field="*{clientTerms}" id="client-terms-input">
+                            <input type="hidden" th:field="*{invoiceInfo.clientTerms}" id="client-terms-input">
                         </div>
                         <div id="po-con">
                             <div id="po-title" style="font-weight: bolder; margin-right: 9%;">P.O. No.:</div>
                             <div id="po-value"><span id="client-poNumber"></span></div>
-                            <input type="hidden"  th:field="*{poNum}" id="client-poNumber-input">
+                            <input type="hidden"  th:field="*{invoiceInfo.poNum}" id="client-poNumber-input">
                         </div>
                         <div id="cp-con">
                             <div id="cp-title" style="font-weight: bolder; margin-right: 1%;">Con. Person:</div>
                             <div id="cp-value"><span  id="client-conPerson" contenteditable="true"></span></div>
-                            <input type="hidden"  th:field="*{clientContactPerson}" id="client-conPerson-input">
+                            <input type="hidden"  th:field="*{invoiceInfo.clientContactPerson}" id="client-conPerson-input">
                         </div>
                     </div>
                 </div>
@@ -157,198 +153,184 @@
                             </thead>
                             <tbody id="table-body">
                             <tr>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="qty1" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_qty form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
+                                <td>
+                                    <input id="qty-1" type="number" class="compute_qty" th:field="*{invoiceProdInfo.qty1}" onfocus="if (this.value == '0') { this.value = ''; }" onblur="if (this.value == '') { this.value = '0'; }" required>
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="unit1" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
+                                <td>
+                                    <input id="unit-1" type="text" th:field="*{invoiceProdInfo.unit1}" required>
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="article1" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
+                                <td>
+                                    <input id="article-1" type="text" th:field="*{invoiceProdInfo.articles1}" required>
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="unit_price1" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_unit_price form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
+                                <td>
+                                    <input id="unitPrice-1" type="number" class="compute_unit_price" th:field="*{invoiceProdInfo.unitPrice1}" onfocus="if (this.value == '0.0') { this.value = ''; }" required>
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <span id="amount-1" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span>
-                                    <input type="hidden" class="compute_amount_input" th:field="*{amount}" id="amount-1-input">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="qty2" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_qty form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-                                </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="unit2" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-                                </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="article2" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-                                </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="unit_price2" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_unit_price form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-                                </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <span id="amount-2" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span>
-                                    <input type="hidden" class="compute_amount_input" th:field="*{amount}" id="amount-2-input">
+                                <td>
+                                    <input id="amount-1" type="text" class="compute_amount" th:field="*{invoiceProdInfo.amount1}" readonly>
                                 </td>
                             </tr>
                             <tr>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="qty3" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_qty form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
+                                <td>
+                                    <input id="qty-2" type="number" class="compute_qty" th:field="*{invoiceProdInfo.qty2}" onfocus="if (this.value == '0') { this.value = ''; }" onblur="if (this.value == '') { this.value = '0'; }">
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="unit3" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
+                                <td>
+                                    <input id="unit-2" type="text" th:field="*{invoiceProdInfo.unit2}">
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="article3" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
+                                <td>
+                                    <input id="article-2" type="text" th:field="*{invoiceProdInfo.articles2}">
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="unit_price3" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_unit_price form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
+                                <td>
+                                    <input id="unitPrice-2" type="number" class="compute_unit_price" th:field="*{invoiceProdInfo.unitPrice2}" onfocus="if (this.value == '0.0') { this.value = ''; }">
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <span id="amount-3" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span>
-                                    <input type="hidden" class="compute_amount_input" th:field="*{amount}" id="amount-3-input">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="qty4" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_qty form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-                                </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="unit4" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-                                </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="article4" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-                                </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="unit_price4" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_unit_price form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-                                </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <span id="amount-4" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span>
-                                    <input type="hidden" class="compute_amount_input" th:field="*{amount}" id="amount-4-input">
+                                <td>
+                                    <input id="amount-2" type="text" class="compute_amount" th:field="*{invoiceProdInfo.amount2}" readonly>
                                 </td>
                             </tr>
                             <tr>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="qty5" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_qty form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
+                                <td>
+                                    <input id="qty-3" type="number" class="compute_qty" th:field="*{invoiceProdInfo.qty3}" onfocus="if (this.value == '0') { this.value = ''; }" onblur="if (this.value == '') { this.value = '0'; }">
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="unit5" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
+                                <td>
+                                    <input id="unit-3" type="text" th:field="*{invoiceProdInfo.unit3}">
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="article5" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
+                                <td>
+                                    <input id="article-3" type="text" th:field="*{invoiceProdInfo.articles3}">
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="unit_price5" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_unit_price form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
+                                <td>
+                                    <input id="unitPrice-3" type="number" class="compute_unit_price" th:field="*{invoiceProdInfo.unitPrice3}" onfocus="if (this.value == '0.0') { this.value = ''; }">
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <span id="amount-5" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span>
-                                    <input type="hidden" class="compute_amount_input" th:field="*{amount}" id="amount-5-input">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="qty6" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_qty form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-                                </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="unit6" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-                                </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="article6" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-                                </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="unit_price6" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_unit_price form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-                                </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <span id="amount-6" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span>
-                                    <input type="hidden" class="compute_amount_input" th:field="*{amount}" id="amount-6-input">
+                                <td>
+                                    <input id="amount-3" type="text" class="compute_amount" th:field="*{invoiceProdInfo.amount3}" readonly>
                                 </td>
                             </tr>
                             <tr>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="qty7" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_qty form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
+                                <td>
+                                    <input id="qty-4" type="number" class="compute_qty" th:field="*{invoiceProdInfo.qty4}" onfocus="if (this.value == '0') { this.value = ''; }" onblur="if (this.value == '') { this.value = '0'; }">
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="unit7" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
+                                <td>
+                                    <input id="unit-4" type="text" th:field="*{invoiceProdInfo.unit4}">
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="article7" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
+                                <td>
+                                    <input id="article-4" type="text" th:field="*{invoiceProdInfo.articles4}">
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="unit_price7" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_unit_price form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
+                                <td>
+                                    <input id="unitPrice-4" type="number" class="compute_unit_price" th:field="*{invoiceProdInfo.unitPrice4}" onfocus="if (this.value == '0.0') { this.value = ''; }">
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <span id="amount-7" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span>
-                                    <input type="hidden" class="compute_amount_input" th:field="*{amount}" id="amount-7-input">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="qty8" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_qty form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-                                </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="unit8" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-                                </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="article8" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-                                </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="unit_price8" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_unit_price form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-                                </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <span id="amount-8" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span>
-                                    <input type="hidden" class="compute_amount_input" th:field="*{amount}" id="amount-8-input">
+                                <td>
+                                    <input id="amount-4" type="text" class="compute_amount" th:field="*{invoiceProdInfo.amount4}" readonly>
                                 </td>
                             </tr>
                             <tr>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="qty9" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_qty form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
+                                <td>
+                                    <input id="qty-5" type="number" class="compute_qty" th:field="*{invoiceProdInfo.qty5}" onfocus="if (this.value == '0') { this.value = ''; }" onblur="if (this.value == '') { this.value = '0'; }">
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="unit9" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
+                                <td>
+                                    <input id="unit-5" type="text" th:field="*{invoiceProdInfo.unit5}">
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="article9" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
+                                <td>
+                                    <input id="article-5" type="text" th:field="*{invoiceProdInfo.articles5}">
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="unit-price9" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_unit_price form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-<!--                                    <input type="text"  th:field="*{unitPrice}" id="unit_price9-input" >-->
+                                <td>
+                                    <input id="unitPrice-5" type="number" class="compute_unit_price" th:field="*{invoiceProdInfo.unitPrice5}" onfocus="if (this.value == '0.0') { this.value = ''; }">
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <span id="amount-9" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span>
-                                    <input type="hidden" class="compute_amount_input" th:field="*{amount}" id="amount-9-input">
+                                <td>
+                                    <input id="amount-5" type="text" class="compute_amount" th:field="*{invoiceProdInfo.amount5}" readonly>
                                 </td>
                             </tr>
                             <tr>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="qty10" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_qty form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-<!--                                    <input type="text"  th:field="*{qty}" id="qty10-input">-->
+                                <td>
+                                    <input id="qty-6" type="number" class="compute_qty" th:field="*{invoiceProdInfo.qty6}" onfocus="if (this.value == '0') { this.value = ''; }" onblur="if (this.value == '') { this.value = '0'; }">
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="unit10" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-<!--                                    <input type="text"  th:field="*{unit}" id="unit10-input">-->
+                                <td>
+                                    <input id="unit-6" type="text" th:field="*{invoiceProdInfo.unit6}">
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="article10" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-<!--                                    <input type="text"  th:field="*{articles}" id="article10-input">-->
+                                <td>
+                                    <input id="article-6" type="text" th:field="*{invoiceProdInfo.articles6}">
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <input id="unit_price10" type="text" class="compute_unit_price form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-<!--                                    <input type="text"  th:field="*{unitPrice}" id="unit_price10-input" >-->
+                                <td>
+                                    <input id="unitPrice-6" type="number" class="compute_unit_price" th:field="*{invoiceProdInfo.unitPrice6}" onfocus="if (this.value == '0.0') { this.value = ''; }">
                                 </td>
-                                <td style="text-align: center; padding-left: 0; padding-right: 0">
-                                    <span id="amount-10" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span><br>
-                                    <input type="hidden" class="compute_amount_input" th:field="*{amount}" id="amount-10-input">
+                                <td>
+                                    <input id="amount-6" type="text" class="compute_amount" th:field="*{invoiceProdInfo.amount6}" readonly>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>
+                                    <input id="qty-7" type="number" class="compute_qty" th:field="*{invoiceProdInfo.qty7}" onfocus="if (this.value == '0') { this.value = ''; }" onblur="if (this.value == '') { this.value = '0'; }">
+                                </td>
+                                <td>
+                                    <input id="unit-7" type="text" th:field="*{invoiceProdInfo.unit7}">
+                                </td>
+                                <td>
+                                    <input id="article-7" type="text" th:field="*{invoiceProdInfo.articles7}">
+                                </td>
+                                <td>
+                                    <input id="unitPrice-7" type="number" class="compute_unit_price" th:field="*{invoiceProdInfo.unitPrice7}" onfocus="if (this.value == '0.0') { this.value = ''; }">
+                                </td>
+                                <td>
+                                    <input id="amount-7" type="text" class="compute_amount" th:field="*{invoiceProdInfo.amount7}" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input id="qty-8" type="number" class="compute_qty" th:field="*{invoiceProdInfo.qty8}" onfocus="if (this.value == '0') { this.value = ''; }" onblur="if (this.value == '') { this.value = '0'; }">
+                                </td>
+                                <td>
+                                    <input id="unit-8" type="text" th:field="*{invoiceProdInfo.unit8}">
+                                </td>
+                                <td>
+                                    <input id="article-8" type="text" th:field="*{invoiceProdInfo.articles8}">
+                                </td>
+                                <td>
+                                    <input id="unitPrice-8" type="number" class="compute_unit_price" th:field="*{invoiceProdInfo.unitPrice8}" onfocus="if (this.value == '0.0') { this.value = ''; }">
+                                </td>
+                                <td>
+                                    <input id="amount-8" type="text" class="compute_amount" th:field="*{invoiceProdInfo.amount8}" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input id="qty-9" type="number" class="compute_qty" th:field="*{invoiceProdInfo.qty9}" onfocus="if (this.value == '0') { this.value = ''; }" onblur="if (this.value == '') { this.value = '0'; }">
+                                </td>
+                                <td>
+                                    <input id="unit-9" type="text" th:field="*{invoiceProdInfo.unit9}">
+                                </td>
+                                <td>
+                                    <input id="article-9" type="text" th:field="*{invoiceProdInfo.articles9}">
+                                </td>
+                                <td>
+                                    <input id="unitPrice-9" type="number" class="compute_unit_price" th:field="*{invoiceProdInfo.unitPrice9}" onfocus="if (this.value == '0.0') { this.value = ''; }">
+                                </td>
+                                <td>
+                                    <input id="amount-9" type="text" class="compute_amount" th:field="*{invoiceProdInfo.amount9}" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input id="qty-10" type="number" class="compute_qty" th:field="*{invoiceProdInfo.qty10}" onfocus="if (this.value == '0') { this.value = ''; }" onblur="if (this.value == '') { this.value = '0'; }">
+                                </td>
+                                <td>
+                                    <input id="unit-10" type="text" th:field="*{invoiceProdInfo.unit10}">
+                                </td>
+                                <td>
+                                    <input id="article-10" type="text" th:field="*{invoiceProdInfo.articles10}">
+                                </td>
+                                <td>
+                                    <input id="unitPrice-10" type="number" class="compute_unit_price" th:field="*{invoiceProdInfo.unitPrice10}" onfocus="if (this.value == '0.0') { this.value = ''; }">
+                                </td>
+                                <td>
+                                    <input id="amount-10" type="text" class="compute_amount" th:field="*{invoiceProdInfo.amount10}" readonly>
+                                </td>
+                            </tr>
+                            </tbody>
                         </table>
-                        </tbody>
+
                     </div>
                     <div class="col-12" style="display: flex; justify-content: end; padding-right: 50px;">
                         <div>
                             <span style="font-weight: bolder">Total Amount Due:</span>
                             <span id="grandTotal" style="color:red;font-weight:bolder;">₱ 0.00</span>
-                            <input type="hidden" th:field="*{grandTotal}" id="grandTotal-input">
+                            <input type="hidden" th:field="*{invoiceInfo.grandTotal}" id="grandTotal-input">
                         </div>
                     </div>
                 </div>
@@ -356,7 +338,7 @@
             <div id="footer">
                 <div id="bx-1">
                     <span  id="cashier-name" contenteditable="true"></span>
-                    <input type="hidden" th:field="*{cashier}" id="cashier-name-input">
+                    <input type="hidden" th:field="*{invoiceInfo.cashier}" id="cashier-name-input">
                     <div style="width: 200px; height: 1px; background-color: black;"></div>
                 </div>
                 <div id="bx-2">

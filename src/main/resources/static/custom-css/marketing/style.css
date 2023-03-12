@@ -1,3 +1,6 @@
+ body{
+ color: green;
+ }
  #content{
      border: solid 1px red;
      width: 100px;
@@ -111,6 +114,12 @@
 }
  #header2{
 }
+
+#header2 .col-6 span{
+    color: black;
+    font-weight: bolder;
+    font-family: Times New Roman;
+}
  #body{
      flex-grow: 1;
      height: 50%;
@@ -138,22 +147,68 @@
      display: flex;
      flex-direction: column;
      flex-grow: 1;
+     align-items: center;
+     margin-right: 1%;
+     margin-left: 1%;
 }
- .main-bx1 #my-client,#my-supplier ,#btn-addSupplier,#btn-addClient{
-     width: 150px;
-     margin: 2.5%;
+ .main-bx1 #my-client,#my-supplier{
+    padding: 5px;
+    margin-top: 10px;
+    width: 100%;
 }
+
+ .main-bx1 #btn-addSupplier,#btn-addClient{
+    margin-top: 10px;
+    align-items: start;
+    width: 220px;
+    background-color: #003D2B;
+    color: white;
+    cursor:pointer;
+    font-weight: bolder;
+}
+
+
  .main-bx2{
      display: flex;
      flex-direction: column;
-     flex-grow: 1;
+     flex-grow: 1.5;
+
 }
  .main-bx2 #btn-Gen,#btn-Create{
-     width: 150px;
+     width: 220px;
      margin: 2.5%;
+         background-color: #003D2B;
+         color: white;
+         cursor:pointer;
+         font-weight: bolder;
+         align-items: start;
 }
 
   /* Remove outline when <span> is focused */
   span[contenteditable="true"]:focus {
     outline: none;
   }
+
+
+#table-body td{
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#table-body td input{
+    font-size: 13px;
+    text-align: center;
+    outline: none;
+    box-shadow: none;
+    width: 100%;
+    padding:0;
+    border: 0;
+}
+
+
+#cashier-name{
+    font-family: Open Sans;
+    color: black;
+    font-size: 15px;
+}

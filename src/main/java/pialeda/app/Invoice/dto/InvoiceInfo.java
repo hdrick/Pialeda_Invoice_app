@@ -18,12 +18,6 @@ public class InvoiceInfo {
     private double grandTotal;
     private String cashier;
 
-    private int qty;
-    private String unit;
-    private String articles;
-    private double unitPrice;
-    private double amount;
-
     public String getInvoiceNum() {
         return invoiceNum;
     }
@@ -136,43 +130,4 @@ public class InvoiceInfo {
         this.cashier = cashier;
     }
 
-    public int getQty() {
-        return qty;
-    }
-
-    public void setQty(int qty) {
-        this.qty = qty;
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
-
-    public String getArticles() {
-        return articles;
-    }
-
-    public void setArticles(String articles) {
-        this.articles = articles;
-    }
-
-    public double getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(double unitPrice) {
-        this.unitPrice = unitPrice;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
 }

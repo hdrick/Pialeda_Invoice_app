@@ -1,13 +1,13 @@
 package pialeda.app.Invoice.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Table(name="invoice_Product_Info")
 public class InvoiceProductInfo {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String invoiceNumber;
     private String purchaseOrderNumber;
 
