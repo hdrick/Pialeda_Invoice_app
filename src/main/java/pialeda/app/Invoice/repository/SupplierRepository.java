@@ -7,4 +7,5 @@ import pialeda.app.Invoice.model.Supplier;
 @Repository
 public interface SupplierRepository extends JpaRepository<Supplier, Integer> {
     Supplier findByName(String name);
+
 }
