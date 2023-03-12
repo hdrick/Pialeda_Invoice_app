@@ -38,26 +38,7 @@ public class MarketingController {
 
     @PostMapping("/createInvoice")
     public String createInvoice(@ModelAttribute("invoiceInfo") InvoiceInfo invoiceInfo, Model model){
-        System.out.println("invoiceNum "+invoiceInfo.getInvoiceNum());
-        System.out.println("poNum "+invoiceInfo.getPoNum());
-        System.out.println("dateCreated "+invoiceInfo.getDateCreated());
-        System.out.println("clientContactPerson "+invoiceInfo.getClientContactPerson());
-        System.out.println("supplierName "+invoiceInfo.getSupplierName());
-        System.out.println("supplierAddress "+invoiceInfo.getSupplierAddress());
-        System.out.println("supplierTin "+invoiceInfo.getSupplierTin());
-        System.out.println("clientName "+invoiceInfo.getClientName());
-        System.out.println("clientTin "+invoiceInfo.getClientTin());
-        System.out.println("clientAddress "+invoiceInfo.getClientAddress());
-        System.out.println("clientBusStyle "+invoiceInfo.getClientBusStyle());
-        System.out.println("clientTerms "+invoiceInfo.getClientTerms());
-        System.out.println("grandTotal "+invoiceInfo.getGrandTotal());
-        System.out.println("cashier "+invoiceInfo.getCashier());
 
-        System.out.println("qty "+invoiceInfo.getQty());
-        System.out.println("unit "+invoiceInfo.getUnit());
-        System.out.println("article "+invoiceInfo.getArticles());
-        System.out.println("unitPRice "+invoiceInfo.getUnitPrice());
-        System.out.println("Amount "+invoiceInfo.getAmount());
         invoiceService.createInvoice(invoiceInfo);
         return "redirect:/marketing-invoice";
     }

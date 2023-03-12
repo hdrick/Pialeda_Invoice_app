@@ -50,9 +50,9 @@
                 <option th:each="supplier : ${supplierList}" th:value="${supplier.name}" th:text="${supplier.name}"></option>
             </select>
             <!--Supplier button  -->
-            <button id="btn-addSupplier" class="btn btn-success" data-toggle="modal" data-target="#supplierModal">Supplier</button>
+            <a id="btn-addSupplier" class="btn btn-success" data-toggle="modal" data-target="#supplierModal">Supplier</a>
             <!--Client button  -->
-            <button id="btn-addClient" class="btn btn-success" data-toggle="modal" data-target="#clientModal">Client</button>
+            <a id="btn-addClient" class="btn btn-success" data-toggle="modal" data-target="#clientModal">Client</a>
         </div>
 
         <div id="inv-con" class="" style="background-color: white; width: 8.5in; height: 11in; margin-bottom: 0.5in;">
@@ -69,7 +69,7 @@
                                 <!-- Supplier Name-->
                                 <!--                                <h3 id="supp-name" class="mt-2 mx-4">AXENCARE CORP.</h3>-->
                                 <h3 id="supp-name" class="mt-2 mx-4" contenteditable="true">Supplier Name</h3>
-                                <input type="text" th:field="*{supplierName}" id="supp-name-input">
+                                <input type="hidden" th:field="*{supplierName}" id="supp-name-input">
                                 <!-- Supplier Address-->
                                 <!--                                <p id="supp-addrs" >28th Floor Antel Global Corporate Center, Julia Vargas Ave., Ortigas Center-->
                                 <!--                                    San Antonio, 1605 City of Passig NCR, Second District Philippines</p>-->
@@ -312,7 +312,7 @@
                                 </td>
                                 <td style="text-align: center; padding-left: 0; padding-right: 0">
                                     <input id="unit-price9" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_unit_price form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-                                    <input type="text"  th:field="*{unitPrice}" id="unit_price9-input" >
+<!--                                    <input type="text"  th:field="*{unitPrice}" id="unit_price9-input" >-->
                                 </td>
                                 <td style="text-align: center; padding-left: 0; padding-right: 0">
                                     <span id="amount-9" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span>
@@ -322,23 +322,23 @@
                             <tr>
                                 <td style="text-align: center; padding-left: 0; padding-right: 0">
                                     <input id="qty10" type="number" min="1" onkeydown="return event.keyCode !== 69"  class="compute_qty form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-                                    <input type="text"  th:field="*{qty}" id="qty10-input">
+<!--                                    <input type="text"  th:field="*{qty}" id="qty10-input">-->
                                 </td>
                                 <td style="text-align: center; padding-left: 0; padding-right: 0">
                                     <input id="unit10" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-                                    <input type="text"  th:field="*{unit}" id="unit10-input">
+<!--                                    <input type="text"  th:field="*{unit}" id="unit10-input">-->
                                 </td>
                                 <td style="text-align: center; padding-left: 0; padding-right: 0">
                                     <input id="article10" type="text" class="form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-                                    <input type="text"  th:field="*{articles}" id="article10-input">
+<!--                                    <input type="text"  th:field="*{articles}" id="article10-input">-->
                                 </td>
                                 <td style="text-align: center; padding-left: 0; padding-right: 0">
                                     <input id="unit_price10" type="text" class="compute_unit_price form-control border-0" style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;">
-                                    <input type="text"  th:field="*{unitPrice}" id="unit_price10-input" >
+<!--                                    <input type="text"  th:field="*{unitPrice}" id="unit_price10-input" >-->
                                 </td>
                                 <td style="text-align: center; padding-left: 0; padding-right: 0">
                                     <span id="amount-10" class="compute_amount" readonly style="font-size: 13px; text-align: center; outline: none; box-shadow: none; width: 100%; padding:0;"></span><br>
-                                    <input type="text" class="compute_amount_input" th:field="*{amount}" id="amount-10-input">
+                                    <input type="hidden" class="compute_amount_input" th:field="*{amount}" id="amount-10-input">
                                 </td>
                             </tr>
                         </table>
