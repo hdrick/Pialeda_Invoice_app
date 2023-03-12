@@ -33,6 +33,11 @@ public class UserService {
         this.userRepo.save(user);
     }
 
+    public long getUserCount(){
+
+        return userRepo.count();
+    }
+
     public void deleteUser(int id){
         userRepo.deleteById(id);
     }

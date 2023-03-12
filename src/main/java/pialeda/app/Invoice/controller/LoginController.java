@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import pialeda.app.Invoice.dto.Login;
+import pialeda.app.Invoice.service.SupplierService;
 import pialeda.app.Invoice.service.UserService;
 
 import javax.naming.AuthenticationException;
@@ -17,6 +18,8 @@ public class LoginController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private SupplierService supplierService;
 
     @GetMapping("/login")
     public String login(Model model){
@@ -34,7 +37,9 @@ public class LoginController {
     }
 
     @GetMapping("admin-dashboard")
-    public String dashboard(){
+    public String dashboard(Model model){
+        model.addAttribute("userCount", userService.getUserCount());
+        model.addAttribute("supplierCount", supplierService.getSupplierCount());
         return "admin/dashboard";
     }
 }

@@ -31,6 +31,10 @@ public class SupplierService {
         supplierRepository.save(supplier);
     }
 
+    public long getSupplierCount(){
+        return supplierRepository.count();
+    }
+
     public List<Supplier> getAllSupplier(){
         return supplierRepository.findAll();
     }
