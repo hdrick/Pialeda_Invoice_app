@@ -24,6 +24,9 @@ public class ClientService {
         clientRepository.save(client);
     }
 
+    public long getClientCount(){
+        return clientRepository.count();
+    }
     public List<Client> getAllClient(){
         return clientRepository.findAll();
     }

@@ -73,7 +73,7 @@
       <div class="records-con">
         <div class="invoice-con con">
           <div>
-            <h6>100</h6>
+            <h6 th:text="${invoiceCount}"></h6>
             <h4>Invoices</h4>
           </div>
           <div>
@@ -93,6 +93,15 @@
           <div>
             <h6 th:text="${supplierCount}"></h6>
             <h4>Supplier</h4>
+          </div>
+          <div>
+            <i class="fa-solid fa-users"></i>
+          </div>
+        </div>
+        <div class="client-con con">
+          <div>
+            <h6 th:text="${clientCount}"></h6>
+            <h4>Client</h4>
           </div>
           <div>
             <i class="fa-solid fa-users"></i>
@@ -125,7 +134,7 @@
 </div>
 
 <!-- Bootstrap JavaScript -->
-<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
 </body>
 </html>

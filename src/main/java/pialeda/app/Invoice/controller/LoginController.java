@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import pialeda.app.Invoice.dto.Login;
+import pialeda.app.Invoice.service.ClientService;
+import pialeda.app.Invoice.service.InvoiceService;
 import pialeda.app.Invoice.service.SupplierService;
 import pialeda.app.Invoice.service.UserService;
 
@@ -21,6 +23,10 @@ public class LoginController {
     private UserService userService;
     @Autowired
     private SupplierService supplierService;
+    @Autowired
+    private ClientService clientService;
+    @Autowired
+    private InvoiceService invoiceService;
 
     @GetMapping("/login")
     public String login(Model model){
@@ -41,6 +47,8 @@ public class LoginController {
     public String dashboard(Model model){
         model.addAttribute("userCount", userService.getUserCount());
         model.addAttribute("supplierCount", supplierService.getSupplierCount());
+        model.addAttribute("clientCount", clientService.getClientCount());
+        model.addAttribute("invoiceCount", clientService.getClientCount());
         return "admin/dashboard";
     }
     @GetMapping("/login/credential-validation")

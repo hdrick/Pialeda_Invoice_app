@@ -113,7 +113,6 @@ public class InvoiceService {
 
     public void insertNotNullItem(int qty, String unit, String articles, double unitPrice, double amount,String invNum, String poNum){
         InvoiceProductInfo invoiceProduct = new InvoiceProductInfo();
-
         if(qty !=0 && !(unit.isEmpty() ||  articles.isEmpty()) && unitPrice!=0.0){
             invoiceProduct.setInvoiceNumber(invNum);
             invoiceProduct.setPurchaseOrderNumber(poNum);
@@ -125,6 +124,9 @@ public class InvoiceService {
 
             invoiceProdInfoRepository.save(invoiceProduct);
         }
+    }
 
+    public long getInvoiceCunt(){
+        return invoiceRepository.count();
     }
 }
