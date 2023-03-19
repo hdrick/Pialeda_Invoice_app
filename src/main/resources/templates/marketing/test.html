@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" th:href="@{/icon/PialedaLOGOcircle.png}"/>
+  <title>Pialeda</title>
+
+  <!-- Bootstrap css -->
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+  <!-- Font awesome local -->
+  <script th:src="@{/fontawesome/2302251f1c.js}" crossorigin="anonymous"></script>
+<!--  custom css for header-->
+  <link rel="stylesheet" type="text/css" th:href="@{/custom-css/marketing/or-header.css}">
+  <!--custom css for vr-->
+  <link rel="stylesheet" type="text/css" th:href="@{/custom-css/marketing/or-style.css}">
+
+</head>
+<body class="body">
+<div class="main-con">
+  <!--Header starts-->
+  <div class="header-con">
+    <div class="left-con">
+      <div id="bx1">
+        <img id="h-logo" th:src="@{/icon/LOGO.png}" alt="Logo">
+      </div>
+      <div id="bx2">
+        <label id="logo-name">PIALEDA</label>
+      </div>
+    </div>
+    <div class="right-con">
+      <div>
+        <i class="fa-solid fa-user"></i>
+        <a class="m-2" >VR-Staff</a>
+        <a href="#" class="" data-toggle="modal" data-target="#logoutModal">
+          <i class="fas fa-sign-out-alt"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-con2">
+    <div class="officialReceipt-con">
+        <div class="row-1">
+          <table border=1>
+            <tr>
+              <td colspan="3" style="text-align: center;">IN SETTLEMENT OF THE FOLLOWING:</td>
+            </tr>
+            <tr>
+              <td colspan="1" style="text-align: center;">INVOICE NO.</td>
+              <td id="amt" colspan="2" style="text-align: center;">AMOUNT</td>
+            </tr>
+            <tr>
+              <td class="amt-r1"><input></td>
+              <td class="amt-r1"><input  type="text" class="myNumber"  step="0.01" onchange="formatNumbers()"></td>
+              <td class="amt-r3"><input></td>
+            </tr>
+            <tr>
+              <td><input></td>
+              <td class="amt-r1"><input  type="text" class="myNumber"  step="0.01" onchange="formatNumbers()"></td>
+              <td class="amt-r3"><input></td>
+            </tr>
+            <tr>
+              <td><input></td>
+              <td class="amt-r1"><input  type="text" class="myNumber"  step="0.01" onchange="formatNumbers()"></td>
+              <td class="amt-r3"><input></td>
+            </tr>
+            <tr>
+              <td><input></td>
+              <td class="amt-r1"><input  type="text" class="myNumber"  step="0.01" onchange="formatNumbers()"></td>
+              <td class="amt-r3"><input></td>
+            </tr>
+            <tr>
+              <td style="font-size: 9px;">Total Sales (VAT inclusive)</td>
+              <td><input  type="text" class="myNumber"  step="0.01" onchange="formatNumbers()"></td>
+              <td class="amt-r3"><input></td>
+            </tr>
+            <tr>
+              <td>Less: VAT</td>
+              <td><input></td>
+              <td class="amt-r3"><input></td>
+            </tr>
+            <tr>
+              <td>Total</td>
+              <td><input  type="text" class="myNumber" name="myNumber2" step="0.01" onchange="formatNumbers()" style="color:red"></td>
+              <td class="amt-r3"><input></td>
+            </tr>
+            <tr>
+              <td style="font-size: 9px;">Less: Withholding Tax</td>
+              <td><input></td>
+              <td class="amt-r3"><input></td>
+            </tr>
+            <tr>
+              <td>Amount Due</td>
+              <td><input  type="text" class="myNumber"  step="0.01" onchange="formatNumbers()" style="color:red"></td>
+              <td class="amt-r3"><input></td>
+            </tr>
+            <tr>
+              <td style="padding: 5px;"></td>
+              <td></td>
+              <td class="amt-r3"></td>
+            </tr>
+            <tr>
+              <td>VaTable Sales</td>
+              <td><input></td>
+              <td class="amt-r3"><input></td>
+            </tr>
+            <tr>
+              <td>VAT-Exempt Sales</td>
+              <td><input></td>
+              <td class="amt-r3"><input></td>
+            </tr>
+            <tr>
+              <td>Zero Rated Sales</td>
+              <td><input></td>
+              <td class="amt-r3"><input></td>
+            </tr>
+            <tr>
+              <td>VAT Amount</td>
+              <td><input  type="text" class="myNumber"  step="0.01" onchange="formatNumbers()"></td>
+              <td class="amt-r3"><input></td>
+            </tr>
+            <tr>
+              <td>Total Sales</td>
+              <td><input  type="text" class="myNumber"  step="0.01" onchange="formatNumbers()"></td>
+              <td class="amt-r3"><input></td>
+            </tr>
+            <tr>
+              <td colspan="3" style="text-align: center;">PAYMENT IN FROM OF</td>
+            </tr>
+            <tr>
+              <td>CASH</td>
+              <td colspan="2"><input></td>
+
+            </tr>
+            <tr>
+              <td>CHECK/NO.</td>
+              <td colspan="2"><input></td>
+            </tr>
+            <tr>
+              <td>AMOUNT</td>
+              <td colspan="2" style="display: flex; border:0;">₱<input  type="text" class="myNumber"  step="0.01" onchange="formatNumbers()" style="color:red"></td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="row-2">
+          <div class="r2-header">
+            <div class="d-flex align-items-center hstyle" style="justify-content: space-between;">
+              <h2 id="logo-suppName" class="mt-2 mx-4" contenteditable="true" style="font-size: 10px; width: 10%; font-weight: bolder; font-style: italic;">PYROTITAN ELECTRONICS INC.</h2>
+              <div id="supp-details">
+                <!-- Supplier Name-->
+                <h5 id="supp-name" class="mt-2 mx-4" contenteditable="true">PYROTITAN ELECTRONICS INC.</h5>
+<!--                <h5 id="supp-name" class="mt-2 mx-4" contenteditable="true">Supplier Name</h5>-->
+                <input type="hidden"  id="supp-name-input">
+                <!-- Supplier Address-->
+                <span id="supp-addrs">28th Floor Antel Global Corporate Center, Julia Vargas Ave., Ortigas Center San Antonio
+                , 1605 City of Passig NCR, Second District Philippines</span>
+<!--                <span id="supp-addrs">Supplier address, and supplier city address</span>-->
+                <input type="hidden"  id="supp-addrs-input">
+                <!-- Supplier TIN-->
+                <span id="supp-tin" >Supplier TIN</span>
+                <input type="hidden"  id="supp-tin-input">
+              </div>
+              <div style="font-weight: bolder;">
+                <div id="s-invo-con">
+                  <label style="width: 150px; color:red;" th:text="${generateORNumber}"></label>
+                  <span  id="invoice-number" style="color: red;"></span>
+                  <input type="hidden" id="invoice-number-input">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="r2-body">
+            <div id="hdate" class="con"><h5>OFFICIAL RECEIPT</h5> <div><label>Date</label><input type="date"></div></div>
+            <div class="con"><label >Received from</label><input id="inp-1"></div>
+            <div class="con"><label>and Address at</label><input></div>
+            <div class="con"><label>with TIN</label><input><label>engaged in the</label></div>
+            <div class="con"><label>Bus. Style of from</label><input><label>,the sum of</label></div>
+            <div class="con"><input><label>Pesos</label></div>
+            <div class="con"><label>(₱<input type="text" id="myNumber" name="myNumber" step="0.01" style="color: red;" onchange="formatNumber()">) in full/partial payment for</label> <input></div>
+          </div>
+          <div class="r2-footer">
+              <input type="text"  id="cashier-name-input">
+              <label style="font-size: 10px; margin-right: 25px; text-align: center;">Cashier/Authorized Representative</label>
+          </div>
+        </div>
+    </div>
+    <div class="officialReceipt-btn">
+      <button class="btn btn-success">Create OR</button>
+      <button class="btn btn-danger">back</button>
+    </div>
+  </div>
+</div>
+<!-- Logout Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="logoutModalLabel">Logout</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to logout?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn" style="background-color: #003D2B; color: white;">Logout</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JavaScript -->
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+<!--<script th:src="@{/custom-js/marketing/marketing-main.js}"></script>-->
+<script>
+<!--let invCount = document.getElementById("invCount").value;-->
+<!--alert("There are " + invCount + " invoices.");-->
+function formatNumber() {
+  let input = document.getElementById("myNumber");
+  let num = parseFloat(input.value);
+  if (!isNaN(num)) {
+    input.value = num.toLocaleString('en-US', { style: 'decimal', minimumFractionDigits: 2 });
+  }
+}
+
+function formatNumbers() {
+  let inputs = document.getElementsByClassName("myNumber");
+  for (let i = 0; i < inputs.length; i++) {
+    let num = parseFloat(inputs[i].value);
+    if (!isNaN(num)) {
+      inputs[i].value = num.toLocaleString('en-US', { style: 'decimal', minimumFractionDigits: 2 });
+    }
+  }
+}
+</script>
+</body>
+</html>

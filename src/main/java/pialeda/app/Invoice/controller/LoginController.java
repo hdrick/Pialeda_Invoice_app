@@ -48,7 +48,7 @@ public class LoginController {
         model.addAttribute("userCount", userService.getUserCount());
         model.addAttribute("supplierCount", supplierService.getSupplierCount());
         model.addAttribute("clientCount", clientService.getClientCount());
-        model.addAttribute("invoiceCount", clientService.getClientCount());
+        model.addAttribute("invoiceCount", invoiceService.getInvoiceCunt());
         return "admin/dashboard";
     }
     @GetMapping("/login/credential-validation")

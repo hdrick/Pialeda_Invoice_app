@@ -10,7 +10,8 @@ import pialeda.app.Invoice.model.Supplier;
 import pialeda.app.Invoice.service.ClientService;
 import pialeda.app.Invoice.service.SupplierService;
 import pialeda.app.Invoice.service.InvoiceService;
-
+import java.time.LocalDate;
+import java.time.Month;
 
 @Controller
 public class MarketingController {
@@ -39,6 +40,27 @@ public class MarketingController {
 //        model.addAttribute("invoiceInfo", new InvoiceInfo());
 //        model.addAttribute("invoiceProdInfo", new InvoiceProdInfo());
         return "marketing/invoice";
+    }
+    @GetMapping("test")
+    public String test(Model model){
+        // get the current date
+        LocalDate currentDate = LocalDate.now();
+
+        // get the current day and month
+        int currentDay = currentDate.getDayOfMonth();
+        int  currentMonth = currentDate.getMonthValue();
+        int generateORNumber = (int) invoiceService.getInvoiceCunt();
+
+        if(generateORNumber == 0 || generateORNumber < 0){
+            generateORNumber = 1;
+        }
+        // format generateORNumber with a leading zero
+        String generateORNumberStr = String.format("%02d", generateORNumber);
+        String resultStr = String.format("%d%d%s", currentMonth, currentDay, generateORNumberStr);
+        int result = Integer.parseInt(resultStr);
+
+        model.addAttribute("generateORNumber", result);
+        return "marketing/test";
     }
 
     @PostMapping("/createInvoice")

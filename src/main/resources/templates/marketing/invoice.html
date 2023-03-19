@@ -53,8 +53,9 @@
             <a id="btn-addSupplier" class="btn btn-success" data-toggle="modal" data-target="#supplierModal">Supplier</a>
             <!--Client button  -->
             <a id="btn-addClient" class="btn btn-success" data-toggle="modal" data-target="#clientModal">Client</a>
+            <!--button for create Official receipt  -->
+            <a id="btn-OR" class="btn btn-success" th:href="@{/test}">Official Receipt</a>
         </div>
-
         <div id="inv-con" class="" style="background-color: white; width: 8.5in; height: 11in; margin-bottom: 0.5in;">
             <!--Supplier information  -->
             <div id="header">
@@ -82,7 +83,6 @@
                                     <span  id="invoice-number" style="color: red;"></span>
                                     <input type="hidden" th:field="*{invoiceInfo.invoiceNum}" id="invoice-number-input">
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -474,6 +474,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Bootstrap JavaScript -->
 <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>

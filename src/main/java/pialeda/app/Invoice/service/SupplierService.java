@@ -1,6 +1,7 @@
 package pialeda.app.Invoice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pialeda.app.Invoice.dto.ClientInfo;
 import pialeda.app.Invoice.dto.SupplierInfo;
@@ -36,7 +37,7 @@ public class SupplierService {
     }
 
     public List<Supplier> getAllSupplier(){
-        return supplierRepository.findAll();
+        return supplierRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
     public Supplier findByName(String name){
         return supplierRepository.findByName(name);

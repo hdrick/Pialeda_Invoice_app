@@ -1,6 +1,7 @@
 package pialeda.app.Invoice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pialeda.app.Invoice.dto.ClientInfo;
 import pialeda.app.Invoice.model.Client;
@@ -28,7 +29,7 @@ public class ClientService {
         return clientRepository.count();
     }
     public List<Client> getAllClient(){
-        return clientRepository.findAll();
+        return clientRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     public Client findByName(String name){
