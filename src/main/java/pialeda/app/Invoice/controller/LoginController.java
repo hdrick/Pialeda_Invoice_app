@@ -3,10 +3,14 @@ package pialeda.app.Invoice.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+import pialeda.app.Invoice.config.JwtUtil;
 import pialeda.app.Invoice.dto.Login;
+import pialeda.app.Invoice.model.User;
 import pialeda.app.Invoice.service.ClientService;
 import pialeda.app.Invoice.service.InvoiceService;
 import pialeda.app.Invoice.service.SupplierService;
@@ -27,6 +31,10 @@ public class LoginController {
     private ClientService clientService;
     @Autowired
     private InvoiceService invoiceService;
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @GetMapping("/login")
     public String login(Model model){
@@ -43,31 +51,77 @@ public class LoginController {
 //        return "redirect:/admin-users";
 //    }
 
-    @GetMapping("admin-dashboard")
-    public String dashboard(Model model){
-        model.addAttribute("userCount", userService.getUserCount());
-        model.addAttribute("supplierCount", supplierService.getSupplierCount());
-        model.addAttribute("clientCount", clientService.getClientCount());
-        model.addAttribute("invoiceCount", invoiceService.getInvoiceCunt());
-        return "admin/dashboard";
-    }
-    @GetMapping("/login/credential-validation")
-    @ResponseBody
-    public ResponseEntity<?> loginValidation(HttpSession session, @RequestParam("email") String email, @RequestParam("pass") String password)
-    {
-        String msg = userService.accountValidation(email, password, session);
-        return new ResponseEntity<>(msg, HttpStatus.OK);
-    }
+//    @GetMapping("admin-dashboard")
+//    public String dashboard(Model model){
+//        model.addAttribute("userCount", userService.getUserCount());
+//        model.addAttribute("supplierCount", supplierService.getSupplierCount());
+//        model.addAttribute("clientCount", clientService.getClientCount());
+//        model.addAttribute("invoiceCount", invoiceService.getInvoiceCunt());
+//        return "admin/dashboard";
+//    }
+    @PostMapping("/validation")
+    public String loginUser(@ModelAttribute("login") Login login, Model model, HttpSession session) {
+        Boolean user = userService.loadUserByEmail(login.getEmail(),login.getPassword());
 
-    @GetMapping("/login/success")
-    public String home(HttpSession session) {
-        if (session != null) {
-            // do something with the session
-            // ...
-            return "homepage";
-        } else {
-            // redirect to the login page
-            return "redirect:/login";
+        if(user == true)
+        {
+            User userDetails = userService.loadRoleByUser(login.getEmail());
+            String destination=null;
+            if(userDetails.getRole().equals("admin"))
+            {
+                String token = jwtUtil.generateToken(userDetails);
+                session.setAttribute("token", token);
+                return destination ="redirect:vr/user";
+            }
+            if (userDetails.getRole().equals("vr-staff"))
+            {
+                return destination = "redirect:vr/user";
+            }
+            if (userDetails.getRole().equals("marketing"))
+            {
+                return destination ="redirect:marketing-invoice";
+            }
+
+
+            return destination;
+        }
+        else
+        {
+            System.out.println(login.getEmail()+"error");
+            System.out.println(login.getPassword()+"error");
+            boolean hideSpan = true;
+            model.addAttribute("hideSpan", hideSpan);
+            model.addAttribute("error", "Your username or password is invalid.");
+            return "login";
         }
     }
+//    @GetMapping("/login/isCredentialValid")
+//    public String loginSubmit(HttpSession session, Model model, @RequestParam String email, @RequestParam String password) {
+//        try {
+//
+//            User userDetails = userService.loadUserByEmail(email);
+//            if (userDetails == null)
+//            {
+//                model.addAttribute("error", "Your username or password is invalid.");
+//                System.out.println("----------------------wrong username");
+//                return "login";
+//            }
+//
+//            if (!encoder.matches(password, userDetails.getPassword())) {
+//                model.addAttribute("error", "Your username or password is invalid.");
+//                System.out.println("----------------------wrong password");
+//                return "login";
+//            }
+//            String token = jwtUtil.generateToken(userDetails);
+//
+//            session.setAttribute("token", token);
+//            session.setAttribute("name", userDetails.getFirstName());
+//            return "redirect:/vr/user";
+//
+//        } catch (BadCredentialsException e) {
+//            model.addAttribute("error", "Your username or password is invalid.");
+//            System.out.println("----------------------wrong credentials");
+//            return "login";
+//        }
+//    }
 }
