@@ -17,15 +17,14 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/login" ).permitAll()
+                .antMatchers("/custom-css/**", "/custom-js/**","/webjars/**","/icon/**","/fontawesome/**").permitAll()
+                .antMatchers("/login", "/login/**" ).permitAll()
                 .antMatchers("/vr/**").hasRole("vr-staff")
                 .antMatchers("/admin/**").hasRole("admin")
                 .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .and()
-                .logout().logoutSuccessUrl("/login").permitAll()
-                .and().csrf().disable();
+                .and().csrf().disable()
+                .formLogin().disable()
+                .logout().logoutSuccessUrl("/login").permitAll();
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }

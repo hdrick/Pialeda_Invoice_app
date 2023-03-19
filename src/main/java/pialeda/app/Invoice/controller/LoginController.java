@@ -1,6 +1,7 @@
 package pialeda.app.Invoice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -59,7 +60,7 @@ public class LoginController {
 //        model.addAttribute("invoiceCount", invoiceService.getInvoiceCunt());
 //        return "admin/dashboard";
 //    }
-    @PostMapping("/validation")
+    @PostMapping("/login/validation")
     public String loginUser(@ModelAttribute("login") Login login, Model model, HttpSession session) {
         Boolean user = userService.loadUserByEmail(login.getEmail(),login.getPassword());
 
@@ -71,7 +72,12 @@ public class LoginController {
             {
                 String token = jwtUtil.generateToken(userDetails);
                 session.setAttribute("token", token);
-                return destination ="redirect:vr/user";
+
+                String BearerToken = "Bearer "+token;
+                HttpHeaders headers = new HttpHeaders();
+                System.out.println(BearerToken);
+                headers.set("Authorization", BearerToken);
+                return destination ="redirect:/vr/user";
             }
             if (userDetails.getRole().equals("vr-staff"))
             {
@@ -95,33 +101,4 @@ public class LoginController {
             return "login";
         }
     }
-//    @GetMapping("/login/isCredentialValid")
-//    public String loginSubmit(HttpSession session, Model model, @RequestParam String email, @RequestParam String password) {
-//        try {
-//
-//            User userDetails = userService.loadUserByEmail(email);
-//            if (userDetails == null)
-//            {
-//                model.addAttribute("error", "Your username or password is invalid.");
-//                System.out.println("----------------------wrong username");
-//                return "login";
-//            }
-//
-//            if (!encoder.matches(password, userDetails.getPassword())) {
-//                model.addAttribute("error", "Your username or password is invalid.");
-//                System.out.println("----------------------wrong password");
-//                return "login";
-//            }
-//            String token = jwtUtil.generateToken(userDetails);
-//
-//            session.setAttribute("token", token);
-//            session.setAttribute("name", userDetails.getFirstName());
-//            return "redirect:/vr/user";
-//
-//        } catch (BadCredentialsException e) {
-//            model.addAttribute("error", "Your username or password is invalid.");
-//            System.out.println("----------------------wrong credentials");
-//            return "login";
-//        }
-//    }
 }
