@@ -42,7 +42,7 @@ public class MarketingController {
 //
 //        return "marketing/invoice";
 //    }
-    @GetMapping("marketing-officialreceipt")
+    @GetMapping("/marketing/officialreceipt")
     public String test(Model model){
         // get the current date
         LocalDate currentDate = LocalDate.now();

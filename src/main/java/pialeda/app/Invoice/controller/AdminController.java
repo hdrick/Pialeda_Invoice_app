@@ -21,7 +21,7 @@ public class AdminController {
 //        return "admin/dashboard";
 //    }
 
-    @GetMapping("admin-users")
+    @GetMapping("/admin/users")
     public String users(Model model){
         model.addAttribute("userList", userService.getAllUser());
         model.addAttribute("user", new User());

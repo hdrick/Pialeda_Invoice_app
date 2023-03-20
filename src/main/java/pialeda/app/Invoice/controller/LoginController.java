@@ -36,31 +36,36 @@ public class LoginController {
         return "login";
     }
 
-    @PostMapping("/loginUser")
-    public String loginUser(@ModelAttribute("login") Login login, Model model) {
+    @PostMapping("/login/auth")
+    public String loginUser(@ModelAttribute("login") Login login, Model model, HttpSession session) {
         Boolean user = userService.loadUserByEmail(login.getEmail(),login.getPassword());
 
         if(user == true){
             User userRole = userService.loadUser(login.getEmail());
             String destination=null;
             if(userRole.getRole().equals("admin")){
-                return destination ="redirect:admin-dashboard";
+                session.setAttribute("name", userRole.getLastName());
+                session.setAttribute("role", userRole.getRole());
+                return destination ="redirect:/admin/dashboard";
             } else if (userRole.getRole().equals("vr-staff")) {
-                return destination = "redirect:vr/user";
+                session.setAttribute("name", userRole.getLastName());
+                session.setAttribute("role", userRole.getRole());
+                return destination = "redirect:/vr/user";
             } else if (userRole.getRole().equals("marketing")) {
-                return destination ="redirect:marketing-invoice";
+                session.setAttribute("name", userRole.getLastName());
+                session.setAttribute("role", userRole.getRole());
+                return destination ="redirect:/marketing/invoice";
             }
             return destination;
         }else{
-            System.out.println(login.getEmail()+"error");
-            System.out.println(login.getPassword()+"error");
             boolean hideSpan = true;
             model.addAttribute("hideSpan", hideSpan);
+            model.addAttribute("error", "Email or Password is incorrect!");
             return "login";
         }
     }
 
-    @GetMapping("admin-dashboard")
+    @GetMapping("/admin/dashboard")
     public String dashboard(Model model){
         model.addAttribute("userCount", userService.getUserCount());
         model.addAttribute("supplierCount", supplierService.getSupplierCount());
@@ -69,7 +74,7 @@ public class LoginController {
         return "admin/dashboard";
     }
 
-    @GetMapping("vr/user")
+    @GetMapping("/vr/user")
     public String invoices(Model model) {
         model.addAttribute("invoiceList", invoiceService.getAllInvoice());
         model.addAttribute("invoice", new Invoice());
@@ -79,7 +84,7 @@ public class LoginController {
         return "vr-staff/vr";
     }
 
-    @GetMapping("marketing-invoice")
+    @GetMapping("/marketing/invoice")
     public String users(Model model){
         model.addAttribute("clientList", clientService.getAllClient());
         model.addAttribute("supplierList", supplierService.getAllSupplier());
