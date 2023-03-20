@@ -57,19 +57,21 @@ public class UserService {
         }
     }
 
-    public String accountValidation(String email, String pass, HttpSession session)
+    public boolean loadUserByEmail(String email, String pass)
     {
         User emailExists = userRepo.findByEmail(email);
-        if (emailExists != null)
-        {
-            boolean password = bCryptPasswordEncoder.matches(pass, emailExists.getPassword());
-            if (password == true)
-            {
-                session.setAttribute("name", emailExists.getFirstName());
-                return "welcome "+emailExists.getFirstName();
-            }
-            return "wrong password";
+        if (emailExists == null){
+            return false;
+        }else{
+            String userDbPass = emailExists.getPassword();
+            boolean isMatch = bCryptPasswordEncoder.matches(pass,userDbPass);
+            return isMatch;
         }
-        return "wrong email";
+    }
+
+    public User loadUser(String email)
+    {
+        User emailExists = userRepo.findByEmail(email);
+        return emailExists;
     }
 }

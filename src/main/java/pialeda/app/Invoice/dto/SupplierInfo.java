@@ -11,6 +11,16 @@ public class SupplierInfo {
     private int corNum;
     private String corDate;
 
+    private double limit;
+
+    public double getLimit() {
+        return limit;
+    }
+
+    public void setLimit(double limit) {
+        this.limit = limit;
+    }
+
     public String getName() {
         return name;
     }

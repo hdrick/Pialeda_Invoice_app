@@ -14,6 +14,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalDouble;
 
 
 @Service
@@ -128,5 +129,9 @@ public class InvoiceService {
 
     public long getInvoiceCunt(){
         return invoiceRepository.count();
+    }
+
+    public double getSuppTotalLimit(String suppName){
+        return invoiceRepository.findSumLimitByName(suppName);
     }
 }

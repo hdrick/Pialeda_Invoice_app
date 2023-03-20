@@ -27,15 +27,15 @@ public class VRController {
     @Autowired
     private SupplierService supplierService;
 
-    @GetMapping("vr/user")
-    public String invoice(Model model) {
-        model.addAttribute("invoiceList", invoiceService.getAllInvoice());
-        model.addAttribute("invoice", new Invoice());
-
-        model.addAttribute("clientList", clientService.getAllClient());
-        model.addAttribute("supplierList", supplierService.getAllSupplier());
-        return "vr-staff/vr";
-    }
+//    @GetMapping("vr/user")
+//    public String invoice(Model model) {
+//        model.addAttribute("invoiceList", invoiceService.getAllInvoice());
+//        model.addAttribute("invoice", new Invoice());
+//
+//        model.addAttribute("clientList", clientService.getAllClient());
+//        model.addAttribute("supplierList", supplierService.getAllSupplier());
+//        return "vr-staff/vr";
+//    }
 
     @GetMapping("vr/{id}")
     public ResponseEntity<Invoice> getInvoice(@PathVariable int id) {

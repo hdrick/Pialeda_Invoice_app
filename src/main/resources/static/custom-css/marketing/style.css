@@ -100,8 +100,8 @@
 }
  #inv-con{
      display: flex;
+     flex-grow: 0.5;
      flex-direction: column;
-     flex-grow: 1;
      padding: 1%;
 }
  #s-invo-con{
@@ -145,7 +145,7 @@
  .main-bx1{
      display: flex;
      flex-direction: column;
-     flex-grow: 1;
+     flex-grow: 0.2;
      align-items: center;
      margin-right: 1%;
      margin-left: 1%;
@@ -156,7 +156,7 @@
     width: 100%;
 }
 
- .main-bx1 #btn-addSupplier,#btn-addClient{
+ .main-bx1 #btn-addSupplier,#btn-addClient,#btn-OR{
     margin-top: 10px;
     align-items: start;
     width: 220px;
@@ -166,12 +166,12 @@
     font-weight: bolder;
 }
 
+btn-OR
+
 
  .main-bx2{
      display: flex;
      flex-direction: column;
-     flex-grow: 1.5;
-
 }
  .main-bx2 #btn-Gen,#btn-Create{
      width: 220px;

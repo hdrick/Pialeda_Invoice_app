@@ -40,8 +40,11 @@ public class Supplier {
     @Column( name="supplier_corDate")
     private String corDate;
 
+    @Column( name="supplier_limit")
+    private double limit;
+
     public Supplier(){}
-    public Supplier(String name, String address, String cityAddress, String tin, int secNum, int secYear, String atp, int corNum, String corDate) {
+    public Supplier(String name, String address, String cityAddress, String tin, int secNum, int secYear, String atp, int corNum, String corDate, double limit) {
         this.name = name;
         this.address = address;
         this.cityAddress = cityAddress;
@@ -51,6 +54,7 @@ public class Supplier {
         this.atp = atp;
         this.corNum = corNum;
         this.corDate = corDate;
+        this.limit = limit;
     }
 
     public Supplier(String name, String address, String cityAddress, String tin) {
@@ -58,6 +62,14 @@ public class Supplier {
         this.address = address;
         this.cityAddress = cityAddress;
         this.tin = tin;
+    }
+
+    public double getLimit() {
+        return limit;
+    }
+
+    public void setLimit(double limit) {
+        this.limit = limit;
     }
 
     public int getId() {

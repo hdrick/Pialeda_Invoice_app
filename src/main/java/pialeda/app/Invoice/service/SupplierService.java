@@ -28,6 +28,7 @@ public class SupplierService {
         supplier.setAtp(supplierInfo.getAtp());
         supplier.setCorNum(supplierInfo.getCorNum());
         supplier.setCorDate(supplierInfo.getCorDate());
+        supplier.setLimit(supplierInfo.getLimit());
 
         supplierRepository.save(supplier);
     }
@@ -42,4 +43,11 @@ public class SupplierService {
     public Supplier findByName(String name){
         return supplierRepository.findByName(name);
     }
+
+    public double findLimitByName(String name){
+        Supplier supp = supplierRepository.findByName(name);
+
+        return supp.getLimit();
+    }
+
 }

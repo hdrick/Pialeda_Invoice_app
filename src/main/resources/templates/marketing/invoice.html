@@ -54,7 +54,7 @@
             <!--Client button  -->
             <a id="btn-addClient" class="btn btn-success" data-toggle="modal" data-target="#clientModal">Client</a>
             <!--button for create Official receipt  -->
-            <a id="btn-OR" class="btn btn-success" th:href="@{/test}">Official Receipt</a>
+            <a id="btn-OR" class="btn btn-success" th:href="@{/marketing-officialreceipt}">Create OR</a>
         </div>
         <div id="inv-con" class="" style="background-color: white; width: 8.5in; height: 11in; margin-bottom: 0.5in;">
             <!--Supplier information  -->
@@ -62,7 +62,6 @@
                 <div class="col-12 text-center mb-3">
                     <div class="align-items-center justify-content-between">
                         <div class="d-flex align-items-center hstyle" style="justify-content: space-between;">
-
                             <!--&lt;!&ndash;                            <img src="https://dummyimage.com/100x100/000/fff" alt="Logo" class="mr-3">&ndash;&gt;-->
                             <!--                            <img  th:src="@{/icon/LOGO.png}" alt="Logo" style="width: 20%; height: 20%;">-->
                             <h2 id="logo-suppName" class="mt-2 mx-4" contenteditable="true" style="font-size: 18px; width: 10%;">Supplier</h2>
@@ -347,7 +346,7 @@
             </div>
         </div>
         <div class="main-bx2">
-            <a id="btn-Gen" class="btn btn-success" onclick="generateInvNum()">Generate</a>
+<!--            <a id="btn-Gen" class="btn btn-success" onclick="generateInvNum()">Generate</a>-->
             <input id="btn-Create" type="submit" class="btn btn-success" value="Create Invoice">
         </div>
     </div>
@@ -409,44 +408,57 @@
                 <form th:action="@{/createSupplier}" th:object="${supplierInfo}" method="POST">
                     <div class="mb-3">
                         <label for="clientName" class="form-label">Supplier Name</label>
-                        <input th:field="*{name}" type="text" class="form-control" id="supplierName" name="suppName">
+                        <input th:field="*{name}" type="text" class="form-control" id="supplierName" name="suppName" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="address" class="form-label">Address</label>
-                        <input th:field="*{address}" type="text" class="form-control" id="suppAddress" name="suppAddress">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <input th:field="*{address}" type="text" class="form-control" id="suppAddress" name="suppAddress" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="cityAddress" class="form-label">City Address</label>
+                            <input th:field="*{cityAddress}" type="text" class="form-control" id="suppCityAddress" name="suppCityAddress" required>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="cityAddress" class="form-label">City Address</label>
-                        <input th:field="*{cityAddress}" type="text" class="form-control" id="suppCityAddress" name="suppCityAddress">
-                    </div>
-                    <div class="mb-3">
-                        <label for="clientTIN" class="form-label">TIN #</label>
-                        <input th:field="*{tin}" type="text" class="form-control" id="suppClientTIN" name="suppClientTIN">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="clientTIN" class="form-label">TIN #</label>
+                            <input th:field="*{tin}" type="text" class="form-control" id="suppClientTIN" name="suppClientTIN" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="suppLimit" class="form-label">Limit</label>
+                            <input  th:field="*{limit}" type="text" class="form-control" id="suppLimit" name="suppLimit" required>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="agent" class="form-label">SEC #</label>
                         <input th:field="*{secNum}" type="agent" class="form-control" id="suppSec" name="suppSec">
                     </div>
-                    <div class="mb-3">
-                        <label for="agent" class="form-label">SEC YEAR</label>
-                        <input th:field="*{secYear}" type="agent" class="form-control" id="suppSecYr" name="suppSecYr">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="agent" class="form-label">SEC YEAR</label>
+                            <input th:field="*{secYear}" type="agent" class="form-control" id="suppSecYr" name="suppSecYr">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="agent" class="form-label">ATP</label>
+                            <input th:field="*{atp}" type="agent" class="form-control" id="suppATP" name="suppATP">
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="agent" class="form-label">ATP</label>
-                        <input th:field="*{atp}" type="agent" class="form-control" id="suppATP" name="suppATP">
-                    </div>
-                    <div class="mb-3">
-                        <label for="agent" class="form-label">COR #</label>
-                        <input th:field="*{corNum}" type="agent" class="form-control" id="suppCOR" name="suppCOR">
-                    </div>
-                    <div class="mb-3">
-                        <label for="agent" class="form-label">COR Date</label>
-                        <input th:field="*{corDate}" type="agent" class="form-control" id="suppCORDate" name="suppCORDate">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="agent" class="form-label">COR #</label>
+                            <input th:field="*{corNum}" type="agent" class="form-control" id="suppCOR" name="suppCOR">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="agent" class="form-label">COR Date</label>
+                            <input th:field="*{corDate}" type="agent" class="form-control" id="suppCORDate" name="suppCORDate">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary" style="background-color: #003D2B; border-color: #003D2B;">Save changes</button>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -474,11 +486,66 @@
         </div>
     </div>
 </div>
+<p th:text="${hideSpan}"></p>
+<!-- Modal -->
+
+<div class="modal fade" id="invoiceLimitModal" tabindex="-1" role="dialog" aria-labelledby="invoiceLimitModalLabel" aria-hidden="true" th:if="${hideDivError}">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="invoiceLimitModalLabel" style="color:red;">Invoice Creation Limit Reached</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Unfortunately, you have reached the maximum amount limit and are unable to create a new invoice at this time. Please try again later or contact support for further assistance</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+
+<div class="modal fade" id="invoiceCreatedModal" tabindex="-1" role="dialog" aria-labelledby="invoiceCreatedModalLabel" aria-hidden="true" th:if="${hideDivSuccess}">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="invoiceCreatedModalLabel" style="color:green">Success</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Your invoice has been successfully created.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- Bootstrap JavaScript -->
 <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
 <script th:src="@{/custom-js/marketing/marketing-main.js}"></script>
+<script>
+    $(document).ready(function () {
+    $('#invoiceLimitModal').modal('show');
+    setTimeout(function() {
+        $('#invoiceLimitModal').modal('hide');
+    }, 3000);
+
+    $('#invoiceCreatedModal').modal('show');
+    setTimeout(function() {
+        $('#invoiceCreatedModal').modal('hide');
+    }, 3000);
+    });
+</script>
 </body>
 </html>

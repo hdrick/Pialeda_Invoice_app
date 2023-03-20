@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pialeda.app.Invoice.dto.*;
 import pialeda.app.Invoice.model.Client;
 import pialeda.app.Invoice.model.Supplier;
 import pialeda.app.Invoice.service.ClientService;
+import pialeda.app.Invoice.service.OfficialRecptService;
 import pialeda.app.Invoice.service.SupplierService;
 import pialeda.app.Invoice.service.InvoiceService;
 import java.time.LocalDate;
@@ -22,26 +24,25 @@ public class MarketingController {
     @Autowired
     private InvoiceService invoiceService;
 
+    @Autowired
+    private OfficialRecptService officialRecptService;
 
-
-    @GetMapping("marketing-invoice")
-    public String users(Model model){
-        model.addAttribute("clientList", clientService.getAllClient());
-        model.addAttribute("supplierList", supplierService.getAllSupplier());
-
-        model.addAttribute("clientInfo", new ClientInfo());
-        model.addAttribute("supplierInfo", new SupplierInfo());
-
-        InvoiceWrapper wrapper = new InvoiceWrapper();
-        wrapper.setInvoiceInfo(new InvoiceInfo());
-        wrapper.setInvoiceProdInfo(new InvoiceProdInfo());
-        model.addAttribute("wrapper", wrapper);
-
-//        model.addAttribute("invoiceInfo", new InvoiceInfo());
-//        model.addAttribute("invoiceProdInfo", new InvoiceProdInfo());
-        return "marketing/invoice";
-    }
-    @GetMapping("test")
+//    @GetMapping("marketing-invoice")
+//    public String users(Model model){
+//        model.addAttribute("clientList", clientService.getAllClient());
+//        model.addAttribute("supplierList", supplierService.getAllSupplier());
+//
+//        model.addAttribute("clientInfo", new ClientInfo());
+//        model.addAttribute("supplierInfo", new SupplierInfo());
+//
+//        InvoiceWrapper wrapper = new InvoiceWrapper();
+//        wrapper.setInvoiceInfo(new InvoiceInfo());
+//        wrapper.setInvoiceProdInfo(new InvoiceProdInfo());
+//        model.addAttribute("wrapper", wrapper);
+//
+//        return "marketing/invoice";
+//    }
+    @GetMapping("marketing-officialreceipt")
     public String test(Model model){
         // get the current date
         LocalDate currentDate = LocalDate.now();
@@ -49,10 +50,12 @@ public class MarketingController {
         // get the current day and month
         int currentDay = currentDate.getDayOfMonth();
         int  currentMonth = currentDate.getMonthValue();
-        int generateORNumber = (int) invoiceService.getInvoiceCunt();
+        int generateORNumber = (int) officialRecptService.getOrCount();
 
         if(generateORNumber == 0 || generateORNumber < 0){
-            generateORNumber = 1;
+            generateORNumber += 1;
+        }else {
+            generateORNumber += 1;
         }
         // format generateORNumber with a leading zero
         String generateORNumberStr = String.format("%02d", generateORNumber);
@@ -60,13 +63,28 @@ public class MarketingController {
         int result = Integer.parseInt(resultStr);
 
         model.addAttribute("generateORNumber", result);
-        return "marketing/test";
+        model.addAttribute("officialReceiptInfo", new OfficialReceiptInfo());
+        return "marketing/officialreceipt";
     }
 
     @PostMapping("/createInvoice")
-    public String createInvoice(@ModelAttribute("wrapper") InvoiceWrapper wrapper, Model model){
-        invoiceService.createInvoice(wrapper);
-        return "redirect:/marketing-invoice";
+    public String createInvoice(@ModelAttribute("wrapper") InvoiceWrapper wrapper, RedirectAttributes redirectAttributes){
+        InvoiceInfo invoiceInfo = wrapper.getInvoiceInfo();
+
+        double sumOfGrandTotal = invoiceService.getSuppTotalLimit(invoiceInfo.getSupplierName());
+        double supplierLimit = supplierService.findLimitByName(invoiceInfo.getSupplierName());
+        double remainingLimit = supplierLimit - sumOfGrandTotal;
+
+        if(invoiceInfo.getGrandTotal() <= remainingLimit){
+            invoiceService.createInvoice(wrapper);
+            boolean hideDivSuccess = true;
+            redirectAttributes.addFlashAttribute("hideDivSuccess", hideDivSuccess);
+            return "redirect:/marketing-invoice";
+        }else{
+            boolean hideDivError = true;
+            redirectAttributes.addFlashAttribute("hideDivError", hideDivError);
+            return "redirect:/marketing-invoice";
+        }
     }
 
     @PostMapping("/createClient")
@@ -81,6 +99,14 @@ public class MarketingController {
         return "redirect:/marketing-invoice";
     }
 
+    @PostMapping("/createOfficialReceipt")
+    public String createOfficialReceipt(@RequestParam("orNumber") int orNumber,
+                                        @ModelAttribute("officialReceiptInfo") OfficialReceiptInfo officialReceiptInfo,
+                                        Model model) {
+        System.out.println(officialReceiptInfo.getRecvFrom());
+        officialRecptService.createOR(orNumber,officialReceiptInfo);
+        return "redirect:/marketing-invoice";
+    }
 
     @GetMapping("/getClientInfo")
     @ResponseBody

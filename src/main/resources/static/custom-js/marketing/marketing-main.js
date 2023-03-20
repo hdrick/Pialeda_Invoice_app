@@ -175,7 +175,7 @@ const cashierNameInput = document.getElementById('cashier-name-input');
 
 
 
-
+generateInvNum();
 
 
 
