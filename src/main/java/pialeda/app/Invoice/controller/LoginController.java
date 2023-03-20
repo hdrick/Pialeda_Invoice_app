@@ -5,6 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,8 @@ import pialeda.app.Invoice.service.SupplierService;
 import pialeda.app.Invoice.service.UserService;
 
 import javax.naming.AuthenticationException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
@@ -52,15 +55,28 @@ public class LoginController {
 //        return "redirect:/admin-users";
 //    }
 
-//    @GetMapping("admin-dashboard")
-//    public String dashboard(Model model){
-//        model.addAttribute("userCount", userService.getUserCount());
-//        model.addAttribute("supplierCount", supplierService.getSupplierCount());
-//        model.addAttribute("clientCount", clientService.getClientCount());
-//        model.addAttribute("invoiceCount", invoiceService.getInvoiceCunt());
-//        return "admin/dashboard";
-//    }
-    @PostMapping("/login/validation")
+    @GetMapping("admin-dashboard")
+    public String dashboard(Model model, HttpSession session){
+        String token = (String) session.getAttribute("token");
+        if (token != null)
+        {
+            User userDetails = userService.loadUserByEmail(jwtUtil.extractEmail(token));
+            if (jwtUtil.validateToken(token, userDetails))
+            {
+                session.setAttribute("name", userDetails.getLastName());
+                session.setAttribute("role", userDetails.getRole());
+                model.addAttribute("userCount", userService.getUserCount());
+                model.addAttribute("supplierCount", supplierService.getSupplierCount());
+                model.addAttribute("clientCount", clientService.getClientCount());
+                model.addAttribute("invoiceCount", invoiceService.getInvoiceCunt());
+                return "admin/dashboard";
+            }
+        }
+        session.invalidate();
+        return "redirect:/login";
+
+    }
+    @PostMapping("/login/auth")
     public String loginUser(@ModelAttribute("login") Login login, Model model, HttpSession session) {
         Boolean user = userService.loadUserByEmail(login.getEmail(),login.getPassword());
 
@@ -68,16 +84,14 @@ public class LoginController {
         {
             User userDetails = userService.loadRoleByUser(login.getEmail());
             String destination=null;
+
             if(userDetails.getRole().equals("admin"))
             {
+
                 String token = jwtUtil.generateToken(userDetails);
                 session.setAttribute("token", token);
 
-                String BearerToken = "Bearer "+token;
-                HttpHeaders headers = new HttpHeaders();
-                System.out.println(BearerToken);
-                headers.set("Authorization", BearerToken);
-                return destination ="redirect:/vr/user";
+                return destination ="redirect:/admin-dashboard";
             }
             if (userDetails.getRole().equals("vr-staff"))
             {
@@ -93,12 +107,23 @@ public class LoginController {
         }
         else
         {
-            System.out.println(login.getEmail()+"error");
-            System.out.println(login.getPassword()+"error");
             boolean hideSpan = true;
             model.addAttribute("hideSpan", hideSpan);
             model.addAttribute("error", "Your username or password is invalid.");
             return "login";
         }
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        // Invalidating the session
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        // Clearing the authentication token
+        SecurityContextHolder.clearContext();
+        return "redirect:/login?logout";
+    }
+
 }
