@@ -29,13 +29,13 @@
 <!--      </div>-->
 <!--    </div>-->
 <!--    <div class="right-con">-->
-<!--      <div>-->
-<!--        <i class="fa-solid fa-user"></i>-->
-<!--        <a class="m-2" >VR-Staff</a>-->
-<!--        <a href="#" class="" data-toggle="modal" data-target="#logoutModal">-->
-<!--          <i class="fas fa-sign-out-alt"></i>-->
-<!--        </a>-->
-<!--      </div>-->
+<!--  <div>-->
+<!--    <i class="fa-solid fa-user"></i>-->
+<!--    <a class="m-2" ><span th:text="${session.name}"></span></a>-->
+<!--    <a href="#" class="" data-toggle="modal" data-target="#logoutModal">-->
+<!--      <i class="fas fa-sign-out-alt"></i>-->
+<!--    </a>-->
+<!--  </div>-->
 <!--    </div>-->
 <!--  </div>-->
 
@@ -209,7 +209,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn" style="background-color: #003D2B; color: white;">Logout</button>
+        <a type="button" class="btn" href="/logout" style="background-color: #003D2B; color: white;">Logout</a>
       </div>
     </div>
   </div>

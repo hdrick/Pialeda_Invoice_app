@@ -113,133 +113,133 @@
 <body class="body">
 <!--        Header starts-->
 <div th:if="${session.token != null}">
-<div class="header-con">
-  <div class="left-con">
-    <div id="bx1">
-      <img id="h-logo" th:src="@{/icon/LOGO.png}" alt="Logo">
+  <div class="header-con">
+    <div class="left-con">
+      <div id="bx1">
+        <img id="h-logo" th:src="@{/icon/LOGO.png}" alt="Logo">
+      </div>
+      <div id="bx2">
+        <label id="logo-name">PIALEDA</label>
+      </div>
     </div>
-    <div id="bx2">
-      <label id="logo-name">PIALEDA</label>
+
+    <div class="right-con">
+      <div>
+        <i class="fa-solid fa-user"></i>
+        <a class="m-2" ><span th:text="${session.name}"></span></a>
+        <a href="#" class="" data-toggle="modal" data-target="#logoutModal">
+          <i class="fas fa-sign-out-alt"></i>
+        </a>
+      </div>
+
     </div>
   </div>
+  <!-- Content Body Start here-->
+  <div class="container" sec:authorize="hasRole('vr-staff')">
+    <div class="row justify-content-md-center">
+      <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="content-body">
+          <div class="row">
+            <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 left-panel">
+              <select class="form-select" aria-label="Default select example">
+                <option value="0" selected>Filter by Client</option>
+                <option th:each="client : ${clientList}" th:value="${client.name}" th:text="${client.name}"></option>
+              </select>
+              <select class="form-select" onchange="getSupplier(this)" aria-label="Default select example">
+                <option value="0" selected>Filter by Client</option>
+                <option th:each="supplier : ${supplierList}" th:value="${supplier.name}" th:text="${supplier.name}"></option>
+              </select>
+              <select class="form-select" id="filterByMonth" aria-label="Default select example">
+                <option value="0"selected>Filter by Month</option>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
 
-  <div class="right-con">
-    <div>
-      <i class="fa-solid fa-user"></i>
-      <a class="m-2" ><span th:text="${session.name}"></span></a>
-      <a href="#" class="" data-toggle="modal" data-target="#logoutModal">
-        <i class="fas fa-sign-out-alt"></i>
-      </a>
-    </div>
-
-  </div>
-</div>
-<!-- Content Body Start here-->
-<div class="container" sec:authorize="hasRole('vr-staff')">
-  <div class="row justify-content-md-center">
-    <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-      <div class="content-body">
-        <div class="row">
-          <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 left-panel">
-            <select class="form-select" aria-label="Default select example">
-              <option value="0" selected>Filter by Client</option>
-              <option th:each="client : ${clientList}" th:value="${client.name}" th:text="${client.name}"></option>
-            </select>
-            <select class="form-select" onchange="getSupplier(this)" aria-label="Default select example">
-              <option value="0" selected>Filter by Client</option>
-              <option th:each="supplier : ${supplierList}" th:value="${supplier.name}" th:text="${supplier.name}"></option>
-            </select>
-            <select class="form-select" id="filterByMonth" aria-label="Default select example">
-              <option value="0"selected>Filter by Month</option>
-              <option value="1">January</option>
-              <option value="2">February</option>
-              <option value="3">March</option>
-              <option value="4">April</option>
-              <option value="5">May</option>
-              <option value="6">June</option>
-              <option value="7">July</option>
-              <option value="8">August</option>
-              <option value="9">September</option>
-              <option value="10">October</option>
-              <option value="11">November</option>
-              <option value="12">December</option>
-
-            </select>
-          </div>
-          <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 right-panel">
-            <span class="search-text">Search</span>
-            <input type="text" class="search-field" id="search-input">
-          </div>
-        </div>
-
-
-        <div class="view-panel">
-          <table class="table table-sm table-bordered" id="my-table">
-            <thead class="table-dark">
-            <tr>
-
-              <th>Invoice #</th>
-              <th>Purchase Order #</th>
-              <th>Client Name</th>
-              <th>Client TIN</th>
-              <th>Supplier Name</th>
-              <th>Supplier TIN</th>
-              <th>Amount Due</th>
-              <th>Cashier</th>
-              <th>Date</th>
-            </tr>
-            </thead>
-            <tbody id="table-body">
-            <tr  class="table-row" th:each="invoice: ${invoiceList}">
-              <td th:text="${invoice.invoiceNum}"></td>
-              <td th:text="${invoice.poNum}"></td>
-              <td th:text="${invoice.clientName}"></td>
-              <td th:text="${invoice.clientTin}"></td>
-              <td th:text="${invoice.supplierName}"></td>
-              <td th:text="${invoice.supplierTin}"></td>
-              <td th:text="${invoice.grandTotal}"></td>
-              <td th:text="${invoice.cashier}"></td>
-              <td th:text="${invoice.dateCreated}"></td>
-            </tr>
-
-            </tbody>
-          </table>
-          <div class="col-xxl-12 col-xl-12 col-md-12">
-            <div id="pagination">
-              <button class="btn btn-light" id="prev">Prev</button>
-              <!--                                          <span id="page-number"></span>-->
-              <div class="pagination" id="page-numbers">
-              </div>
-              <button class="btn btn-light" id="next">Next</button>
+              </select>
+            </div>
+            <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 right-panel">
+              <span class="search-text">Search</span>
+              <input type="text" class="search-field" id="search-input">
             </div>
           </div>
+
+
+          <div class="view-panel">
+            <table class="table table-sm table-bordered" id="my-table">
+              <thead class="table-dark">
+              <tr>
+
+                <th>Invoice #</th>
+                <th>Purchase Order #</th>
+                <th>Client Name</th>
+                <th>Client TIN</th>
+                <th>Supplier Name</th>
+                <th>Supplier TIN</th>
+                <th>Amount Due</th>
+                <th>Cashier</th>
+                <th>Date</th>
+              </tr>
+              </thead>
+              <tbody id="table-body">
+              <tr  class="table-row" th:each="invoice: ${invoiceList}">
+                <td th:text="${invoice.invoiceNum}"></td>
+                <td th:text="${invoice.poNum}"></td>
+                <td th:text="${invoice.clientName}"></td>
+                <td th:text="${invoice.clientTin}"></td>
+                <td th:text="${invoice.supplierName}"></td>
+                <td th:text="${invoice.supplierTin}"></td>
+                <td th:text="${invoice.grandTotal}"></td>
+                <td th:text="${invoice.cashier}"></td>
+                <td th:text="${invoice.dateCreated}"></td>
+              </tr>
+
+              </tbody>
+            </table>
+            <div class="col-xxl-12 col-xl-12 col-md-12">
+              <div id="pagination">
+                <button class="btn btn-light" id="prev">Prev</button>
+                <!--                                          <span id="page-number"></span>-->
+                <div class="pagination" id="page-numbers">
+                </div>
+                <button class="btn btn-light" id="next">Next</button>
+              </div>
+            </div>
+          </div>
+          <!--        <button id="download-btn">Download Excel</button>-->
+
+
         </div>
-        <!--        <button id="download-btn">Download Excel</button>-->
-
-
       </div>
     </div>
   </div>
-</div>
-<!-- Logout Modal -->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="logoutModalLabel">Logout</h5>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
-        </button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to logout?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-        <button th:href="@{/logout}" type="button" class="btn btn-logout">Logout</button>
+  <!-- Logout Modal -->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="logoutModalLabel">Logout</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to logout?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+          <button th:href="@{/logout}" type="button" class="btn btn-logout">Logout</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </div>
 <div th:if="${session.token == null}">
   <script>

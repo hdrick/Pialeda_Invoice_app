@@ -61,42 +61,6 @@ public class UserService {
         }
     }
 
-<<<<<<< HEAD
-    public boolean loadUserByEmail(String email, String pass)
-    {
-        User emailExists = userRepo.findByEmail(email);
-        if (emailExists == null){
-            return false;
-        }else{
-            String userDbPass = emailExists.getPassword();
-            boolean isMatch = bCryptPasswordEncoder.matches(pass,userDbPass);
-            return isMatch;
-        }
-    }
-
-    public User loadUser(String email)
-    {
-        User emailExists = userRepo.findByEmail(email);
-        return emailExists;
-=======
-//    public String accountValidation(String email, String pass, HttpSession session)
-//    {
-//        User emailExists = userRepo.findByEmail(email);
-//        if (emailExists != null)
-//        {
-//            boolean password = bCryptPasswordEncoder.matches(pass, emailExists.getPassword());
-//            if (password == true)
-//            {
-//                session.setAttribute("name", emailExists.getFirstName());
-//                String token = jwtUtil.generateToken(emailExists);
-//                System.out.println(token);
-//                return "welcome "+emailExists.getFirstName()+" token: "+token;
-//            }
-//            return "wrong password";
-//        }
-//        return "wrong email";
-//    }
-
     public boolean loadUserByEmail(String email, String pass)
     {
         User emailExists = userRepo.findByEmail(email);
@@ -135,6 +99,5 @@ public class UserService {
             authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
         });
         return authorities;
->>>>>>> feature/security
     }
 }
