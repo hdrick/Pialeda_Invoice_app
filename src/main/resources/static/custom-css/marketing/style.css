@@ -100,7 +100,7 @@
 }
  #inv-con{
      display: flex;
-     flex-grow: 0.5;
+     flex-grow: 1;
      flex-direction: column;
      padding: 1%;
 }
@@ -145,7 +145,7 @@
  .main-bx1{
      display: flex;
      flex-direction: column;
-     flex-grow: 0.2;
+
      align-items: center;
      margin-right: 1%;
      margin-left: 1%;
@@ -172,15 +172,16 @@ btn-OR
  .main-bx2{
      display: flex;
      flex-direction: column;
+
 }
- .main-bx2 #btn-Gen,#btn-Create{
-     width: 220px;
-     margin: 2.5%;
-         background-color: #003D2B;
-         color: white;
-         cursor:pointer;
-         font-weight: bolder;
-         align-items: start;
+ .main-bx2 #btn-Gen,#btn-Create,#btn-invoices{
+    margin: 5px;
+    align-items: start;
+    width: 100%;
+    background-color: #003D2B;
+    color: white;
+    cursor:pointer;
+    font-weight: bolder;
 }
 
   /* Remove outline when <span> is focused */
@@ -193,6 +194,15 @@ btn-OR
     text-align: center;
     padding-left: 0;
     padding-right: 0;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #000;
+  background-color: #fff;
 }
 
 #table-body td input{

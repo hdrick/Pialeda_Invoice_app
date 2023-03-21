@@ -10,37 +10,38 @@
   <!-- Font awesome local -->
   <script th:src="@{/fontawesome/2302251f1c.js}" crossorigin="anonymous"></script>
 <!--  custom css for header-->
-  <link rel="stylesheet" type="text/css" th:href="@{/custom-css/marketing/or-header.css}">
+<!--  <link rel="stylesheet" type="text/css" th:href="@{/custom-css/marketing/or-header.css}">-->
   <!--custom css for vr-->
   <link rel="stylesheet" type="text/css" th:href="@{/custom-css/marketing/or-style.css}">
+<!--  <link rel="stylesheet" th:href="@{/custom-css/marketing/or-print.css}" media="print">-->
 
 </head>
 <body class="body">
 <div class="main-con">
   <!--Header starts-->
-  <div class="header-con">
-    <div class="left-con">
-      <div id="bx1">
-        <img id="h-logo" th:src="@{/icon/LOGO.png}" alt="Logo">
-      </div>
-      <div id="bx2">
-        <label id="logo-name">PIALEDA</label>
-      </div>
-    </div>
-    <div class="right-con">
-      <div>
-        <i class="fa-solid fa-user"></i>
-        <a class="m-2" >VR-Staff</a>
-        <a href="#" class="" data-toggle="modal" data-target="#logoutModal">
-          <i class="fas fa-sign-out-alt"></i>
-        </a>
-      </div>
-    </div>
-  </div>
+<!--  <div class="header-con">-->
+<!--    <div class="left-con">-->
+<!--      <div id="bx1">-->
+<!--        <img id="h-logo" th:src="@{/icon/LOGO.png}" alt="Logo">-->
+<!--      </div>-->
+<!--      <div id="bx2">-->
+<!--        <label id="logo-name">PIALEDA</label>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="right-con">-->
+<!--      <div>-->
+<!--        <i class="fa-solid fa-user"></i>-->
+<!--        <a class="m-2" >VR-Staff</a>-->
+<!--        <a href="#" class="" data-toggle="modal" data-target="#logoutModal">-->
+<!--          <i class="fas fa-sign-out-alt"></i>-->
+<!--        </a>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
 
   <div class="main-con2">
     <form method="POST" th:action="@{/createOfficialReceipt}" th:object="${officialReceiptInfo}">
-    <div class="officialReceipt-con">
+    <div class="officialReceipt-con" id="print-content">
         <div class="row-1">
           <table border=1>
             <tr>
