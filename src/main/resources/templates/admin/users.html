@@ -20,6 +20,7 @@
 </head>
 <body>
     <!--Main container-->
+    <div th:if="${session.token != null}">
     <div class="main-con">
         <!--Header starts-->
         <div class="header-con">
@@ -35,7 +36,7 @@
             <div class="right-con">
                 <div>
                     <i class="fa-solid fa-user"></i>
-                    <a class="m-2" >Hendwrick Gonzales</a>
+                    <a class="m-2" ><span th:text="${session.name}"></span></a>
                     <a href="#" class="" data-toggle="modal" data-target="#logoutModal">
                         <i class="fas fa-sign-out-alt"></i>
                     </a>
@@ -277,7 +278,15 @@
         </div>
     </div>
 
+    </div>
+    <div th:if="${session.token == null}">
+        <script>
+          $(document).ready(function() {
+            window.location.href = "/login";
+          });
+        </script>
 
+    </div>
     <!-- Bootstrap JavaScript -->
     <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>

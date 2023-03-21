@@ -112,6 +112,7 @@
 </head>
 <body class="body">
 <!--        Header starts-->
+<div th:if="${session.token != null}">
 <div class="header-con">
   <div class="left-con">
     <div id="bx1">
@@ -123,9 +124,9 @@
   </div>
 
   <div class="right-con">
-    <div th:if="${session.name != null}">
+    <div>
       <i class="fa-solid fa-user"></i>
-      <a class="m-2" ><span th:text="${session.name}"></span</a>
+      <a class="m-2" ><span th:text="${session.name}"></span></a>
       <a href="#" class="" data-toggle="modal" data-target="#logoutModal">
         <i class="fas fa-sign-out-alt"></i>
       </a>
@@ -134,7 +135,7 @@
   </div>
 </div>
 <!-- Content Body Start here-->
-<div class="container">
+<div class="container" sec:authorize="hasRole('vr-staff')">
   <div class="row justify-content-md-center">
     <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <div class="content-body">
@@ -234,10 +235,19 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-logout">Logout</button>
+        <button th:href="@{/logout}" type="button" class="btn btn-logout">Logout</button>
       </div>
     </div>
   </div>
+</div>
+</div>
+<div th:if="${session.token == null}">
+  <script>
+          $(document).ready(function() {
+            window.location.href = "/login";
+          });
+        </script>
+
 </div>
 <!-- Bootstrap JavaScript -->
 <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
