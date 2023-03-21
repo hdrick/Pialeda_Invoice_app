@@ -44,11 +44,6 @@ public class MarketingController {
 //    }
     @GetMapping("marketing-officialreceipt")
     public String test(Model model){
-        int security = 2;
-
-        if(security !=1){
-            return "marketing/invoice-view";
-        }else{
             // get the current date
             LocalDate currentDate = LocalDate.now();
 
@@ -70,7 +65,7 @@ public class MarketingController {
             model.addAttribute("generateORNumber", result);
             model.addAttribute("officialReceiptInfo", new OfficialReceiptInfo());
             return "marketing/officialreceipt";
-        }
+
 
     }
 
