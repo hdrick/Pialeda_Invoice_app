@@ -1,14 +1,11 @@
 package pialeda.app.Invoice.model;
 
-import org.springframework.security.core.GrantedAuthority;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.GenerationType;
-import java.util.Collection;
 
 @Entity
 @Table(name="users")
@@ -68,5 +65,4 @@ public class User {
 
     public String getRole() {return role;}
     public void setRole(String role) {this.role = role;}
-
 }
