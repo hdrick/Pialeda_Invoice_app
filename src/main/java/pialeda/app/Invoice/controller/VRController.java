@@ -59,6 +59,27 @@ public class VRController {
         return "vr-staff/vr";
     }
 
+    @GetMapping("vr/user/invoices/{pageNumbers}/{field}")
+    public String getPageWithSort(Model model, @PathVariable("pageNumbers") int currentPage,
+                                  @PathVariable String field,
+                                  @PathVariable("sortDir") String sortDir)
+    {
+        Page<Invoice> page = invoiceService.findAllWithSort(field, sortDir, currentPage);
+        List<Invoice> invoices = page.getContent();
+        int totalPages = page.getTotalPages();
+        long totalItems = page.getTotalElements();
+
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalItems", totalItems);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc")? "desc" : "asc");
+        model.addAttribute("invoices", invoices);
+
+
+        return "vr-staff/vr";
+    }
+
     @GetMapping("vr/{id}")
     public ResponseEntity<Invoice> getInvoice(@PathVariable int id) {
         Optional<Invoice> invoice = invoiceService.getInvoiceById(id);
@@ -75,12 +96,6 @@ public class VRController {
         List<Invoice> keyword = invoiceService.getKeyword(query);
 
         return new ResponseEntity<>(keyword, HttpStatus.OK);
-    }
-
-    @GetMapping("vr/all-invoice")
-    @ResponseBody
-    public List<Invoice> getAll() {
-        return invoiceService.getAllInvoice();
     }
 
 }

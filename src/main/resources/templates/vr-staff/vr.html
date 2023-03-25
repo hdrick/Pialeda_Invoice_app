@@ -126,7 +126,7 @@
   <div class="right-con">
     <div th:if="${session.name != null}">
       <i class="fa-solid fa-user"></i>
-      <a class="m-2" ><span th:text="${session.name}"></span</a>
+      <a class="m-2" ><span th:text="${session.name}"></span></a>
       <a href="#" class="" data-toggle="modal" data-target="#logoutModal">
         <i class="fas fa-sign-out-alt"></i>
       </a>
@@ -141,11 +141,11 @@
       <div class="content-body">
         <div class="row">
           <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 left-panel">
-            <select class="form-select" aria-label="Default select example">
+            <select class="form-select">
               <option value="0" selected>Filter by Client</option>
               <option th:each="client : ${clientList}" th:value="${client.name}" th:text="${client.name}"></option>
             </select>
-            <select class="form-select" onchange="getSupplier(this)" aria-label="Default select example">
+            <select class="form-select">
               <option value="0" selected>Filter by Client</option>
               <option th:each="supplier : ${supplierList}" th:value="${supplier.name}" th:text="${supplier.name}"></option>
             </select>
