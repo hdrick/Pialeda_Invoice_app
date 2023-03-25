@@ -1,3 +1,6 @@
+body{
+background-color: #ddd;
+}
 .main-con{
     height: 100vh;
 
@@ -16,6 +19,7 @@
 }
 
 .officialReceipt-con{
+    border: solid 1px black;
     padding: 0.5%;
     background-color: white;
     width: 9.5in;
@@ -181,5 +185,8 @@ table td input{
     border: 0;
 }
 
-
-
+@media print {
+  button, a {
+    display: none !important;
+  }
+}

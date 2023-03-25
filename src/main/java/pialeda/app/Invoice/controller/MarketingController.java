@@ -44,28 +44,36 @@ public class MarketingController {
 //    }
     @GetMapping("/marketing/officialreceipt")
     public String test(Model model){
-        // get the current date
-        LocalDate currentDate = LocalDate.now();
+            // get the current date
+            LocalDate currentDate = LocalDate.now();
 
-        // get the current day and month
-        int currentDay = currentDate.getDayOfMonth();
-        int  currentMonth = currentDate.getMonthValue();
-        int generateORNumber = (int) officialRecptService.getOrCount();
+            // get the current day and month
+            int currentDay = currentDate.getDayOfMonth();
+            int  currentMonth = currentDate.getMonthValue();
+            int generateORNumber = (int) officialRecptService.getOrCount();
 
-        if(generateORNumber == 0 || generateORNumber < 0){
-            generateORNumber += 1;
-        }else {
-            generateORNumber += 1;
-        }
-        // format generateORNumber with a leading zero
-        String generateORNumberStr = String.format("%02d", generateORNumber);
-        String resultStr = String.format("%d%d%s", currentMonth, currentDay, generateORNumberStr);
-        int result = Integer.parseInt(resultStr);
+            if(generateORNumber == 0 || generateORNumber < 0){
+                generateORNumber += 1;
+            }else {
+                generateORNumber += 1;
+            }
+            // format generateORNumber with a leading zero
+            String generateORNumberStr = String.format("%02d", generateORNumber);
+            String resultStr = String.format("%d%d%s", currentMonth, currentDay, generateORNumberStr);
+            int result = Integer.parseInt(resultStr);
 
-        model.addAttribute("generateORNumber", result);
-        model.addAttribute("officialReceiptInfo", new OfficialReceiptInfo());
-        return "marketing/officialreceipt";
+            model.addAttribute("generateORNumber", result);
+            model.addAttribute("officialReceiptInfo", new OfficialReceiptInfo());
+            return "marketing/officialreceipt";
+
+
     }
+
+    @GetMapping("marketing-view/invoices")
+    public String viewInvoices(Model model){
+        return "marketing/invoice-view";
+    }
+
 
     @PostMapping("/createInvoice")
     public String createInvoice(@ModelAttribute("wrapper") InvoiceWrapper wrapper, RedirectAttributes redirectAttributes){

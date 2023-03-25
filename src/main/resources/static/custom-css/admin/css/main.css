@@ -104,6 +104,11 @@ margin-bottom: 10px;
     font-weight: bolder;
 }
 
+.sideBar-con .sideBar-bx1 div .label a{
+    color: white;
+}
+
+
 .sideBar-con .sideBar-bx1 div i{
     justify-content: center;
     align-items: center;
@@ -140,7 +145,8 @@ margin-bottom: 10px;
 
 
 
-.sideBar-con .sideBar-bx1 div:hover i{
+.sideBar-con .sideBar-bx1 div:hover i,
+.sideBar-con .sideBar-bx1 div:hover a {
     color: #003D2B;
 }
 

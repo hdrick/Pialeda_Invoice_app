@@ -40,12 +40,12 @@
     <div class="main-con2" style="margin-top: 8%;">
         <div class="main-bx1">
             <!--Client List  -->
-            <select id="my-client" onchange="getClientInfo()" style="font-weight: bolder;">
+            <select id="my-client" onchange="getClientInfo()" style="font-weight: bolder;" required>
                 <option value="" selected>Select Client</option>
                 <option th:each="client : ${clientList}" th:value="${client.name}" th:text="${client.name}" style="font-weight: bolder;"></option>
             </select>
             <!--Supplier List  -->
-            <select id="my-supplier" onchange="getSupplierInfo()" style="font-weight: bolder;">
+            <select id="my-supplier" onchange="getSupplierInfo()" style="font-weight: bolder;" required>
                 <option value="" selected>Select Supplier</option>
                 <option th:each="supplier : ${supplierList}" th:value="${supplier.name}" th:text="${supplier.name}" style="font-weight: bolder;"></option>
             </select>
@@ -140,7 +140,7 @@
             <div id="body">
                 <div class="row">
                     <div class="col-12">
-                        <table class="table" border="1">
+                        <table class="table">
                             <thead>
                             <tr>
                                 <th style="font-size: 12px; width: 10%; text-align: center;">QTY</th>
@@ -150,7 +150,7 @@
                                 <th style="font-size: 12px; width: 10%; text-align: center;">AMOUNT</th>
                             </tr>
                             </thead>
-                            <tbody id="table-body">
+                            <tbody id="table-body" >
                             <tr>
                                 <td>
                                     <input id="qty-1" type="number" class="compute_qty" th:field="*{invoiceProdInfo.qty1}" onfocus="if (this.value == '0') { this.value = ''; }" onblur="if (this.value == '') { this.value = '0'; }" required>
@@ -348,9 +348,40 @@
         <div class="main-bx2">
 <!--            <a id="btn-Gen" class="btn btn-success" onclick="generateInvNum()">Generate</a>-->
             <input id="btn-Create" type="submit" class="btn btn-success" value="Create Invoice">
+            <a id="btn-invoices" class="btn btn-success" data-toggle="modal" data-target="#invoicesModal">Invoices</a>
+
         </div>
     </div>
     </form>
+</div>
+<!-- Invoices Modal -->
+<div class="modal fade" id="invoicesModal" tabindex="-1" role="dialog" aria-labelledby="invoicesModalLabel" aria-hidden="true" style="margin-top: 4%;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="invoicesModalLabel">Invoices</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form  method="POST">
+                    <div>
+                        <!--Supplier List  -->
+                        <select id="my-supplier-invoices" onchange="getSupplierInfo()" style="font-weight: bolder;" required>
+                            <option value="" selected>Select Supplier</option>
+                            <option th:each="supplier : ${supplierList}" th:value="${supplier.name}" th:text="${supplier.name}" style="font-weight: bolder;"></option>
+                        </select>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" style="background-color: #003D2B; border-color: #003D2B;">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- Client Modal -->
 <div class="modal fade" id="clientModal" tabindex="-1" role="dialog" aria-labelledby="clientModalLabel" aria-hidden="true" style="margin-top: 4%;">
@@ -486,7 +517,6 @@
         </div>
     </div>
 </div>
-<p th:text="${hideSpan}"></p>
 <!-- Modal -->
 
 <div class="modal fade" id="invoiceLimitModal" tabindex="-1" role="dialog" aria-labelledby="invoiceLimitModalLabel" aria-hidden="true" th:if="${hideDivError}">
@@ -536,15 +566,13 @@
 <script th:src="@{/custom-js/marketing/marketing-main.js}"></script>
 <script>
     $(document).ready(function () {
-    $('#invoiceLimitModal').modal('show');
-    setTimeout(function() {
-        $('#invoiceLimitModal').modal('hide');
-    }, 3000);
 
-    $('#invoiceCreatedModal').modal('show');
-    setTimeout(function() {
-        $('#invoiceCreatedModal').modal('hide');
-    }, 3000);
+        $('#invoiceLimitModal').modal('show');
+
+        $('#invoiceCreatedModal').modal('show');
+        setTimeout(function() {
+            $('#invoiceCreatedModal').modal('hide');
+        }, 3000);
     });
 </script>
 </body>
