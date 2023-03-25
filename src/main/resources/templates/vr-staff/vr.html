@@ -60,18 +60,19 @@
         justify-content: center;
         height: 40px;
     }
+    .pagination
+    {
+      height: 100%;
+    }
     .btn-light
     {
         margin: 0;
         max-height: 40px;
     }
-    .pagination
+    .page-item
     {
-      display: inline-block;
-      position: relative;
-      top: 9px;
+      display: flex;
     }
-
     .pagination a
     {
       color: black;
@@ -189,7 +190,7 @@
             </tr>
             </thead>
             <tbody id="table-body">
-            <tr  class="table-row" th:each="invoice: ${invoiceList}">
+            <tr  class="table-row" th:each="invoice: ${invoices}">
               <td th:text="${invoice.invoiceNum}"></td>
               <td th:text="${invoice.poNum}"></td>
               <td th:text="${invoice.clientName}"></td>
@@ -204,13 +205,48 @@
             </tbody>
           </table>
           <div class="col-xxl-12 col-xl-12 col-md-12">
+
             <div id="pagination">
-              <button class="btn btn-light" id="prev">Prev</button>
-              <!--                                          <span id="page-number"></span>-->
-              <div class="pagination" id="page-numbers">
-              </div>
-              <button class="btn btn-light" id="next">Next</button>
+              Total Items: [[${totalItems}]] : Page [[${currentPage}]] of [[${totalPages}]]
+              &nbsp; &nbsp; - &nbsp;
+              <ul class="pagination">
+                <li class="page-item" th:if="${currentPage > 1}">
+                  <a class="page-link" th:href="@{/vr/user/invoices/1}">First</a>
+                </li>
+                <li class="page-item disabled" th:unless="${currentPage > 1}">
+                  <a class="page-link">First</a>
+                </li>
+                <li class="page-item" th:if="${currentPage > 1}">
+                  <a class="page-link" th:href="@{'/vr/user/invoices/' + ${currentPage - 1}}">Prev</a>
+                </li>
+                <li class="page-item disabled" th:unless="${currentPage > 1}">
+                  <a class="page-link">Prev</a>
+                </li>
+                <li th:each="i: ${#numbers.sequence(1, totalPages)}" th:class="${i == currentPage} ? 'page-item active' : 'page-item'" th:if="${i <= 5}">
+                  <a th:href="@{'/vr/user/invoices/' + ${i}}">[[${i}]]</a>
+                </li>
+                <li class="page-item" th:if="${currentPage < totalPages}">
+                  <a class="page-link" th:href="@{'/vr/user/invoices/' + ${currentPage + 1}}">Next</a>
+                </li>
+                <li class="page-item disabled" th:unless="${currentPage < totalPages}">
+                  <a class="page-link">Next</a>
+                </li>
+                <li class="page-item" th:if="${currentPage < totalPages}">
+                  <a class="page-link" th:href="@{'/vr/user/invoices/' + ${totalPages}}">Last</a>
+                </li>
+                <li class="page-item disabled" th:unless="${currentPage < totalPages}">
+                  <a class="page-link">Last</a>
+                </li>
+              </ul>
             </div>
+
+<!--            <div id="pagination">-->
+<!--              <button class="btn btn-light" id="prev">Prev</button>-->
+<!--              -->
+<!--              <div class="pagination" id="page-numbers">-->
+<!--              </div>-->
+<!--              <button class="btn btn-light" id="next">Next</button>-->
+<!--            </div>-->
           </div>
         </div>
         <!--        <button id="download-btn">Download Excel</button>-->

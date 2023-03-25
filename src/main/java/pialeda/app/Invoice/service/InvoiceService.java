@@ -1,6 +1,9 @@
 package pialeda.app.Invoice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pialeda.app.Invoice.dto.InvoiceProdInfo;
 import pialeda.app.Invoice.dto.InvoiceWrapper;
@@ -33,6 +36,12 @@ public class InvoiceService {
         }
         Optional<Invoice> invoice = Optional.ofNullable(invoiceRepository.findById(id));
         return invoice;
+    }
+
+    public Page<Invoice> findPage(int pageNumber)
+    {
+        Pageable pageable = PageRequest.of(pageNumber -1, 7);
+        return invoiceRepository.findAll(pageable);
     }
     public List<Invoice> getAllInvoice(){
         return invoiceRepository.findAll();
