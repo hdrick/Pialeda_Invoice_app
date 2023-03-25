@@ -1,6 +1,7 @@
 package pialeda.app.Invoice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,6 +37,13 @@ public class VRController {
 //        model.addAttribute("supplierList", supplierService.getAllSupplier());
 //        return "vr-staff/vr";
 //    }
+
+//    @GetMapping("vr/user/invoices")
+//    public String getAllPages(Model model)
+//    {
+//        return getOnePage(model, 1);
+//    }
+
 
     @GetMapping("vr/{id}")
     public ResponseEntity<Invoice> getInvoice(@PathVariable int id) {

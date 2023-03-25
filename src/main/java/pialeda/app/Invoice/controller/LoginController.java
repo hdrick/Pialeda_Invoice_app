@@ -2,6 +2,7 @@ package pialeda.app.Invoice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
@@ -17,6 +18,7 @@ import pialeda.app.Invoice.dto.GlobalUser;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.List;
 
 
 @Controller
@@ -37,13 +39,13 @@ public class LoginController {
         String destination=null;
         if (role == null){
             model.addAttribute("login", new Login());
-            return "login";
+            return "/login";
         }else if(role.equals("marketing")){
-            return destination = "redirect:marketing-invoice";
+            return destination = "redirect:/marketing-invoice";
         } else if (role.equals("vr-staff")) {
-            return destination = "redirect:vr-user";
+            return destination = "redirect:/vr/user/invoices";
         } else if (role.equals("admin")) {
-            return destination = "redirect:admin-dashboard";
+            return destination = "redirect:/admin-dashboard";
         }
         return destination;
     }
@@ -67,13 +69,13 @@ public class LoginController {
             if(userROle.equals("admin")){
 
 //                redirectAttrs.addAttribute("fullName", fullName);
-                return destination ="redirect:admin-dashboard";
+                return destination ="redirect:/admin-dashboard";
             } else if (userROle.equals("vr-staff")) {
 
-                return destination = "redirect:vr-user";
+                return destination = "redirect:/vr/user/invoices";
             } else if (userROle.equals("marketing")) {
 
-                return destination ="redirect:marketing-invoice";
+                return destination ="redirect:/marketing-invoice";
             }
             return "destination";
 //            return "login";
@@ -97,14 +99,14 @@ public class LoginController {
 
         System.out.println("FIRSTTTTTT");
         if(role == null){
-            return destination = "redirect:login";
+            return destination = "redirect:/login";
         }
         else if (role.equals("marketing")) {
-            return destination = "redirect:marketing-invoice";
+            return destination = "redirect:/marketing-invoice";
         }
         else if (role.equals("vr-staff")) {
 
-            return destination = "redirect:vr-user";
+            return destination = "redirect:/vr-user";
         }
         else if (role.equals("admin")) {
             model.addAttribute("userCount", userService.getUserCount());
@@ -119,8 +121,8 @@ public class LoginController {
 
 
     //VR CONTROLLER
-    @GetMapping("vr-user")
-    public String invoices(Model model) {
+    @GetMapping("vr/user/invoices")
+    public String getAllPages(Model model) {
         String role = GlobalUser.getUserRole();
         String userFname = GlobalUser.getUserFirstName();
         String userLname = GlobalUser.getUserLastName();
@@ -128,12 +130,12 @@ public class LoginController {
         String destination=null;
 
         if(role == null){
-            return "redirect:login";
+            return "redirect:/login";
         } else if (role.equals("admin")) {
-            return destination = "redirect:admin-dashboard";
+            return destination = "redirect:/admin-dashboard";
         }
         else if (role.equals("marketing")) {
-            return destination = "redirect:marketing-invoice";
+            return destination = "redirect:/marketing-invoice";
         } else if (role.equals("vr-staff")) {
             model.addAttribute("invoiceList", invoiceService.getAllInvoice());
             model.addAttribute("invoice", new Invoice());
@@ -141,11 +143,26 @@ public class LoginController {
             model.addAttribute("clientList", clientService.getAllClient());
             model.addAttribute("supplierList", supplierService.getAllSupplier());
             model.addAttribute("fullName",fullName);
-            return destination = "vr-staff/vr";
+            return getOnePage(model, 1);
         }
         return destination;
     }
 
+    @GetMapping("vr/user/invoices/{pageNumbers}")
+    public String getOnePage(Model model, @PathVariable("pageNumbers") int currentPage)
+    {
+        Page<Invoice> page = invoiceService.findPage(currentPage);
+        int totalPages = page.getTotalPages();
+        long totalItems = page.getTotalElements();
+        List<Invoice> invoices = page.getContent();
+
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalItems", totalItems);
+        model.addAttribute("invoices", invoices);
+
+        return "vr-staff/vr";
+    }
     //MARKETING CONTROLLER
     @GetMapping("marketing-invoice")
     public String users(Model model){
@@ -196,7 +213,7 @@ public class LoginController {
         System.out.println("USER ROLE BEFORE LOGOUT: "+role);
         String newRole = GlobalUser.setUserRole(null);
         System.out.println("USER ROLE after LOGOUT: "+newRole);
-        return "redirect:login";
+        return "redirect:/login";
     }
 
 
