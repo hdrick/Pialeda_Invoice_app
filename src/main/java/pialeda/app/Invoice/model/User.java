@@ -27,6 +27,15 @@ public class User {
     @Column(length = 45, nullable = false, name="user_role")
     private String role;
 
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public int getId() {
         return id;

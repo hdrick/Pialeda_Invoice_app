@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import pialeda.app.Invoice.dto.GlobalUser;
 import pialeda.app.Invoice.model.User;
 import pialeda.app.Invoice.service.UserService;
 
@@ -23,9 +24,24 @@ public class AdminController {
 
     @GetMapping("admin-users")
     public String users(Model model){
-        model.addAttribute("userList", userService.getAllUser());
-        model.addAttribute("user", new User());
-        return "admin/users";
+        String role = GlobalUser.getUserRole();
+        String userFname = GlobalUser.getUserFirstName();
+        String userLname = GlobalUser.getUserLastName();
+        String fullName = userLname+", "+userFname;
+        String destination=null;
+        if(role == null){
+            return destination = "redirect:login";
+        } else if (role.equals("vr-staff")) {
+            return destination = "redirect:vr-user";
+        } else if (role.equals(("marketing"))) {
+            return destination = "redirect:marketing-invoice";
+        } else if (role.equals("admin")) {
+            model.addAttribute("userList", userService.getAllUser());
+            model.addAttribute("user", new User());
+            model.addAttribute("fullName",fullName);
+            return destination = "admin/users";
+        }
+        return destination;
     }
 
     @PostMapping("/createUser")

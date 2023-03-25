@@ -23,7 +23,6 @@
             <label id="logo-name">PIALEDA</label>
         </div>
     </div>
-
     <!--        Login starts-->
     <div class="container">
         <div class="row justify-content-md-center">
@@ -33,7 +32,7 @@
                     <form method="POST" id="loginForm" th:object="${login}" th:action="@{/loginUser}">
                         <div class="form-title" style="margin-bottom: 30px;"><h1 >LOGIN</h1></div>
                         <span th:if="${hideSpan}" class="alert alert-danger">
-                            Invalid Username or Password.
+                            Invalid Email or Password.
                         </span>
                         <div class="form-username">
                             <input type="text" class="form-input" placeholder="Email" id="uname"

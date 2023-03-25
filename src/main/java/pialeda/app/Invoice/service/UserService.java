@@ -7,7 +7,6 @@ import pialeda.app.Invoice.model.User;
 import pialeda.app.Invoice.repository.UserRepository;
 
 import javax.naming.AuthenticationException;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Service
@@ -69,9 +68,19 @@ public class UserService {
         }
     }
 
+    public void updateToken(String token, String email){
+        User getUser = userRepo.findByEmail(email);
+        getUser.setToken(token);
+        userRepo.save(getUser);
+    }
     public User loadUser(String email)
     {
         User emailExists = userRepo.findByEmail(email);
         return emailExists;
+    }
+
+    public String getToken(String email){
+        User user = userRepo.findTokenByEmail(email);
+        return  user.getToken();
     }
 }

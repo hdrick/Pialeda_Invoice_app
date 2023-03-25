@@ -27,21 +27,6 @@ public class MarketingController {
     @Autowired
     private OfficialRecptService officialRecptService;
 
-//    @GetMapping("marketing-invoice")
-//    public String users(Model model){
-//        model.addAttribute("clientList", clientService.getAllClient());
-//        model.addAttribute("supplierList", supplierService.getAllSupplier());
-//
-//        model.addAttribute("clientInfo", new ClientInfo());
-//        model.addAttribute("supplierInfo", new SupplierInfo());
-//
-//        InvoiceWrapper wrapper = new InvoiceWrapper();
-//        wrapper.setInvoiceInfo(new InvoiceInfo());
-//        wrapper.setInvoiceProdInfo(new InvoiceProdInfo());
-//        model.addAttribute("wrapper", wrapper);
-//
-//        return "marketing/invoice";
-//    }
     @GetMapping("marketing-officialreceipt")
     public String test(Model model){
             // get the current date
