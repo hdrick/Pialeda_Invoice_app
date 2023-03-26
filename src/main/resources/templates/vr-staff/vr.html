@@ -82,7 +82,8 @@
       transition: background-color .3s;
       max-height: 40px;
     }
-
+    .disabled
+    {cursor: no-drop;}
     .pagination a.active
     {
       background-color: #4CAF50;
@@ -141,13 +142,14 @@
       <div class="content-body">
         <div class="row">
           <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 left-panel">
-            <select class="form-select" aria-label="Default select example">
+            <select class="form-select"  id="filterByClient" aria-label="Default select example">
               <option value="0" selected>Filter by Client</option>
-              <option th:each="client : ${clientList}" th:value="${client.name}" th:text="${client.name}"></option>
+              <option th:each="client : ${clients}" th:value="${client.name}" th:text="${client.name}"
+                      th:href="@{'/vr/user/invoices/' + ${currentPage} + '/filter-by-Client/'}"></option>
             </select>
             <select class="form-select" onchange="getSupplier(this)" aria-label="Default select example">
-              <option value="0" selected>Filter by Client</option>
-              <option th:each="supplier : ${supplierList}" th:value="${supplier.name}" th:text="${supplier.name}"></option>
+              <option value="0" selected>Filter by Supplier</option>
+              <option th:each="supplier : ${suppliers}" th:value="${supplier}" th:text="${supplier}"></option>
             </select>
             <select class="form-select" id="filterByMonth" aria-label="Default select example">
               <option value="0"selected>Filter by Month</option>
@@ -224,7 +226,7 @@
                     <a class="page-link">Prev</a>
                   </li>
                   <li th:each="i: ${#numbers.sequence(1, totalPages)}" th:class="${i == currentPage} ? 'page-item active' : 'page-item'" th:if="${i <= 5}">
-                    <a th:href="@{'/vr/user/invoices/' + ${i+1}}" th:text="${i+1}"></a>
+                    <a th:href="@{'/vr/user/invoices/' + ${i}}" th:text="${i}"></a>
                   </li>
                   <li class="page-item" th:if="${currentPage < totalPages}">
                     <a class="page-link" th:href="@{'/vr/user/invoices/' + ${currentPage + 1}}">Next</a>
@@ -284,6 +286,20 @@
     var selectedValue = $(this).val();
     console.log(selectedValue);
 });
+$('#filterByClient').on('change', function() {
+    event.preventDefault();
+    var clientName = $(this).find('option:selected').attr('value');
+    var href = $(this).find('option:selected').attr('href');
+
+
+
+    var encodedPath = encodeURIComponent(clientName).replace(/%20/g, '%20');
+    console.log(href+encodedPath);
+    window.location.href = href+encodedPath;
+
+
+});
+
 
   });
 </script>
