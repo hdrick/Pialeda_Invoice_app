@@ -106,7 +106,7 @@ public class LoginController {
         }
         else if (role.equals("vr-staff")) {
 
-            return destination = "redirect:/vr-user";
+            return destination = "redirect:/vr/user/invoices";
         }
         else if (role.equals("admin")) {
             model.addAttribute("userCount", userService.getUserCount());
@@ -175,7 +175,7 @@ public class LoginController {
 
         System.out.println("FIRSTTTTTT");
         if(role == null){
-            return destination = "redirect:login";
+            return destination = "redirect:/login";
         }
         else if (role.equals("marketing")) {
             model.addAttribute("clientList", clientService.getAllClient());
@@ -192,7 +192,7 @@ public class LoginController {
             return destination = "marketing/invoice";
         }
         else if (role.equals("vr-staff")) {
-            return destination = "redirect:vr-user";
+            return destination = "redirect:/vr/user/invoices";
         }
         else if (role.equals("admin")) {
             return destination = "redirect:admin-dashboard";

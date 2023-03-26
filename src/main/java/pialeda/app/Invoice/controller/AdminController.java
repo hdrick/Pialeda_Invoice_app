@@ -32,7 +32,7 @@ public class AdminController {
         if(role == null){
             return destination = "redirect:login";
         } else if (role.equals("vr-staff")) {
-            return destination = "redirect:vr-user";
+            return destination = "redirect:/vr/user/invoices";
         } else if (role.equals(("marketing"))) {
             return destination = "redirect:marketing-invoice";
         } else if (role.equals("admin")) {
