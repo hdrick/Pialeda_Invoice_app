@@ -158,7 +158,7 @@ public class InvoiceService {
         return invoiceRepository.findByClientNameContainingIgnoreCase(name, pageable);
     }
 
-    
+
 //    DRICKS...
     public Page<Invoice> getInvoicesPaginated(int currentPage, int size){
         Pageable p = PageRequest.of(currentPage, size);
