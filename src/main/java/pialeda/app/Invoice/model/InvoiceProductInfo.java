@@ -19,7 +19,19 @@ public class InvoiceProductInfo {
 
     public InvoiceProductInfo(){}
 
-    public InvoiceProductInfo(String invoiceNumber, String purchaseOrderNumber, int qty, String unit, String articles, double unitPrice, double amount) {
+//    public InvoiceProductInfo(String invoiceNumber, String purchaseOrderNumber, int qty, String unit, String articles, double unitPrice, double amount) {
+//        this.invoiceNumber = invoiceNumber;
+//        this.purchaseOrderNumber = purchaseOrderNumber;
+//        this.qty = qty;
+//        this.unit = unit;
+//        this.articles = articles;
+//        this.unitPrice = unitPrice;
+//        this.amount = amount;
+//    }
+
+
+    public InvoiceProductInfo(int id, String invoiceNumber, String purchaseOrderNumber, int qty, String unit, String articles, double unitPrice, double amount) {
+        this.id = id;
         this.invoiceNumber = invoiceNumber;
         this.purchaseOrderNumber = purchaseOrderNumber;
         this.qty = qty;
@@ -27,6 +39,14 @@ public class InvoiceProductInfo {
         this.articles = articles;
         this.unitPrice = unitPrice;
         this.amount = amount;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getInvoiceNumber() {

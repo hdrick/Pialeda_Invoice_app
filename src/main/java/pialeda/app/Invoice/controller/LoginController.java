@@ -96,8 +96,6 @@ public class LoginController {
         String fullName = userLname+", "+userFname;
         String destination=null;
 
-
-        System.out.println("FIRSTTTTTT");
         if(role == null){
             return destination = "redirect:/login";
         }

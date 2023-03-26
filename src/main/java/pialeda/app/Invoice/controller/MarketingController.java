@@ -1,19 +1,24 @@
 package pialeda.app.Invoice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pialeda.app.Invoice.dto.*;
-import pialeda.app.Invoice.model.Client;
-import pialeda.app.Invoice.model.Supplier;
+import pialeda.app.Invoice.model.*;
 import pialeda.app.Invoice.service.ClientService;
 import pialeda.app.Invoice.service.OfficialRecptService;
 import pialeda.app.Invoice.service.SupplierService;
 import pialeda.app.Invoice.service.InvoiceService;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MarketingController {
@@ -27,8 +32,16 @@ public class MarketingController {
     @Autowired
     private OfficialRecptService officialRecptService;
 
+
     @GetMapping("marketing-officialreceipt")
     public String test(Model model){
+        String role = GlobalUser.getUserRole();
+        String destination=null;
+        if(role == null){
+            return destination = "redirect:login";
+        } else if (role.equals("vr-staff")) {
+            return destination = "redirect:/vr/user/invoices";
+        } else if (role.equals(("marketing"))) {
             // get the current date
             LocalDate currentDate = LocalDate.now();
 
@@ -49,9 +62,11 @@ public class MarketingController {
 
             model.addAttribute("generateORNumber", result);
             model.addAttribute("officialReceiptInfo", new OfficialReceiptInfo());
-            return "marketing/officialreceipt";
-
-
+            return destination = "marketing/officialreceipt";
+        } else if (role.equals("admin")) {
+            return destination = "redirect:/admin-dashboard";
+        }
+        return destination;
     }
 
     @GetMapping("marketing-view/invoices")
@@ -116,4 +131,88 @@ public class MarketingController {
         Supplier supplierInfo = new Supplier(supplier.getName(), supplier.getAddress(), supplier.getCityAddress(), supplier.getTin());
         return supplierInfo;
     }
+
+
+
+    @GetMapping("/invoice-view")
+    public String invoiceView(Model model){
+        String role = GlobalUser.getUserRole();
+        String destination=null;
+        if(role == null){
+            return destination = "redirect:login";
+        } else if (role.equals("vr-staff")) {
+            return destination = "redirect:/vr/user/invoices";
+        } else if (role.equals(("marketing"))) {
+            return destination = findPaginated(0, model);
+        } else if (role.equals("admin")) {
+            return destination = "redirect:/admin-dashboard";
+        }
+        return destination;
+
+    }
+
+    @GetMapping("/page/{pageno}")
+    public String findPaginated(@PathVariable int pageno, Model model){
+        Page<Invoice> invoiceList= invoiceService.getInvoicesPaginated(pageno, 8);
+
+        model.addAttribute("invoiceList", invoiceList);
+        model.addAttribute("currentPage",pageno);
+        model.addAttribute("totalPages",invoiceList.getTotalPages());
+        model.addAttribute("totalItem", invoiceList.getTotalElements());
+
+        return "marketing/invoice-view";
+    }
+
+    @GetMapping("/specific-inv")
+    @ResponseBody
+    public Map<String, Object> getInvById(@RequestParam("id") int id){
+        Invoice inv= invoiceService.getInvByIdAndFillFields(id);
+        List<InvoiceProductInfo> prodList = invoiceService.getAllProdByInvNum(inv.getInvoiceNum());
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("invoiceNum", inv.getInvoiceNum());
+        result.put("poNum", inv.getPoNum());
+        result.put("dateCreated", inv.getDateCreated());
+        result.put("supplierName", inv.getSupplierName());
+        result.put("clientName", inv.getClientName());
+        result.put("clientContactPerson", inv.getClientContactPerson());
+        result.put("productList", prodList);
+
+        return result;
+    }
+
+    @PostMapping("/submit-form")
+    public String handleSubmitForm(
+            @RequestParam("inv-num") String invoiceNumber,
+            @RequestParam("date-created") String dateCreated,
+            @RequestParam("supp-name") String supplierName,
+            @RequestParam("client-name") String clientName,
+            @RequestParam("client-cp") String clientContactPerson,
+            @RequestParam("total-amt") String totalAmt,
+            @RequestParam("qty-input") List<String> qtyList,
+            @RequestParam("unit-input") List<String> unitList,
+            @RequestParam("articles-input") List<String> articlesList,
+            @RequestParam("unitP-input") List<String> unitPriceList,
+            @RequestParam("amount-input") List<String> amountList,
+            @RequestParam("id-input") List<String> prodIdList,
+            Model model,
+            RedirectAttributes redirectAttributes
+    ) {
+
+         boolean ifSuccess = invoiceService.updateInvoices(invoiceNumber, dateCreated, supplierName, clientName, clientContactPerson, totalAmt, qtyList, unitList, articlesList, unitPriceList, amountList, prodIdList);
+
+         if(ifSuccess == true){
+             boolean hideDivSuccess = true;
+             redirectAttributes.addFlashAttribute("hideDivSuccess", hideDivSuccess);
+             return "redirect:/invoice-view";
+         }else{
+             boolean hideDivError = true;
+             redirectAttributes.addFlashAttribute("hideDivError", hideDivError);
+             return "redirect:/invoice-view";
+         }
+    }
+
+
+
+
 }

@@ -8,17 +8,19 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pialeda.app.Invoice.dto.InvoiceProdInfo;
 import pialeda.app.Invoice.dto.InvoiceWrapper;
+import pialeda.app.Invoice.model.Client;
 import pialeda.app.Invoice.model.Invoice;
 import pialeda.app.Invoice.model.InvoiceProductInfo;
+import pialeda.app.Invoice.model.Supplier;
+import pialeda.app.Invoice.repository.ClientRepository;
 import pialeda.app.Invoice.repository.InvoiceProdInfoRepository;
 import pialeda.app.Invoice.repository.InvoiceRepository;
 import pialeda.app.Invoice.dto.InvoiceInfo;
+import pialeda.app.Invoice.repository.SupplierRepository;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalDouble;
 
 
 @Service
@@ -28,6 +30,12 @@ public class InvoiceService {
     private InvoiceRepository invoiceRepository;
     @Autowired
     private InvoiceProdInfoRepository invoiceProdInfoRepository;
+
+    @Autowired
+    private SupplierRepository supplierRepository;
+
+    @Autowired
+    private ClientRepository clientRepository;
 
     public Optional<Invoice> getInvoiceById(int id)
     {
@@ -154,4 +162,67 @@ public class InvoiceService {
 
         return invoiceRepository.findAll(pageable);
     }
+
+    public Page<Invoice> getInvoicesPaginated(int currentPage, int size){
+        Pageable p = PageRequest.of(currentPage, size);
+        return invoiceRepository.findAll(p);
+    }
+
+    public Invoice getInvByIdAndFillFields(int id){
+        return invoiceRepository.findById(id);
+    }
+
+    public List<InvoiceProductInfo> getAllProdByInvNum(String invNum){
+        return invoiceProdInfoRepository.findByInvoiceNumber(invNum);
+    }
+
+    public boolean updateInvoices(String invoiceNumber, String dateCreated,
+                                 String supplierName, String clientName, String clientContactPerson,
+                                 String totalAmt, List<String> qtyList, List<String> unitList, List<String> articlesList,
+                                 List<String> unitPriceList, List<String> amountList, List<String> prodIdList){
+
+       try {
+           Invoice invDb = invoiceRepository.findByInvoiceNum(invoiceNumber);
+           Supplier supplier = supplierRepository.findByName(supplierName);
+           Client client = clientRepository.findByName(clientName);
+           List<InvoiceProductInfo> productInfo = invoiceProdInfoRepository.findByInvoiceNumber(invoiceNumber);
+
+           invDb.setDateCreated(dateCreated);
+
+           invDb.setSupplierName(supplier.getName());
+           invDb.setSupplierAddress(supplier.getAddress());
+           invDb.setSupplierTin(supplier.getTin());
+
+           invDb.setClientName(client.getName());
+           invDb.setClientContactPerson(clientContactPerson);
+           invDb.setClientTin(client.getTin());
+           invDb.setClientAddress(client.getAddress());
+
+           String totalAmtNew = totalAmt.replace(",", "");
+           invDb.setGrandTotal(Double.parseDouble(totalAmtNew));
+
+           // Update the product info for each product
+           for (int i = 0; i < prodIdList.size(); i++) {
+               String prodId = prodIdList.get(i);
+               for (InvoiceProductInfo prodInfo : productInfo) {
+                   if (String.valueOf(prodInfo.getId()).equals(prodId)) {
+                       prodInfo.setQty(Integer.parseInt(qtyList.get(i)));
+                       prodInfo.setUnit(unitList.get(i));
+                       prodInfo.setArticles(articlesList.get(i));
+                       prodInfo.setUnitPrice(Double.parseDouble(unitPriceList.get(i)));
+                       prodInfo.setAmount(Double.parseDouble(amountList.get(i)));
+                       break;
+                   }
+               }
+           }
+
+           invoiceRepository.save(invDb);
+           invoiceProdInfoRepository.saveAll(productInfo);
+           return true;
+       }catch (Exception e){
+           e.printStackTrace();
+           return false;
+       }
+    }
+
 }

@@ -55,6 +55,18 @@ public class Invoice {
         this.cashier = cashier;
     }
 
+    public Invoice(String invoiceNum) {
+    }
+
+    public Invoice(String invoiceNum, String poNum, String dateCreated, String supplierName, String clientName, String clientContactPerson) {
+        this.invoiceNum = invoiceNum;
+        this.poNum = poNum;
+        this.dateCreated = dateCreated;
+        this.supplierName = supplierName;
+        this.clientName = clientName;
+        this.clientContactPerson = clientContactPerson;
+    }
+
     public int getId() {
         return id;
     }

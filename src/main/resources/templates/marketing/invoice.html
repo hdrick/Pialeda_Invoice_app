@@ -336,7 +336,7 @@
             </div>
             <div id="footer">
                 <div id="bx-1">
-                    <span  id="cashier-name" contenteditable="true"></span>
+                    <span  id="cashier-name" contenteditable="true" th:text="${fullName}"></span>
                     <input type="hidden" th:field="*{invoiceInfo.cashier}" id="cashier-name-input">
                     <div style="width: 200px; height: 1px; background-color: black;"></div>
                 </div>
@@ -348,41 +348,13 @@
         <div class="main-bx2">
 <!--            <a id="btn-Gen" class="btn btn-success" onclick="generateInvNum()">Generate</a>-->
             <input id="btn-Create" type="submit" class="btn btn-success" value="Create Invoice">
-            <a id="btn-invoices" class="btn btn-success" data-toggle="modal" data-target="#invoicesModal">Invoices</a>
+            <a id="btn-invoices" class="btn btn-success" th:href="@{/invoice-view}">Invoices</a>
 
         </div>
     </div>
     </form>
 </div>
-<!-- Invoices Modal -->
-<div class="modal fade" id="invoicesModal" tabindex="-1" role="dialog" aria-labelledby="invoicesModalLabel" aria-hidden="true" style="margin-top: 4%;">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="invoicesModalLabel">Invoices</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form  method="POST">
-                    <div>
-                        <!--Supplier List  -->
-                        <select id="my-supplier-invoices" onchange="getSupplierInfo()" style="font-weight: bolder;" required>
-                            <option value="" selected>Select Supplier</option>
-                            <option th:each="supplier : ${supplierList}" th:value="${supplier.name}" th:text="${supplier.name}" style="font-weight: bolder;"></option>
-                        </select>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" style="background-color: #003D2B; border-color: #003D2B;">Save changes</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 <!-- Client Modal -->
 <div class="modal fade" id="clientModal" tabindex="-1" role="dialog" aria-labelledby="clientModalLabel" aria-hidden="true" style="margin-top: 4%;">
     <div class="modal-dialog modal-dialog-centered">

@@ -168,7 +168,8 @@ const clientTermsInput = document.getElementById('client-terms-input');
 
 const cashierName = document.getElementById('cashier-name');
 const cashierNameInput = document.getElementById('cashier-name-input');
-
+// Set the initial value of the input field to the text content of the cashierName element
+cashierNameInput.value = cashierName.textContent;
     cashierName.addEventListener('input', function() {
       cashierNameInput.value = cashierName.textContent;
     });
