@@ -40,6 +40,11 @@ public class SupplierService {
     public List<Supplier> getAllSupplier(){
         return supplierRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
+
+    public List<String> getAllSupplierName()
+    {
+        return supplierRepository.getAllSupplierNames(Sort.by(Sort.Direction.ASC, "name"));
+    }
     public Supplier findByName(String name){
         return supplierRepository.findByName(name);
     }

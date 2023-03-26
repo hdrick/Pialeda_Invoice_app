@@ -35,4 +35,9 @@ public class ClientService {
     public Client findByName(String name){
         return clientRepository.findByName(name);
     }
+
+    public List<Client> filterClient(String name)
+    {
+        return (List<Client>) clientRepository.findByName(name);
+    }
 }

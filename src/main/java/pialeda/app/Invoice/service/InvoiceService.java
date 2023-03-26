@@ -152,17 +152,14 @@ public class InvoiceService {
         Pageable pageable = PageRequest.of(pageNumber -1, 7);
         return invoiceRepository.findAll(pageable);
     }
-
-    public Page<Invoice> findAllWithSort(String field, String direction, int pageNumber)
+    public Page<Invoice> filterPage(String name, int pageNumber)
     {
-        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name())?
-                Sort.by(field).ascending(): Sort.by(field).descending();
-
-        Pageable pageable = PageRequest.of(pageNumber -1, 7, sort);
-
-        return invoiceRepository.findAll(pageable);
+        Pageable pageable = PageRequest.of(pageNumber -1, 7);
+        return invoiceRepository.findByClientNameContainingIgnoreCase(name, pageable);
     }
 
+    
+//    DRICKS...
     public Page<Invoice> getInvoicesPaginated(int currentPage, int size){
         Pageable p = PageRequest.of(currentPage, size);
         return invoiceRepository.findAll(p);
@@ -224,5 +221,15 @@ public class InvoiceService {
            return false;
        }
     }
+
+//    public Page<Invoice> findAllWithSort(String field, String direction, int pageNumber)
+//    {
+//        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name())?
+//                Sort.by(field).ascending(): Sort.by(field).descending();
+//
+//        Pageable pageable = PageRequest.of(pageNumber -1, 7, sort);
+//
+//        return invoiceRepository.findAll(pageable);
+//    }
 
 }

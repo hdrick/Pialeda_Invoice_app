@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import pialeda.app.Invoice.model.Client;
 import pialeda.app.Invoice.model.Invoice;
 import pialeda.app.Invoice.service.ClientService;
 import pialeda.app.Invoice.service.InvoiceService;
@@ -28,32 +29,29 @@ public class VRController {
     @Autowired
     private SupplierService supplierService;
 
-//    @GetMapping("vr/user")
-//    public String invoice(Model model) {
-//        model.addAttribute("invoiceList", invoiceService.getAllInvoice());
-//        model.addAttribute("invoice", new Invoice());
-//
-//        model.addAttribute("clientList", clientService.getAllClient());
-//        model.addAttribute("supplierList", supplierService.getAllSupplier());
-//        return "vr-staff/vr";
-//    }
+    @GetMapping("vr/user/invoices/{pageNumbers}/filter-by-Client/{clientName}")
+    public String getFilterClient(Model model, @PathVariable("pageNumbers") int currentPage,
+                                  @PathVariable("clientName") String client)
+    {
+        System.out.println(client);
+        Page<Invoice> page = invoiceService.filterPage(client, currentPage);
+        List<Client> clients = clientService.getAllClient();
+        List<String> suppliers = supplierService.getAllSupplierName();
+        List<Invoice> invoices = page.getContent();
 
-//    @GetMapping("vr/user/invoices")
-//    public String getAllPages(Model model)
-//    {
-//        return getOnePage(model, 1);
-//    }
+        int totalPages = page.getTotalPages();
+        long totalItems = page.getTotalElements();
 
 
-    @GetMapping("vr/{id}")
-    public ResponseEntity<Invoice> getInvoice(@PathVariable int id) {
-        Optional<Invoice> invoice = invoiceService.getInvoiceById(id);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalItems", totalItems);
+        model.addAttribute("invoices", invoices);
 
-        if (invoice.isPresent()) {
-            return new ResponseEntity<>(invoice.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        model.addAttribute("clients", clients);
+        model.addAttribute("suppliers", suppliers);
+
+        return "vr-staff/vr";
     }
 
     @GetMapping("vr/search")
@@ -61,12 +59,6 @@ public class VRController {
         List<Invoice> keyword = invoiceService.getKeyword(query);
 
         return new ResponseEntity<>(keyword, HttpStatus.OK);
-    }
-
-    @GetMapping("vr/all-invoice")
-    @ResponseBody
-    public List<Invoice> getAll() {
-        return invoiceService.getAllInvoice();
     }
 
 }
