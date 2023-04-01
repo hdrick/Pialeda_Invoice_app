@@ -34,8 +34,9 @@
     }
     .left-panel select
     {
-        width: auto;
+        width: 150px;
         margin-right: 24px;
+        border: none;
     }
     .search-text
     {
@@ -144,15 +145,18 @@
           <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 left-panel">
             <select class="form-select"  id="filterByClient" aria-label="Default select example">
               <option value="0" selected>Filter by Client</option>
+<!--              <option th:each="client : ${clients}" th:value="${client.name}" th:text="${client.name}"-->
+<!--                      th:href="@{'/vr/user/invoices/' + ${currentPage} + '/filter-by-Client/'}"></option>-->
               <option th:each="client : ${clients}" th:value="${client.name}" th:text="${client.name}"
-                      th:href="@{'/vr/user/invoices/' + ${currentPage} + '/filter-by-Client/'}"></option>
+                      th:href="@{/vr/user/invoices(client=${client.name},page=${1})}"></option>
             </select>
             <select class="form-select" onchange="getSupplier(this)" aria-label="Default select example">
               <option value="0" selected>Filter by Supplier</option>
-              <option th:each="supplier : ${suppliers}" th:value="${supplier}" th:text="${supplier}"></option>
+              <option th:each="supplier : ${suppliers}" th:value="${supplier}" th:text="${supplier}"
+                      th:href="@{/vr/user/invoices(supplier=${supplier},page=${1})}"></option>
             </select>
-            <select class="form-select" id="filterByMonth" aria-label="Default select example">
-              <option value="0"selected>Filter by Month</option>
+            <select class="form-select" id="sortByMonth" aria-label="Default select example">
+              <option value="0"selected>Sort by Month</option>
               <option value="1">January</option>
               <option value="2">February</option>
               <option value="3">March</option>
@@ -214,28 +218,28 @@
                 &nbsp; &nbsp; - &nbsp;
                 <ul class="pagination">
                   <li class="page-item" th:if="${currentPage > 1}">
-                    <a class="page-link" th:href="@{/vr/user/invoices/1}">First</a>
+                    <a class="page-link" th:href="@{/vr/user/invoices?page=1}">First</a>
                   </li>
                   <li class="page-item disabled" th:unless="${currentPage > 1}">
                     <a class="page-link">First</a>
                   </li>
                   <li class="page-item" th:if="${currentPage > 1}">
-                    <a class="page-link" th:href="@{'/vr/user/invoices/' + ${currentPage - 1}}">Prev</a>
+                    <a class="page-link" th:href="@{'/vr/user/invoices?page=' + ${currentPage - 1}}">Prev</a>
                   </li>
                   <li class="page-item disabled" th:unless="${currentPage > 1}">
                     <a class="page-link">Prev</a>
                   </li>
                   <li th:each="i: ${#numbers.sequence(1, totalPages)}" th:class="${i == currentPage} ? 'page-item active' : 'page-item'" th:if="${i <= 5}">
-                    <a th:href="@{'/vr/user/invoices/' + ${i}}" th:text="${i}"></a>
+                    <a th:href="@{'/vr/user/invoices?page=' + ${i}}" th:text="${i}"></a>
                   </li>
                   <li class="page-item" th:if="${currentPage < totalPages}">
-                    <a class="page-link" th:href="@{'/vr/user/invoices/' + ${currentPage + 1}}">Next</a>
+                    <a class="page-link" th:href="@{'/vr/user/invoices?page=' + ${currentPage + 1}}">Next</a>
                   </li>
                   <li class="page-item disabled" th:unless="${currentPage < totalPages}">
                     <a class="page-link">Next</a>
                   </li>
                   <li class="page-item" th:if="${currentPage < totalPages}">
-                    <a class="page-link" th:href="@{'/vr/user/invoices/' + ${totalPages}}">Last</a>
+                    <a class="page-link" th:href="@{'/vr/user/invoices?page=' + ${totalPages}}">Last</a>
                   </li>
                   <li class="page-item disabled" th:unless="${currentPage < totalPages}">
                     <a class="page-link">Last</a>
@@ -294,8 +298,8 @@ $('#filterByClient').on('change', function() {
 
 
     var encodedPath = encodeURIComponent(clientName).replace(/%20/g, '%20');
-    console.log(href+encodedPath);
-    window.location.href = href+encodedPath;
+    console.log(href);
+    window.location.href = href;
 
 
 });

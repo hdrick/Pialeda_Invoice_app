@@ -29,30 +29,6 @@ public class VRController {
     @Autowired
     private SupplierService supplierService;
 
-    @GetMapping("vr/user/invoices/{pageNumbers}/filter-by-Client/{clientName}")
-    public String getFilterClient(Model model, @PathVariable("pageNumbers") int currentPage,
-                                  @PathVariable("clientName") String client)
-    {
-        System.out.println(client);
-        Page<Invoice> page = invoiceService.filterPage(client, currentPage);
-        List<Client> clients = clientService.getAllClient();
-        List<String> suppliers = supplierService.getAllSupplierName();
-        List<Invoice> invoices = page.getContent();
-
-        int totalPages = page.getTotalPages();
-        long totalItems = page.getTotalElements();
-
-
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("totalItems", totalItems);
-        model.addAttribute("invoices", invoices);
-
-        model.addAttribute("clients", clients);
-        model.addAttribute("suppliers", suppliers);
-
-        return "vr-staff/vr";
-    }
 
     @GetMapping("vr/search")
     public ResponseEntity<?> searchInvoice(@RequestParam("query") String query) {

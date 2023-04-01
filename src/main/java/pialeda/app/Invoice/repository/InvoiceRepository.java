@@ -24,5 +24,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
     Invoice findByInvoiceNum(String invNum);
 
     Page<Invoice> findByClientNameContainingIgnoreCase(String name, Pageable pageable);
+    Page<Invoice> findBySupplierNameContainingIgnoreCase(String name, Pageable pageable);
+    Page<Invoice> findByClientNameAndSupplierNameContainingIgnoreCase(String client, String supplier, Pageable pageable);
 
 }

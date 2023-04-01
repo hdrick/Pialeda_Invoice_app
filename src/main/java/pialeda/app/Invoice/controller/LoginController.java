@@ -21,6 +21,7 @@ import pialeda.app.Invoice.dto.GlobalUser;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -122,7 +123,9 @@ public class LoginController {
 
     //VR CONTROLLER
     @GetMapping("vr/user/invoices")
-    public String getAllPages(Model model) {
+    public String getAllPages(Model model, @RequestParam(name="client", required = false) String client,
+                              @RequestParam(name="supplier", required = false) String supplier,
+                              @RequestParam(name="page", required = false, defaultValue = "1") int currentPage) {
         String role = GlobalUser.getUserRole();
         String userFname = GlobalUser.getUserFirstName();
         String userLname = GlobalUser.getUserLastName();
@@ -137,66 +140,96 @@ public class LoginController {
         else if (role.equals("marketing")) {
             return destination = "redirect:/marketing-invoice";
         } else if (role.equals("vr-staff")) {
-//            model.addAttribute("invoiceList", invoiceService.getAllInvoice());
-//            model.addAttribute("invoice", new Invoice());
 
-//            model.addAttribute("clientList", clientService.getAllClient());
-//            model.addAttribute("supplierList", supplierService.getAllSupplier());
-            model.addAttribute("fullName",fullName);
-            return getOnePage(model, 1);
+            if (client != null && supplier != null)
+            {
+                Page<Invoice> page = invoiceService.filterPageByClientAndSupplier(client, supplier, currentPage);
+                List<Client> clients = clientService.getAllClient();
+                List<String> suppliers = supplierService.getAllSupplierName();
+                List<Invoice> invoices = page.getContent();
+
+                int totalPages = page.getTotalPages();
+                long totalItems = page.getTotalElements();
+
+                model.addAttribute("fullName",fullName);
+
+                model.addAttribute("currentPage", currentPage);
+                model.addAttribute("totalPages", totalPages);
+                model.addAttribute("totalItems", totalItems);
+                model.addAttribute("invoices", invoices);
+
+                model.addAttribute("clients", clients);
+                model.addAttribute("suppliers", suppliers);
+                return "vr-staff/vr";
+            }
+            else if (client != null && supplier == null)
+            {
+                Page<Invoice> page = invoiceService.filterPageByClient(client, currentPage);
+                List<Client> clients = clientService.getAllClient();
+                List<String> suppliers = supplierService.getAllSupplierName();
+                List<Invoice> invoices = page.getContent();
+
+                int totalPages = page.getTotalPages();
+                long totalItems = page.getTotalElements();
+
+                model.addAttribute("fullName",fullName);
+
+                model.addAttribute("currentPage", currentPage);
+                model.addAttribute("totalPages", totalPages);
+                model.addAttribute("totalItems", totalItems);
+                model.addAttribute("invoices", invoices);
+
+                model.addAttribute("clients", clients);
+                model.addAttribute("suppliers", suppliers);
+                return "vr-staff/vr";
+            }
+            else if (client == null && supplier != null)
+            {
+                Page<Invoice> page = invoiceService.filterPageBySupplier(supplier, currentPage);
+                List<Client> clients = clientService.getAllClient();
+                List<String> suppliers = supplierService.getAllSupplierName();
+                List<Invoice> invoices = page.getContent();
+
+                int totalPages = page.getTotalPages();
+                long totalItems = page.getTotalElements();
+
+                model.addAttribute("fullName",fullName);
+
+                model.addAttribute("currentPage", currentPage);
+                model.addAttribute("totalPages", totalPages);
+                model.addAttribute("totalItems", totalItems);
+                model.addAttribute("invoices", invoices);
+
+                model.addAttribute("clients", clients);
+                model.addAttribute("suppliers", suppliers);
+                return "vr-staff/vr";
+            }
+            else
+            {
+
+                Page<Invoice> page = invoiceService.findPage(currentPage);
+                List<Client> clients = clientService.getAllClient();
+                List<String> suppliers = supplierService.getAllSupplierName();
+                List<Invoice> invoices = page.getContent();
+
+                int totalPages = page.getTotalPages();
+                long totalItems = page.getTotalElements();
+
+
+
+                model.addAttribute("currentPage", currentPage);
+                model.addAttribute("totalPages", totalPages);
+                model.addAttribute("totalItems", totalItems);
+                model.addAttribute("invoices", invoices);
+
+                model.addAttribute("clients", clients);
+                model.addAttribute("suppliers", suppliers);
+
+                return "vr-staff/vr";
+            }
         }
         return destination;
     }
-
-    @GetMapping("vr/user/invoices/{pageNumbers}")
-    public String getOnePage(Model model, @PathVariable("pageNumbers") int currentPage)
-    {
-        Page<Invoice> page = invoiceService.findPage(currentPage);
-        List<Client> clients = clientService.getAllClient();
-        List<String> suppliers = supplierService.getAllSupplierName();
-        List<Invoice> invoices = page.getContent();
-
-        int totalPages = page.getTotalPages();
-        long totalItems = page.getTotalElements();
-
-
-
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("totalItems", totalItems);
-        model.addAttribute("invoices", invoices);
-
-        model.addAttribute("clients", clients);
-        model.addAttribute("suppliers", suppliers);
-
-        return "vr-staff/vr";
-    }
-//    @GetMapping("vr/user/invoices/{pageNumbers}/{field}")
-//    public String getPageWithSort(Model model, @PathVariable("pageNumbers") int currentPage,
-//                                  @PathVariable String field,
-//                                  @PathVariable("sortDir") String sortDir)
-//    {
-//        Page<Invoice> page = invoiceService.findAllWithSort(field, sortDir, currentPage);
-//        List<Invoice> invoices = page.getContent();
-//        List<Client> clients = clientService.getAllClient();
-//        List<String> suppliers = supplierService.getAllSupplierName();
-//
-//        int totalPages = page.getTotalPages();
-//        long totalItems = page.getTotalElements();
-//
-//        model.addAttribute("currentPage", currentPage);
-//        model.addAttribute("totalPages", totalPages);
-//        model.addAttribute("totalItems", totalItems);
-//        model.addAttribute("sortDir", sortDir);
-//        model.addAttribute("reverseSortDir", sortDir.equals("asc")? "desc" : "asc");
-//        model.addAttribute("invoices", invoices);
-//        model.addAttribute("clients", clients);
-//        model.addAttribute("suppliers", suppliers);
-//
-//
-//        return "vr-staff/vr";
-//    }
-
     //MARKETING CONTROLLER
     @GetMapping("marketing-invoice")
     public String users(Model model){

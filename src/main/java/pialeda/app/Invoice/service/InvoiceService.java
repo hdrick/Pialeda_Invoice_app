@@ -152,10 +152,20 @@ public class InvoiceService {
         Pageable pageable = PageRequest.of(pageNumber -1, 7);
         return invoiceRepository.findAll(pageable);
     }
-    public Page<Invoice> filterPage(String name, int pageNumber)
+    public Page<Invoice> filterPageByClient(String name, int pageNumber)
     {
         Pageable pageable = PageRequest.of(pageNumber -1, 7);
         return invoiceRepository.findByClientNameContainingIgnoreCase(name, pageable);
+    }
+    public Page<Invoice> filterPageBySupplier(String name, int pageNumber)
+    {
+        Pageable pageable = PageRequest.of(pageNumber -1, 7);
+        return invoiceRepository.findBySupplierNameContainingIgnoreCase(name, pageable);
+    }
+    public Page<Invoice> filterPageByClientAndSupplier(String client, String supplier, int pageNumber)
+    {
+        Pageable pageable = PageRequest.of(pageNumber -1, 7);
+        return invoiceRepository.findByClientNameAndSupplierNameContainingIgnoreCase(client, supplier, pageable);
     }
 
 
