@@ -35,6 +35,8 @@ public class LoginController {
     private ClientService clientService;
     @Autowired
     private InvoiceService invoiceService;
+    @Autowired
+    private VRController vrController;
 
     @GetMapping("/login")
     public String login(Model model){
@@ -146,228 +148,49 @@ public class LoginController {
             {
                 if (month != null)
                 {
-                    return filterSortPage(model, client, supplier, month, currentPage, fullName);
+                    return vrController.filterSortPage(model, client, supplier, month, currentPage, fullName);
                 }
                 else
                 {
-                    Page<Invoice> page = invoiceService.filterPageByClientAndSupplier(client, supplier, currentPage);
-                    List<Client> clients = clientService.getAllClient();
-                    List<String> suppliers = supplierService.getAllSupplierName();
-                    List<Invoice> invoices = page.getContent();
-
-                    int totalPages = page.getTotalPages();
-                    long totalItems = page.getTotalElements();
-
-                    model.addAttribute("fullName", fullName);
-
-                    model.addAttribute("currentPage", currentPage);
-                    model.addAttribute("totalPages", totalPages);
-                    model.addAttribute("totalItems", totalItems);
-                    model.addAttribute("invoices", invoices);
-
-                    model.addAttribute("clients", clients);
-                    model.addAttribute("suppliers", suppliers);
-
-                    model.addAttribute("selectedMonth", month);
-                    model.addAttribute("selectedClient", client);
-                    model.addAttribute("selectedSupplier", supplier);
-                    return "vr-staff/vr";
+                    return vrController.filterSortClientSupplierPage(model, client, supplier, month, currentPage, fullName);
                 }
             }
             else if(client == null && supplier == null && month != null)
             {
-                Page<Invoice> page = invoiceService.sortByMonthAsc(month, currentPage);
-                List<Client> clients = clientService.getAllClient();
-                List<String> suppliers = supplierService.getAllSupplierName();
-                List<Invoice> invoices = page.getContent();
-
-                int totalPages = page.getTotalPages();
-                long totalItems = page.getTotalElements();
-
-                model.addAttribute("fullName",fullName);
-
-                model.addAttribute("currentPage", currentPage);
-                model.addAttribute("totalPages", totalPages);
-                model.addAttribute("totalItems", totalItems);
-                model.addAttribute("invoices", invoices);
-
-                model.addAttribute("clients", clients);
-                model.addAttribute("suppliers", suppliers);
-
-                model.addAttribute("selectedMonth", month);
-                model.addAttribute("selectedClient", null);
-                model.addAttribute("selectedSupplier", null);
-                return "vr-staff/vr";
+                return vrController.sortPageByMonth(model, month, currentPage, fullName);
             }
             else if (client != null && supplier == null)
             {
                 if (month != null)
                 {
-                    return filterClientSortPage(model, client, month, currentPage, fullName);
+                    return vrController.filterClientSortPage(model, client, month, currentPage, fullName);
                 }
                 else
                 {
-                    Page<Invoice> page = invoiceService.filterPageByClient(client, currentPage);
-                    List<Client> clients = clientService.getAllClient();
-                    List<String> suppliers = supplierService.getAllSupplierName();
-                    List<Invoice> invoices = page.getContent();
-
-                    int totalPages = page.getTotalPages();
-                    long totalItems = page.getTotalElements();
-
-                    model.addAttribute("fullName", fullName);
-
-                    model.addAttribute("currentPage", currentPage);
-                    model.addAttribute("totalPages", totalPages);
-                    model.addAttribute("totalItems", totalItems);
-                    model.addAttribute("invoices", invoices);
-
-                    model.addAttribute("clients", clients);
-                    model.addAttribute("suppliers", suppliers);
-                    model.addAttribute("selectedMonth", month);
-                    model.addAttribute("selectedClient", client);
-                    model.addAttribute("selectedSupplier", null);
-                    return "vr-staff/vr";
+                    return vrController.filterPageClient(model, client, month, currentPage, fullName);
                 }
             }
             else if (client == null && supplier != null)
             {
                 if (month != null)
                 {
-                    return filterSupplierSortPage(model, supplier, month, currentPage, fullName);
+                    return vrController.filterSupplierSortPage(model, supplier, month, currentPage, fullName);
                 }
                 else
                 {
-
-                    Page<Invoice> page = invoiceService.filterPageBySupplier(supplier, currentPage);
-                    List<Client> clients = clientService.getAllClient();
-                    List<String> suppliers = supplierService.getAllSupplierName();
-                    List<Invoice> invoices = page.getContent();
-
-                    int totalPages = page.getTotalPages();
-                    long totalItems = page.getTotalElements();
-
-                    model.addAttribute("fullName", fullName);
-
-                    model.addAttribute("currentPage", currentPage);
-                    model.addAttribute("totalPages", totalPages);
-                    model.addAttribute("totalItems", totalItems);
-                    model.addAttribute("invoices", invoices);
-
-                    model.addAttribute("clients", clients);
-                    model.addAttribute("suppliers", suppliers);
-
-                    model.addAttribute("selectedMonth", month);
-                    model.addAttribute("selectedClient", null);
-                    model.addAttribute("selectedSupplier", supplier);
-                    return "vr-staff/vr";
+                    return vrController.filterPageSupplier(model, supplier, currentPage, fullName);
                 }
             }
             else
             {
-
-                Page<Invoice> page = invoiceService.findPage(currentPage);
-                List<Client> clients = clientService.getAllClient();
-                List<String> suppliers = supplierService.getAllSupplierName();
-                List<Invoice> invoices = page.getContent();
-
-                int totalPages = page.getTotalPages();
-                long totalItems = page.getTotalElements();
-
-
-
-                model.addAttribute("currentPage", currentPage);
-                model.addAttribute("totalPages", totalPages);
-                model.addAttribute("totalItems", totalItems);
-                model.addAttribute("invoices", invoices);
-
-                model.addAttribute("clients", clients);
-                model.addAttribute("suppliers", suppliers);
-
-                model.addAttribute("selectedMonth", null);
-                model.addAttribute("selectedClient", null);
-                model.addAttribute("selectedSupplier", null);
-
-                return "vr-staff/vr";
+                return vrController.getDefaultPage(model, currentPage, fullName);
             }
         }
         return destination;
     }
-    public String filterSupplierSortPage(Model model, String supplier, String month, int currentPage, String name)
-    {
-        Page<Invoice> page = invoiceService.filterPageBySupplierSortByMonth(supplier, month, currentPage);
-        List<Client> clients = clientService.getAllClient();
-        List<String> suppliers = supplierService.getAllSupplierName();
-        List<Invoice> invoices = page.getContent();
 
-        int totalPages = page.getTotalPages();
-        long totalItems = page.getTotalElements();
 
-        model.addAttribute("fullName",name);
 
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("totalItems", totalItems);
-        model.addAttribute("invoices", invoices);
-
-        model.addAttribute("clients", clients);
-        model.addAttribute("suppliers", suppliers);
-
-        model.addAttribute("selectedMonth", month);
-        model.addAttribute("selectedClient", null);
-        model.addAttribute("selectedSupplier", supplier);
-        return "vr-staff/vr";
-    }
-    public String filterClientSortPage(Model model, String client, String month, int currentPage, String name)
-    {
-        Page<Invoice> page = invoiceService.filterPageByClientSortByMonth(client, month, currentPage);
-        List<Client> clients = clientService.getAllClient();
-        List<String> suppliers = supplierService.getAllSupplierName();
-        List<Invoice> invoices = page.getContent();
-
-        int totalPages = page.getTotalPages();
-        long totalItems = page.getTotalElements();
-
-        model.addAttribute("fullName",name);
-
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("totalItems", totalItems);
-        model.addAttribute("invoices", invoices);
-
-        model.addAttribute("clients", clients);
-        model.addAttribute("suppliers", suppliers);
-
-        model.addAttribute("selectedMonth", month);
-        model.addAttribute("selectedClient", client);
-        model.addAttribute("selectedSupplier", null);
-        return "vr-staff/vr";
-    }
-    public String filterSortPage(Model model, String client, String supplier, String month, int currentPage, String name)
-    {
-        Page<Invoice> page = invoiceService.filterPageByClientAndSupplierSortByMonth(client, supplier, month, currentPage);
-        List<Client> clients = clientService.getAllClient();
-        List<String> suppliers = supplierService.getAllSupplierName();
-        List<Invoice> invoices = page.getContent();
-
-        int totalPages = page.getTotalPages();
-        long totalItems = page.getTotalElements();
-
-        model.addAttribute("fullName",name);
-
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("totalItems", totalItems);
-        model.addAttribute("invoices", invoices);
-
-        model.addAttribute("clients", clients);
-        model.addAttribute("suppliers", suppliers);
-
-        model.addAttribute("selectedMonth", month);
-        model.addAttribute("selectedClient", client);
-        model.addAttribute("selectedSupplier", supplier);
-        return "vr-staff/vr";
-    }
     //MARKETING CONTROLLER
     @GetMapping("marketing-invoice")
     public String users(Model model){
