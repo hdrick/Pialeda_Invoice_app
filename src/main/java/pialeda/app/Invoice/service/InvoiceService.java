@@ -152,10 +152,29 @@ public class InvoiceService {
         Pageable pageable = PageRequest.of(pageNumber -1, 7);
         return invoiceRepository.findAll(pageable);
     }
+    public Page<Invoice> searchPageByKeyword(String keyword, int pageNumber)
+    {
+        Pageable pageable = PageRequest.of(pageNumber -1, 7);
+        return invoiceRepository.findByKeyword(keyword, pageable);
+    }
     public Page<Invoice> filterPageByClient(String name, int pageNumber)
     {
         Pageable pageable = PageRequest.of(pageNumber -1, 7);
         return invoiceRepository.findByClientNameContainingIgnoreCase(name, pageable);
+    }
+    public Page<Invoice> filterPageByClientSortByMonth(String name, String month, int pageNumber)
+    {
+        Sort sort = Sort.by("dateCreated");
+        sort = sort.ascending();
+        Pageable pageable = PageRequest.of(pageNumber -1, 7, sort);
+        return invoiceRepository.findByClientNameAndDateCreatedContainingIgnoreCase(name, month, pageable);
+    }
+    public Page<Invoice> filterPageBySupplierSortByMonth(String name, String month, int pageNumber)
+    {
+        Sort sort = Sort.by("dateCreated");
+        sort = sort.ascending();
+        Pageable pageable = PageRequest.of(pageNumber -1, 7, sort);
+        return invoiceRepository.findBySupplierNameAndDateCreatedContainingIgnoreCase(name, month, pageable);
     }
     public Page<Invoice> filterPageBySupplier(String name, int pageNumber)
     {
@@ -166,6 +185,22 @@ public class InvoiceService {
     {
         Pageable pageable = PageRequest.of(pageNumber -1, 7);
         return invoiceRepository.findByClientNameAndSupplierNameContainingIgnoreCase(client, supplier, pageable);
+    }
+
+    public Page<Invoice> filterPageByClientAndSupplierSortByMonth(String client, String supplier, String month, int pageNumber)
+    {
+        Sort sort = Sort.by("dateCreated");
+        sort = sort.ascending();
+        Pageable pageable = PageRequest.of(pageNumber -1, 7, sort);
+        return invoiceRepository.findByClientNameAndSupplierNameAndDateCreatedContainingIgnoreCase(client, supplier, month, pageable);
+    }
+    public Page<Invoice> sortByMonthAsc(String month, int pageNumber)
+    {
+
+        Sort sort = Sort.by("dateCreated");
+        sort = sort.ascending();
+        Pageable pageable = PageRequest.of(pageNumber -1, 7, sort);
+        return invoiceRepository.findByDateCreatedContainingIgnoreCase(month, pageable);
     }
 
 

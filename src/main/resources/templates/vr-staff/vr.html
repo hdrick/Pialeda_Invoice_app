@@ -143,32 +143,38 @@
       <div class="content-body">
         <div class="row">
           <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 left-panel">
-            <select class="form-select"  id="filterByClient" aria-label="Default select example">
-              <option value="0" selected>Filter by Client</option>
-<!--              <option th:each="client : ${clients}" th:value="${client.name}" th:text="${client.name}"-->
-<!--                      th:href="@{'/vr/user/invoices/' + ${currentPage} + '/filter-by-Client/'}"></option>-->
+            <select class="form-select" id="filterByClient">
+              <option value="default" selected>Filter by Client</option>
+              <!--              <option th:each="client : ${clients}" th:value="${client.name}" th:text="${client.name}"-->
+              <!--                      th:href="@{'/vr/user/invoices/' + ${currentPage} + '/filter-by-Client/'}"></option>-->
+              <!--                <option th:each="client : ${clients}" th:value="${client.name}" th:text="${client.name}"-->
+              <!--                        th:href="@{/vr/user/invoices(client=${client.name},page=${1})}" th:selected="${selectedClient == client.name}">-->
+              <!--                </option>-->
               <option th:each="client : ${clients}" th:value="${client.name}" th:text="${client.name}"
-                      th:href="@{/vr/user/invoices(client=${client.name},page=${1})}"></option>
+                      th:selected="${selectedClient == client.name}">
+              </option>
+
             </select>
-            <select class="form-select" onchange="getSupplier(this)" aria-label="Default select example">
-              <option value="0" selected>Filter by Supplier</option>
+            <select class="form-select" id="filterBySupplier">
+              <option value="default" selected>Filter by Supplier</option>
               <option th:each="supplier : ${suppliers}" th:value="${supplier}" th:text="${supplier}"
-                      th:href="@{/vr/user/invoices(supplier=${supplier},page=${1})}"></option>
+                      th:selected="${selectedSupplier == supplier}">
+              </option>
             </select>
-            <select class="form-select" id="sortByMonth" aria-label="Default select example">
-              <option value="0"selected>Sort by Month</option>
-              <option value="1">January</option>
-              <option value="2">February</option>
-              <option value="3">March</option>
-              <option value="4">April</option>
-              <option value="5">May</option>
-              <option value="6">June</option>
-              <option value="7">July</option>
-              <option value="8">August</option>
-              <option value="9">September</option>
-              <option value="10">October</option>
-              <option value="11">November</option>
-              <option value="12">December</option>
+            <select class="form-select" id="sortByMonth">
+              <option value="default"selected>Sort by Month</option>
+              <option value="January" th:selected="${selectedMonth == 'January'}">January</option>
+              <option value="February" th:selected="${selectedMonth == 'February'}">February</option>
+              <option value="March" th:selected="${selectedMonth == 'March'}">March</option>
+              <option value="April" th:selected="${selectedMonth == 'April'}">April</option>
+              <option value="May" th:selected="${selectedMonth == 'May'}">May</option>
+              <option value="June" th:selected="${selectedMonth == 'June'}">June</option>
+              <option value="July" th:selected="${selectedMonth == 'July'}">July</option>
+              <option value="August" th:selected="${selectedMonth == 'August'}">August</option>
+              <option value="September" th:selected="${selectedMonth == 'September'}">September</option>
+              <option value="October" th:selected="${selectedMonth == 'October'}">October</option>
+              <option value="November" th:selected="${selectedMonth == 'November'}">November</option>
+              <option value="December" th:selected="${selectedMonth == 'December'}">December</option>
 
             </select>
           </div>
@@ -210,102 +216,232 @@
 
             </tbody>
           </table>
-          <div class="col-xxl-12 col-xl-12 col-md-12">
-            <div class="col-xxl-12 col-xl-12 col-md-12">
-
+          <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <div id="pagination">
-                Total Items: [[${totalItems}]] : Page [[${currentPage}]] of [[${totalPages}]]
-                &nbsp; &nbsp; - &nbsp;
-                <ul class="pagination">
-                  <li class="page-item" th:if="${currentPage > 1}">
+                <div th:if="${totalPages > 0 || totalItems > 0}" style="font-size: 13px; position: absolute; left: 1px; bottom: 1px;">
+                  <strong> Total Items: [[${totalItems}]] <br> <em>  Page [[${currentPage}]] of [[${totalPages}]] </em> </strong>
+                </div>
+                <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                     th:unless="${totalPages > 0 || totalItems > 0}" style="display: flex; justify-content: center; font-size: 13px">
+                  <strong>Total Items:  [[${totalItems}]] </strong>
+                </div>
+                <div th:if="${selectedClient != null}">
+                  <ul class="pagination" th:if="${totalPages > 0 || totalItems > 0}">
+                    <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{'/vr/user/invoices?client='+${selectedClient}+'&page=1'}">First</a>
+                    </li>
+                    <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{'/vr/user/invoices?client=' + ${selectedClient} + '&page=' + ${currentPage - 1}}">Prev</a>
+                    </li>
+                    <li th:each="i: ${#numbers.sequence(1, totalPages)}" th:class="${i == currentPage} ? 'page-item active' : 'page-item'" th:if="${i <= 5}">
+                      <a th:href="@{'/vr/user/invoices?client=' + ${selectedClient} + '&page=' + ${i}}" th:text="${i}"></a>
+                    </li>
+                    <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{'/vr/user/invoices?client=' + ${selectedClient} + '&page=' + ${currentPage + 1}}">Next</a>
+                    </li>
+                    <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{'/vr/user/invoices?client=' + ${selectedClient} + '&page=' + ${totalPages}}">Last</a>
+                    </li>
+                  </ul></div>
+                <div th:unless="${selectedClient != null}">
+                <ul class="pagination" th:if="${totalPages > 0 || totalItems > 0}">
+                  <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
                     <a class="page-link" th:href="@{/vr/user/invoices?page=1}">First</a>
                   </li>
-                  <li class="page-item disabled" th:unless="${currentPage > 1}">
-                    <a class="page-link">First</a>
-                  </li>
-                  <li class="page-item" th:if="${currentPage > 1}">
+                  <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
                     <a class="page-link" th:href="@{'/vr/user/invoices?page=' + ${currentPage - 1}}">Prev</a>
-                  </li>
-                  <li class="page-item disabled" th:unless="${currentPage > 1}">
-                    <a class="page-link">Prev</a>
                   </li>
                   <li th:each="i: ${#numbers.sequence(1, totalPages)}" th:class="${i == currentPage} ? 'page-item active' : 'page-item'" th:if="${i <= 5}">
                     <a th:href="@{'/vr/user/invoices?page=' + ${i}}" th:text="${i}"></a>
                   </li>
-                  <li class="page-item" th:if="${currentPage < totalPages}">
+                  <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
                     <a class="page-link" th:href="@{'/vr/user/invoices?page=' + ${currentPage + 1}}">Next</a>
                   </li>
-                  <li class="page-item disabled" th:unless="${currentPage < totalPages}">
-                    <a class="page-link">Next</a>
-                  </li>
-                  <li class="page-item" th:if="${currentPage < totalPages}">
+                  <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
                     <a class="page-link" th:href="@{'/vr/user/invoices?page=' + ${totalPages}}">Last</a>
                   </li>
-                  <li class="page-item disabled" th:unless="${currentPage < totalPages}">
-                    <a class="page-link">Last</a>
-                  </li>
-                </ul>
+                </ul></div>
               </div>
+            </div>
           </div>
+          <!--        <button id="download-btn">Download Excel</button>-->
+
+
         </div>
-        <!--        <button id="download-btn">Download Excel</button>-->
-
-
       </div>
     </div>
   </div>
-</div>
-<!-- Logout Modal -->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="logoutModalLabel">Logout</h5>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
-        </button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to logout?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-        <a class="btn" style="background-color: #003D2B; color: white;" th:href="@{/logout}">Logout</a>
+  <!-- Logout Modal -->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="logoutModalLabel">Logout</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to logout?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+          <a class="btn" style="background-color: #003D2B; color: white;" th:href="@{/logout}">Logout</a>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<!-- Bootstrap JavaScript -->
-<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
-<script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
-<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-<script th:src="@{/custom-js/vr-staff/utils.js}"></script>
-<script th:src="@{/custom-js/vr-staff/table.js}"></script>
-<script th:src="@{/custom-js/vr-staff/search.js}"></script>
-<script th:src="@{/custom-js/vr-staff/excel.js}"></script>
-<script>
+  <!-- Bootstrap JavaScript -->
+  <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+  <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script th:src="@{/custom-js/vr-staff/table.js}"></script>
+  <script th:src="@{/custom-js/vr-staff/search.js}"></script>
+  <script th:src="@{/custom-js/vr-staff/excel.js}"></script>
+  <script>
   $(document).ready(function() {
-  $('#filterByMonth').change(function() {
-    var selectedValue = $(this).val();
-    console.log(selectedValue);
-});
-$('#filterByClient').on('change', function() {
+  var baseURL = "/vr/user/invoices";
+
+    $('#filterByClient').on('change', function() {
     event.preventDefault();
-    var clientName = $(this).find('option:selected').attr('value');
-    var href = $(this).find('option:selected').attr('href');
+
+    var clientName = $(this).find('option:selected').attr('value')
+    var supplierName = $('#filterBySupplier').find('option:selected').attr('value');
+
+    var filterClient = encodeURIComponent(clientName).replace(/%20/g, "%20");
+    var filterSupplier = encodeURIComponent(supplierName).replace(/%20/g, "%20");
 
 
+      if(supplierName == 'default')
+      {
+          if(clientName == 'default')
+          {
+             window.location.href = baseURL;
+          }
+          else
+          {
+            var cleanURL = baseURL + "?client=" + filterClient + "&page=1";
+            window.location.href = cleanURL;
+          }
+      }
+      else
+      {
+          if(clientName == 'default')
+          {
+             var cleanURL = baseURL  + "?supplier=" + filterSupplier + "&page=1";
+             window.location.href = cleanURL;
+          }
+          else
+          {
+              var cleanURL = baseURL + "?client=" + filterClient + "&supplier=" + filterSupplier + "&page=1";
+              window.location.href = cleanURL;
+          }
+      }
+    });
 
-    var encodedPath = encodeURIComponent(clientName).replace(/%20/g, '%20');
-    console.log(href);
-    window.location.href = href;
+    $('#filterBySupplier').on('change', function() {
+    event.preventDefault();
 
+    var supplierName = $(this).find('option:selected').attr('value')
+    var clientName = $('#filterByClient').find('option:selected').attr('value');
 
+    var filterClient = encodeURIComponent(clientName).replace(/%20/g, "%20");
+    var filterSupplier = encodeURIComponent(supplierName).replace(/%20/g, "%20");
+
+      if(clientName == 'default')
+      {
+          if(supplierName == 'default')
+          {
+             window.location.href = baseURL;
+          }
+          else
+          {
+            var cleanURL = baseURL + "?supplier=" + filterSupplier + "&page=1";
+            window.location.href = cleanURL;
+          }
+      }
+      else
+      {
+          if(supplierName == 'default')
+          {
+             var cleanURL = baseURL  + "?client=" + filterClient + "&page=1";
+             window.location.href = cleanURL;
+          }
+          else
+          {
+              var cleanURL = baseURL + "?client=" + filterClient + "&supplier=" + filterSupplier + "&page=1";
+              window.location.href = cleanURL;
+          }
+      }
+    });
+
+    $('#sortByMonth').on('change', function() {
+    event.preventDefault();
+        var selectedMonth = $(this).find('option:selected').attr('value')
+
+        var supplierName = $('#filterBySupplier').find('option:selected').attr('value')
+        var clientName = $('#filterByClient').find('option:selected').attr('value');
+
+        var filterClient = encodeURIComponent(clientName).replace(/%20/g, "%20");
+        var filterSupplier = encodeURIComponent(supplierName).replace(/%20/g, "%20");
+
+        if(clientName != 'default' && supplierName != 'default')
+        {
+            if(selectedMonth != 'default')
+            {
+              var cleanURL = baseURL + "?client=" + filterClient + "&supplier=" + filterSupplier +"&sortBy=" + selectedMonth + "&page=1";
+              window.location.href = cleanURL;
+            }
+            else
+            {
+              var cleanURL = baseURL + "?client=" + filterClient + "&supplier=" + filterSupplier + "&page=1";
+              window.location.href = cleanURL;
+            }
+        }
+        else if(clientName != 'default')
+        {
+            if(selectedMonth != 'default')
+            {
+              var cleanURL = baseURL + "?client=" + filterClient + "&sortBy=" + selectedMonth + "&page=1";
+              window.location.href = cleanURL;
+            }
+            else
+            {
+              var cleanURL = baseURL + "?client=" + filterClient + "&page=1";
+              window.location.href = cleanURL;
+            }
+        }
+        else if(supplierName != 'default')
+        {
+            if(selectedMonth != 'default')
+            {
+              var cleanURL = baseURL + "?supplier=" + filterSupplier + "&sortBy=" + selectedMonth + "&page=1";
+              window.location.href = cleanURL;
+            }
+            else
+            {
+              var cleanURL = baseURL + "?supplier=" + filterSupplier + "&page=1";
+              window.location.href = cleanURL;
+            }
+        }
+        else
+        {
+            if(selectedMonth == 'default')
+            {
+              window.location.href =  baseURL;
+            }
+            else
+            {
+              window.location.href =  baseURL + "?sortBy=" + selectedMonth + "&page=1";
+            }
+        }
+
+    });
 });
 
 
-  });
 </script>
 </body>
 </html>
