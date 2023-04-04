@@ -30,7 +30,7 @@ public class AdminController {
         String fullName = userLname+", "+userFname;
         String destination=null;
         if(role == null){
-            return destination = "redirect:login";
+            return destination = "redirect:/login";
         } else if (role.equals("vr-staff")) {
             return destination = "redirect:/vr/user/invoices";
         } else if (role.equals(("marketing"))) {

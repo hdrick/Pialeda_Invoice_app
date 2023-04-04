@@ -44,7 +44,7 @@ public class LoginController {
         String destination=null;
         if (role == null){
             model.addAttribute("login", new Login());
-            return "/login";
+            return "admin/login";
         }else if(role.equals("marketing")){
             return destination = "redirect:/marketing-invoice";
         } else if (role.equals("vr-staff")) {
@@ -87,7 +87,7 @@ public class LoginController {
         }else{
             boolean hideSpan = true;
             model.addAttribute("hideSpan", hideSpan);
-            return "login";
+            return "admin/login";
         }
     }
 
