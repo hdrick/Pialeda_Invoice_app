@@ -16,6 +16,9 @@ public class InvoiceInfo {
     private String clientTerms;
 
     private double grandTotal;
+    private double addVat;
+    private double amountNetOfVat;
+    private double totalSalesVatInc;
     private String cashier;
 
     public String getInvoiceNum() {
@@ -130,4 +133,27 @@ public class InvoiceInfo {
         this.cashier = cashier;
     }
 
+    public double getAddVat() {
+        return addVat;
+    }
+
+    public void setAddVat(double addVat) {
+        this.addVat = addVat;
+    }
+
+    public double getAmountNetOfVat() {
+        return amountNetOfVat;
+    }
+
+    public void setAmountNetOfVat(double amountNetOfVat) {
+        this.amountNetOfVat = amountNetOfVat;
+    }
+
+    public double getTotalSalesVatInc() {
+        return totalSalesVatInc;
+    }
+
+    public void setTotalSalesVatInc(double totalSalesVatInc) {
+        this.totalSalesVatInc = totalSalesVatInc;
+    }
 }

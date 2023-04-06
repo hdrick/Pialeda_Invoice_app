@@ -35,6 +35,9 @@ public class Invoice {
     private String clientTerms;
 
     private double grandTotal;
+    private double addVat;
+    private double amountNetOfVat;
+    private double totalSalesVatInc;
     private String cashier;
 
     public Invoice(){}
@@ -55,6 +58,26 @@ public class Invoice {
         this.cashier = cashier;
     }
 
+    public Invoice(String invoiceNum, String poNum, String dateCreated, String clientContactPerson, String supplierName, String supplierAddress, String supplierTin, String clientName, String clientTin, String clientAddress, String clientBusStyle, String clientTerms, double grandTotal, double addVat, double amountNetOfVat, double totalSalesVatInc, String cashier) {
+        this.invoiceNum = invoiceNum;
+        this.poNum = poNum;
+        this.dateCreated = dateCreated;
+        this.clientContactPerson = clientContactPerson;
+        this.supplierName = supplierName;
+        this.supplierAddress = supplierAddress;
+        this.supplierTin = supplierTin;
+        this.clientName = clientName;
+        this.clientTin = clientTin;
+        this.clientAddress = clientAddress;
+        this.clientBusStyle = clientBusStyle;
+        this.clientTerms = clientTerms;
+        this.grandTotal = grandTotal;
+        this.addVat = addVat;
+        this.amountNetOfVat = amountNetOfVat;
+        this.totalSalesVatInc = totalSalesVatInc;
+        this.cashier = cashier;
+    }
+
     public Invoice(String invoiceNum) {
     }
 
@@ -65,6 +88,30 @@ public class Invoice {
         this.supplierName = supplierName;
         this.clientName = clientName;
         this.clientContactPerson = clientContactPerson;
+    }
+
+    public double getAddVat() {
+        return addVat;
+    }
+
+    public void setAddVat(double addVat) {
+        this.addVat = addVat;
+    }
+
+    public double getAmountNetOfVat() {
+        return amountNetOfVat;
+    }
+
+    public void setAmountNetOfVat(double amountNetOfVat) {
+        this.amountNetOfVat = amountNetOfVat;
+    }
+
+    public double getTotalSalesVatInc() {
+        return totalSalesVatInc;
+    }
+
+    public void setTotalSalesVatInc(double totalSalesVatInc) {
+        this.totalSalesVatInc = totalSalesVatInc;
     }
 
     public int getId() {

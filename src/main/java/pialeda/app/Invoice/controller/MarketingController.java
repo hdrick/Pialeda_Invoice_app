@@ -1,5 +1,7 @@
 package pialeda.app.Invoice.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -13,9 +15,11 @@ import pialeda.app.Invoice.service.OfficialRecptService;
 import pialeda.app.Invoice.service.SupplierService;
 import pialeda.app.Invoice.service.InvoiceService;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,17 +80,36 @@ public class MarketingController {
 
 
     @PostMapping("/createInvoice")
-    public String createInvoice(@ModelAttribute("wrapper") InvoiceWrapper wrapper, RedirectAttributes redirectAttributes){
-        InvoiceInfo invoiceInfo = wrapper.getInvoiceInfo();
+    public String createInvoice(@ModelAttribute("invoiceInfo") InvoiceInfo invoiceInfo,
+                                 RedirectAttributes redirectAttributes){
+
 
         double sumOfGrandTotal = invoiceService.getSuppTotalLimit(invoiceInfo.getSupplierName());
         double supplierLimit = supplierService.findLimitByName(invoiceInfo.getSupplierName());
         double remainingLimit = supplierLimit - sumOfGrandTotal;
 
         if(invoiceInfo.getGrandTotal() <= remainingLimit){
-            invoiceService.createInvoice(wrapper);
+//            invoiceService.createInvoice(invoiceInfo);
+            System.out.println("Invoice Number: "+invoiceInfo.getInvoiceNum());
+            System.out.println("PoNum: "+invoiceInfo.getPoNum());
+            System.out.println("ateCreated: "+invoiceInfo.getDateCreated());
+            System.out.println("ClientContactPerson: "+invoiceInfo.getClientContactPerson());
+            System.out.println("SupplierName: "+invoiceInfo.getSupplierName());
+            System.out.println("SupplierAddress: "+invoiceInfo.getSupplierAddress());
+            System.out.println("SupplierTin: "+invoiceInfo.getSupplierTin());
+            System.out.println("ClientName: "+invoiceInfo.getClientName());
+            System.out.println("ClientTin: "+invoiceInfo.getClientTin());
+            System.out.println("ClientAddress: "+invoiceInfo.getClientAddress());
+            System.out.println("ClientBusStyle: "+invoiceInfo.getClientBusStyle());
+            System.out.println("ClientTerms: "+invoiceInfo.getClientTerms());
+            System.out.println("GrandTotal: "+invoiceInfo.getGrandTotal());
+            System.out.println("AddVat: "+invoiceInfo.getAddVat());
+            System.out.println("AmountNetOfVat: "+invoiceInfo.getAmountNetOfVat());
+            System.out.println("TotalSalesVatInc: "+invoiceInfo.getTotalSalesVatInc());
+            System.out.println("Cashier: "+invoiceInfo.getCashier());
             boolean hideDivSuccess = true;
             redirectAttributes.addFlashAttribute("hideDivSuccess", hideDivSuccess);
+
             return "redirect:/marketing-invoice";
         }else{
             boolean hideDivError = true;
@@ -94,6 +117,36 @@ public class MarketingController {
             return "redirect:/marketing-invoice";
         }
     }
+
+//    @PostMapping("/createInvoice")
+//    public String createInvoice(@ModelAttribute("invoiceInfo") InvoiceInfo invoiceInfo,
+//                                @RequestParam("data") String data, RedirectAttributes redirectAttributes){
+//        System.out.println("Invoice Number: "+invoiceInfo.getInvoiceNum());
+//        System.out.println("PoNum: "+invoiceInfo.getPoNum());
+//        System.out.println("ateCreated: "+invoiceInfo.getDateCreated());
+//        System.out.println("ClientContactPerson: "+invoiceInfo.getClientContactPerson());
+//        System.out.println("SupplierName: "+invoiceInfo.getSupplierName());
+//        System.out.println("SupplierAddress: "+invoiceInfo.getSupplierAddress());
+//        System.out.println("SupplierTin: "+invoiceInfo.getSupplierTin());
+//        System.out.println("ClientName: "+invoiceInfo.getClientName());
+//        System.out.println("ClientTin: "+invoiceInfo.getClientTin());
+//        System.out.println("ClientAddress: "+invoiceInfo.getClientAddress());
+//        System.out.println("ClientBusStyle: "+invoiceInfo.getClientBusStyle());
+//        System.out.println("ClientTerms: "+invoiceInfo.getClientTerms());
+//        System.out.println("GrandTotal: "+invoiceInfo.getGrandTotal());
+//        System.out.println("AddVat: "+invoiceInfo.getAddVat());
+//        System.out.println("AmountNetOfVat: "+invoiceInfo.getAmountNetOfVat());
+//        System.out.println("TotalSalesVatInc: "+invoiceInfo.getTotalSalesVatInc());
+//        System.out.println("Cashier: "+invoiceInfo.getCashier());
+//        List<Map<String, String>> tableData = new ArrayList<>();
+//        try {
+//            tableData = new ObjectMapper().readValue(data, new TypeReference<>() {});
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println("Table data: " + tableData);
+//        return "redirect:/newinvoice";
+//    }
 
     @PostMapping("/createClient")
     public String createClient(@ModelAttribute("clientInfo") ClientInfo clientInfo, Model model) {
@@ -111,6 +164,7 @@ public class MarketingController {
     public String createOfficialReceipt(@RequestParam("orNumber") int orNumber,
                                         @ModelAttribute("officialReceiptInfo") OfficialReceiptInfo officialReceiptInfo,
                                         Model model) {
+
         System.out.println(officialReceiptInfo.getRecvFrom());
         officialRecptService.createOR(orNumber,officialReceiptInfo);
         return "redirect:/marketing-invoice";

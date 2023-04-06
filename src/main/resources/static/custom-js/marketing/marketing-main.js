@@ -88,11 +88,6 @@ function getSupplierInfo(){
         }
     });
 }
-
-
-
-
-
 function generatePONumber() {
     const poNum = document.getElementById('client-poNumber');
     const poNumInput = document.getElementById('client-poNumber-input');
@@ -109,48 +104,111 @@ function generatePONumber() {
     poNum.textContent = poNumber;
     poNumInput.value = poNumber;
 }
-//////////////////////////////
-const quantity = document.querySelectorAll('.compute_qty');
-const unitPrice = document.querySelectorAll('.compute_unit_price');
-const amount = document.querySelectorAll('.compute_amount');
 
-const totalAmountDue = document.getElementById('grandTotal');
-const totalAmountDueInput = document.getElementById('grandTotal-input');
+//////////////////// table
+const tableBody = document.getElementById('table-body');
+const addRowBtn = document.getElementById('add-row-btn');
+const deleteRowBtn = document.getElementById('delete-row-btn');
+let rowCounter = 0;
 
-// Loop through each row of the table
-for (let i = 0; i < quantity.length; i++) {
-    // Add an event listener to the quantity and unit price input fields for each row
-    quantity[i].addEventListener('input', updateAmount);
-    unitPrice[i].addEventListener('input', updateAmount);
+// Define a function to update the amount based on the quantity and unit price values
+// Add row
+addRowBtn.addEventListener('click', () => {
+  if (rowCounter < 30) {
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+      <td>
+        <input id="qty" type="number" class="compute_qty" onfocus="if (this.value == '0') { this.value = ''; }" onblur="if (this.value == '') { this.value = '0'; }" required>
+      </td>
+      <td>
+        <input id="unit" type="text" required>
+      </td>
+      <td>
+        <input id="article" type="text" required>
+      </td>
+      <td>
+        <input id="unitPrice" type="number" class="compute_unit_price" onfocus="if (this.value == '0.0') { this.value = ''; }" required>
+      </td>
+      <td>
+        <input id="amount" type="text" class="compute_amount" readonly>
+      </td>
+    `;
+    tableBody.appendChild(newRow);
+    const inputs = newRow.querySelectorAll('.compute_qty, .compute_unit_price');
+    inputs.forEach(input => {
+      input.addEventListener('input', () => {
+        updateAmount(newRow);
+      });
+    }); // <-- added closing curly brace here
+    rowCounter++;
+    computeInvoiceTotals(); // Call updateTotalAmount function here
+  } else {
+    alert('Maximum row limit reached!');
+  }
+});
+
+
+function updateAmount(row) {
+  const qty = row.querySelector('.compute_qty').value;
+  const unitPrice = row.querySelector('.compute_unit_price').value;
+  const amountInput = row.querySelector('.compute_amount');
+
+  if (qty && unitPrice && qty > 0 && unitPrice > 0) {
+    const amount = qty * unitPrice;
+    amountInput.value = amount.toFixed(2);
+  } else {
+    amountInput.value = '';
+  }
+  computeInvoiceTotals();
 }
 
-// Function to update the amount and total amount due
-function updateAmount() {
-    let rowAmount = 0;
+function computeInvoiceTotals() {
+  const amountInputs = document.querySelectorAll('.compute_amount');
+  let totalSalesVatInc = 0;
+  let totalAmountNetOfVat = 0;
+  let addVat = 0;
+  let grandTotal = 0;
 
-
-    // Loop through each row of the table
-    for (let i = 0; i < quantity.length; i++) {
-    const amountInput = document.querySelectorAll('.compute_amount_input');
-
-        // Get the quantity and unit price values for the current row
-        const qty = parseFloat(quantity[i].value) || 0;
-        const price = parseFloat(unitPrice[i].value) || 0;
-
-        // Calculate the amount for the current row
-        const amt = qty * price;
-
-        // Update the amount for the current row
-        amount[i].value = amt.toFixed(2);
-
-
-        // Add the amount for the current row to the total amount due
-        rowAmount += amt;
+  amountInputs.forEach(input => {
+    if (input.value !== '') {
+      totalSalesVatInc += parseFloat(input.value);
     }
-    // Update the total amount due
-    totalAmountDue.textContent = "₱ " + rowAmount.toLocaleString();
-    totalAmountDueInput.value = rowAmount.toFixed(2);
+  });
+
+  totalAmountNetOfVat = totalSalesVatInc / 1.12;
+  addVat = totalSalesVatInc - totalAmountNetOfVat;
+  grandTotal = totalSalesVatInc;
+
+  const totalSaleVatIncSpan = document.getElementById('totalSale-VatIncl');
+  const amountNOVSpan = document.getElementById('amount-NOV');
+  const addVATSpan = document.getElementById('add-VAT');
+  const totalAmountDueSpan = document.getElementById('totalAmount-due');
+  const totalSalesVatIncInput = document.getElementById('totalSalesVatInc-input');
+  const amountNetOfVatInput = document.getElementById('amountNetOfVat-input');
+  const addVatInput = document.getElementById('addVat-input');
+  const grandTotalInput = document.getElementById('grandTotal-input');
+
+  totalSaleVatIncSpan.textContent = '₱ ' + totalSalesVatInc.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  amountNOVSpan.textContent = '₱ ' + totalAmountNetOfVat.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  addVATSpan.textContent = '₱ ' + addVat.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  totalAmountDueSpan.textContent = '₱ ' + grandTotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+  totalSalesVatIncInput.value = totalSalesVatInc.toFixed(2);
+  amountNetOfVatInput.value = totalAmountNetOfVat.toFixed(2);
+  addVatInput.value = addVat.toFixed(2);
+  grandTotalInput.value = grandTotal.toFixed(2);
 }
+// Delete last row
+deleteRowBtn.addEventListener('click', () => {
+  const rows = tableBody.getElementsByTagName('tr');
+  if (rows.length > 0) {
+    rows[rows.length - 1].remove();
+    rowCounter--;
+  }else {
+       alert('At least one row is required!');
+     }
+  computeInvoiceTotals();
+});
 
 const clientBusStyleSpan = document.getElementById('client-busStyle');
 const clientBusStyleInput = document.getElementById('client-busStyle-input');
@@ -176,7 +234,70 @@ cashierNameInput.value = cashierName.textContent;
 
 
 
+function getAllData() {
+  const rows = document.querySelectorAll('table tbody tr');
+  const data = [];
+
+  rows.forEach(row => {
+    const qty = row.querySelector('#qty')?.value;
+    const unit = row.querySelector('#unit')?.value;
+    const article = row.querySelector('#article')?.value;
+    const unitPrice = row.querySelector('#unitPrice')?.value;
+    const amount = row.querySelector('#amount')?.value;
+
+    if (qty || unit || article || unitPrice || amount) {
+      data.push({ qty, unit, article, unitPrice, amount });
+    }
+  });
+  return data; // add return statement
+}
+
+//function submitForm(event) {
+//  event.preventDefault(); // prevent form submission
+//  const data = getAllData(); // get data from table
+//  const form = document.getElementById('myForm');
+//  const formData = new FormData(form);
+//  formData.append('data', JSON.stringify(data)); // append data to form data
+//  const xhr = new XMLHttpRequest();
+//  xhr.open('POST', form.action);
+//  xhr.send(formData); // send AJAX request
+//}
+
+//function getAllData() {
+//  const rows = document.querySelectorAll('table tbody tr');
+//  const data = [];
+//
+//  rows.forEach(row => {
+//    const qty = row.querySelector('#qty')?.value;
+//    const unit = row.querySelector('#unit')?.value;
+//    const article = row.querySelector('#article')?.value;
+//    const unitPrice = row.querySelector('#unitPrice')?.value;
+//    const amount = row.querySelector('#amount')?.value;
+//
+//    if (qty || unit || article || unitPrice || amount) {
+//      data.push({ qty, unit, article, unitPrice, amount });
+//    }
+//  });
+//
+//  // Send an AJAX request to the server with the data
+//  const xhr = new XMLHttpRequest();
+//  xhr.open('POST', '/createInvoice');
+//  xhr.setRequestHeader('Content-Type', 'application/json');
+//  xhr.onreadystatechange = function() {
+//    if (xhr.readyState === XMLHttpRequest.DONE) {
+//      if (xhr.status === 200) {
+//        console.log(xhr.responseText);
+//      } else {
+//        console.error('Failed to send data to server');
+//      }
+//    }
+//  };
+//  xhr.send(JSON.stringify(data));
+//}
+
+
 generateInvNum();
+
 
 
 

@@ -1,27 +1,19 @@
 package pialeda.app.Invoice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pialeda.app.Invoice.dto.*;
-import pialeda.app.Invoice.model.Client;
-import pialeda.app.Invoice.model.Invoice;
-import pialeda.app.Invoice.model.Supplier;
 import pialeda.app.Invoice.model.User;
 import pialeda.app.Invoice.service.ClientService;
 import pialeda.app.Invoice.service.InvoiceService;
 import pialeda.app.Invoice.service.SupplierService;
 import pialeda.app.Invoice.service.UserService;
 import pialeda.app.Invoice.dto.GlobalUser;
-
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.List;
-import java.util.Optional;
+
 
 
 @Controller
@@ -200,8 +192,6 @@ public class LoginController {
         String fullName = userLname+", "+userFname;
         String destination=null;
 
-
-        System.out.println("FIRSTTTTTT");
         if(role == null){
             return destination = "redirect:/login";
         }
@@ -212,10 +202,7 @@ public class LoginController {
             model.addAttribute("clientInfo", new ClientInfo());
             model.addAttribute("supplierInfo", new SupplierInfo());
 
-            InvoiceWrapper wrapper = new InvoiceWrapper();
-            wrapper.setInvoiceInfo(new InvoiceInfo());
-            wrapper.setInvoiceProdInfo(new InvoiceProdInfo());
-            model.addAttribute("wrapper", wrapper);
+            model.addAttribute("invoiceInfo", new InvoiceInfo());
             model.addAttribute("fullName",fullName);
             return destination = "marketing/invoice";
         }
@@ -227,36 +214,24 @@ public class LoginController {
         }
         return destination;
     }
-    @GetMapping("unauthorized")
-    public String unauthorizedUser(){
-            return "Unauthorized-Access";
-    }
 
+//    @GetMapping("newinvoice")
+//    public String newinvoice(Model model){
+//        model.addAttribute("clientList", clientService.getAllClient());
+//        model.addAttribute("supplierList", supplierService.getAllSupplier());
+//
+//        model.addAttribute("clientInfo", new ClientInfo());
+//        model.addAttribute("supplierInfo", new SupplierInfo());
+//
+//        model.addAttribute("invoiceInfo", new InvoiceInfo());
+////        model.addAttribute("fullName",fullName);
+//        return "marketing/newinvoice";
+//    }
 
     @GetMapping("logout")
     public String logout(){
         String role = GlobalUser.getUserRole();
-
-
-        System.out.println("USER ROLE BEFORE LOGOUT: "+role);
         String newRole = GlobalUser.setUserRole(null);
-        System.out.println("USER ROLE after LOGOUT: "+newRole);
         return "redirect:/login";
     }
-
-
-
-        private SecureRandom random = new SecureRandom();
-        public String generateToken() {
-            // Generate a random token
-            String token = new BigInteger(200, random).toString(32);
-
-            // Trim the token to 40 characters
-            if (token.length() > 40) {
-                token = token.substring(0, 40);
-            }
-
-            return token;
-        }
-
 }

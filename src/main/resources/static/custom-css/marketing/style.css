@@ -125,9 +125,9 @@
 }
  #footer{
      display: flex;
-     flex-direction: column;
+     flex-direction: row;
      align-items: flex-end;
-     justify-content: flex-end;
+     justify-content: center;
      height: 10%;
 }
  #bx-1{
@@ -165,9 +165,23 @@
     cursor:pointer;
     font-weight: bolder;
 }
+ .main-bx1 #add-row-btn{
+    background-color: #2E7D32;
+    color: white;
+    font-weight: bolder;
+    font-size: 15px;
+    margin-top:20px;
+    cursor: pointer;
+}
 
-btn-OR
-
+ .main-bx1 #delete-row-btn{
+    background-color: #757575;
+    color: white;
+    font-weight: bolder;
+    font-size: 15px;
+    margin-top:20px;
+    cursor: pointer;
+}
 
  .main-bx2{
      display: flex;
@@ -189,20 +203,34 @@ btn-OR
     outline: none;
   }
 
+  /* TABLE */
+.table-responsive {
+  overflow-x: auto;
+  position: relative;
+}
+
+.table-responsive table {
+  margin: 0 auto;
+}
+
+.table-responsive tbody {
+  max-height: 250px;
+  overflow-y: scroll;
+}
+
+.table-responsive thead th {
+  background-color: #003D2B;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding:5px;
+}
 
 #table-body td{
     text-align: center;
     padding-left: 0;
     padding-right: 0;
-}
-
-table {
-  border-collapse: collapse;
-}
-
-th, td {
-  border: 1px solid #000;
-  background-color: #fff;
+    border: solid 1px gray;
 }
 
 #table-body td input{
@@ -215,6 +243,7 @@ th, td {
     border: 0;
 }
 
+  /* END OF TABLE */
 
 #cashier-name{
     font-family: Open Sans;
