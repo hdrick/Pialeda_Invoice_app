@@ -2,15 +2,10 @@ package pialeda.app.Invoice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pialeda.app.Invoice.dto.*;
-import pialeda.app.Invoice.model.Client;
-import pialeda.app.Invoice.model.Invoice;
-import pialeda.app.Invoice.model.Supplier;
 import pialeda.app.Invoice.model.User;
 import pialeda.app.Invoice.service.ClientService;
 import pialeda.app.Invoice.service.InvoiceService;
@@ -20,8 +15,7 @@ import pialeda.app.Invoice.dto.GlobalUser;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.List;
-import java.util.Optional;
+
 
 
 @Controller
@@ -152,7 +146,7 @@ public class LoginController {
                 }
                 else
                 {
-                    return vrController.filterSortClientSupplierPage(model, client, supplier, month, currentPage, fullName);
+                    return vrController.filterSortClientSupplierPage(model, client, supplier, currentPage, fullName);
                 }
             }
             else if(client == null && supplier == null && month != null)
@@ -167,7 +161,7 @@ public class LoginController {
                 }
                 else
                 {
-                    return vrController.filterPageClient(model, client, month, currentPage, fullName);
+                    return vrController.filterPageClient(model, client, currentPage, fullName);
                 }
             }
             else if (client == null && supplier != null)
@@ -210,7 +204,7 @@ public class LoginController {
             model.addAttribute("supplierList", supplierService.getAllSupplier());
 
             model.addAttribute("clientInfo", new ClientInfo());
-            model.addAttribute("supplierInfo", new SupplierInfo());
+            model.addAttribute("supplierInfo", new OfficialReceiptInfo.SupplierInfo());
 
             InvoiceWrapper wrapper = new InvoiceWrapper();
             wrapper.setInvoiceInfo(new InvoiceInfo());

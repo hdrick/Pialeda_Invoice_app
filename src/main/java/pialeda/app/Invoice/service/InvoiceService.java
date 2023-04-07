@@ -149,7 +149,7 @@ public class InvoiceService {
 
     public Page<Invoice> findPage(int pageNumber)
     {
-        Pageable pageable = PageRequest.of(pageNumber -1, 7);
+        Pageable pageable = PageRequest.of(pageNumber -1, 2);
         return invoiceRepository.findAll(pageable);
     }
     public Page<Invoice> searchPageByKeyword(String keyword, int pageNumber)
