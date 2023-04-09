@@ -5,10 +5,10 @@ public class SupplierInfo {
     private String address;
     private String cityAddress;
     private String tin;
-    private int secNum;
-    private int secYear;
+    private String secNum;
+    private String secYear;
     private String atp;
-    private int corNum;
+    private String corNum;
     private String corDate;
 
     private double limit;
@@ -53,19 +53,19 @@ public class SupplierInfo {
         this.tin = tin;
     }
 
-    public int getSecNum() {
+    public String getSecNum() {
         return secNum;
     }
 
-    public void setSecNum(int secNum) {
+    public void setSecNum(String secNum) {
         this.secNum = secNum;
     }
 
-    public int getSecYear() {
+    public String getSecYear() {
         return secYear;
     }
 
-    public void setSecYear(int secYear) {
+    public void setSecYear(String secYear) {
         this.secYear = secYear;
     }
 
@@ -77,11 +77,11 @@ public class SupplierInfo {
         this.atp = atp;
     }
 
-    public int getCorNum() {
+    public String getCorNum() {
         return corNum;
     }
 
-    public void setCorNum(int corNum) {
+    public void setCorNum(String corNum) {
         this.corNum = corNum;
     }
 

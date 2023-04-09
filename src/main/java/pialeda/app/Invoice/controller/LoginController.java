@@ -11,8 +11,8 @@ import pialeda.app.Invoice.service.InvoiceService;
 import pialeda.app.Invoice.service.SupplierService;
 import pialeda.app.Invoice.service.UserService;
 import pialeda.app.Invoice.dto.GlobalUser;
-import java.math.BigInteger;
-import java.security.SecureRandom;
+import java.time.LocalDate;
+import java.util.Random;
 
 
 
@@ -64,8 +64,7 @@ public class LoginController {
             System.out.println(fullName);
 
             if(userROle.equals("admin")){
-
-//                redirectAttrs.addAttribute("fullName", fullName);
+//            redirectAttrs.addAttribute("fullName", fullName);
                 return destination ="redirect:/admin-dashboard";
             } else if (userROle.equals("vr-staff")) {
 
@@ -204,7 +203,41 @@ public class LoginController {
 
             model.addAttribute("invoiceInfo", new InvoiceInfo());
             model.addAttribute("fullName",fullName);
-            return destination = "marketing/invoice";
+            // get the current date
+            LocalDate currentDate = LocalDate.now();
+
+            // get the current day and month
+            int currentDay = currentDate.getDayOfMonth();
+            int  currentMonth = currentDate.getMonthValue();
+            int generateInvoiceNumber = (int) invoiceService.getInvoiceCunt();
+            Random random = new Random();
+            if(generateInvoiceNumber == 0 || generateInvoiceNumber < 0){
+                generateInvoiceNumber +=1;
+            }else{
+                generateInvoiceNumber +=1;
+            }
+            // generate two random two-digit numbers between 10 and 99
+            int randomNum = random.nextInt(90) + 10;
+            // format generateInvoiceNumber with a leading zero
+            String generateInvNumberStr = String.format("%02d",generateInvoiceNumber);
+            String resulInvNumStr = String.format("%d%d%s", currentMonth, currentDay, generateInvNumberStr);
+            String invoiceNumber = resulInvNumStr + randomNum;
+            int result = Integer.parseInt(invoiceNumber);
+            String resultStr = String.valueOf(result);
+            if(invoiceService.checkInvoiceNum(resultStr) == false){
+                model.addAttribute("generateInvNum", result);
+                String resultStr2 = String.valueOf(result);
+                String poFormat = "PO"+resultStr2;
+                model.addAttribute("generatePONum", poFormat);
+                return destination = "marketing/invoice";
+            }else{
+                result +=1;
+                model.addAttribute("generateInvNum", result);
+                String resultStr2 = String.valueOf(result);
+                String poFormat = "PO"+resultStr2;
+                model.addAttribute("generatePONum", poFormat);
+                return destination = "marketing/invoice";
+            }
         }
         else if (role.equals("vr-staff")) {
             return destination = "redirect:/vr/user/invoices";
@@ -214,19 +247,6 @@ public class LoginController {
         }
         return destination;
     }
-
-//    @GetMapping("newinvoice")
-//    public String newinvoice(Model model){
-//        model.addAttribute("clientList", clientService.getAllClient());
-//        model.addAttribute("supplierList", supplierService.getAllSupplier());
-//
-//        model.addAttribute("clientInfo", new ClientInfo());
-//        model.addAttribute("supplierInfo", new SupplierInfo());
-//
-//        model.addAttribute("invoiceInfo", new InvoiceInfo());
-////        model.addAttribute("fullName",fullName);
-//        return "marketing/newinvoice";
-//    }
 
     @GetMapping("logout")
     public String logout(){

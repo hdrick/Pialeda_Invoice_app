@@ -81,8 +81,9 @@
                                 <div style="font-weight: bolder;">
                                     <div id="s-invo-con">
                                         <label style="width: 150px;">SALES INVOICE:</label>
-                                        <span  id="invoice-number" style="color: red;"></span>
-                                        <input type="hidden" th:field="*{invoiceNum}" id="invoice-number-input">
+                                        <span  id="invoice-number" style="color: red;" th:text="${generateInvNum}"></span>
+                                        <!-- <label id="invoice-number" style="color: red;" th:text="${generateInvNum}"></label> -->
+                                        <input type="hidden" th:field="*{invoiceNum}" id="invoice-number-input" >
                                     </div>
                                 </div>
                             </div>
@@ -128,7 +129,8 @@
                             </div>
                             <div id="po-con">
                                 <div id="po-title" style="font-weight: bolder; margin-right: 9%; color:green;">P.O. No.:</div>
-                                <div id="po-value"><span id="client-poNumber"></span></div>
+                                <!-- <div id="po-value"><span id="client-poNumber"></span></div> -->
+                                <div id="po-value"><span id="client-poNumber" th:text="${generatePONum}"></span></div>
                                 <input type="hidden"  th:field="*{poNum}" id="client-poNumber-input">
                             </div>
                             <div id="cp-con">
@@ -148,14 +150,12 @@
                                     <th style="font-size: 12px; width: 10%; text-align: center; color: white;">QTY</th>
                                     <th style="font-size: 12px; width: 10%; text-align: center;color: white;">UNIT</th>
                                     <th style="font-size: 12px; width: 60%; text-align: center;color: white;">ARTICLES</th>
-                                    <th style="font-size: 8px; width: 10%; text-align: center;color: white;">UNIT PRICE</th>
+                                    <th style="font-size: 12px; width: 10%; text-align: center;color: white;">U-PRICE</th>
                                     <th style="font-size: 12px; width: 10%; text-align: center;color: white;">AMOUNT</th>
                                 </tr>
                                 </thead>
                                 <tbody id="table-body" class="scrollable-table">
-                                <tr>
 
-                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -223,23 +223,35 @@
                 <form th:action="@{/createClient}" th:object="${clientInfo}" method="POST">
                     <div class="mb-3">
                         <label for="clientName" class="form-label">Client Name</label>
-                        <input th:field="*{name}" type="text" class="form-control" id="clientName" name="clientName">
+                        <input th:field="*{name}" type="text" class="form-control" id="clientName" name="clientName" required>
                     </div>
                     <div class="mb-3">
                         <label for="address" class="form-label">Address</label>
-                        <input th:field="*{address}" type="text" class="form-control" id="address" name="address">
+                        <input th:field="*{address}" type="text" class="form-control" id="address" name="address" required>
                     </div>
                     <div class="mb-3">
                         <label for="cityAddress" class="form-label">City Address</label>
-                        <input th:field="*{cityAddress}" type="text" class="form-control" id="cityAddress" name="cityAddress">
+                        <input th:field="*{cityAddress}" type="text" class="form-control" id="cityAddress" name="cityAddress" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="clientTIN" class="form-label">TIN #</label>
-                        <input th:field="*{tin}" type="text" class="form-control" id="clientTIN" name="clientTIN">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="clientTIN" class="form-label">TIN #</label>
+                            <input th:field="*{tin}" type="text" class="form-control" id="clientTIN" name="clientTIN" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label  class="form-label">Agent</label>
+                            <input th:field="*{agent}" type="text" class="form-control" id="agent" name="agent" required>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="agent" class="form-label">Agent</label>
-                        <input th:field="*{agent}" type="agent" class="form-control" id="agent" name="agent">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label  class="form-label">Bus. Style</label>
+                            <input th:field="*{busStyle}" type="text" class="form-control" id="busStyle" name="busStyle">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label  class="form-label">Terms</label>
+                            <input th:field="*{terms}" type="text" class="form-control" id="terms" name="terms">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -264,7 +276,7 @@
             <div class="modal-body">
                 <form th:action="@{/createSupplier}" th:object="${supplierInfo}" method="POST">
                     <div class="mb-3">
-                        <label for="clientName" class="form-label">Supplier Name</label>
+                        <label  class="form-label">Supplier Name</label>
                         <input th:field="*{name}" type="text" class="form-control" id="supplierName" name="suppName" required>
                     </div>
                     <div class="row">
@@ -279,36 +291,36 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="clientTIN" class="form-label">TIN #</label>
+                            <label  class="form-label">TIN #</label>
                             <input th:field="*{tin}" type="text" class="form-control" id="suppClientTIN" name="suppClientTIN" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="suppLimit" class="form-label">Limit</label>
+                            <label  class="form-label">Limit</label>
                             <input  th:field="*{limit}" type="text" class="form-control" id="suppLimit" name="suppLimit" required>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="agent" class="form-label">SEC #</label>
-                        <input th:field="*{secNum}" type="agent" class="form-control" id="suppSec" name="suppSec">
+                        <label  class="form-label">SEC #</label>
+                        <input th:field="*{secNum}" type="text" class="form-control" id="suppSec" name="suppSec">
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="agent" class="form-label">SEC YEAR</label>
-                            <input th:field="*{secYear}" type="agent" class="form-control" id="suppSecYr" name="suppSecYr">
+                            <label  class="form-label">SEC YEAR</label>
+                            <input th:field="*{secYear}" type="text" class="form-control" id="suppSecYr" name="suppSecYr">
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="agent" class="form-label">ATP</label>
-                            <input th:field="*{atp}" type="agent" class="form-control" id="suppATP" name="suppATP">
+                            <label  class="form-label">ATP</label>
+                            <input th:field="*{atp}" type="text" class="form-control" id="suppATP" name="suppATP">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="agent" class="form-label">COR #</label>
-                            <input th:field="*{corNum}" type="agent" class="form-control" id="suppCOR" name="suppCOR">
+                            <label class="form-label">COR #</label>
+                            <input th:field="*{corNum}" type="text" class="form-control" id="suppCOR" name="suppCOR">
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="agent" class="form-label">COR Date</label>
-                            <input th:field="*{corDate}" type="agent" class="form-control" id="suppCORDate" name="suppCORDate">
+                            <label  class="form-label">COR Date</label>
+                            <input th:field="*{corDate}" type="text" class="form-control" id="suppCORDate" name="suppCORDate">
                         </div>
                     </div>
                     <div class="modal-footer">

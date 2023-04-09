@@ -6,6 +6,25 @@ public class ClientInfo {
     private String cityAddress;
     private String tin;
     private String agent;
+    private String busStyle;
+    private String terms;
+
+    
+    public String getBusStyle() {
+        return busStyle;
+    }
+
+    public void setBusStyle(String busStyle) {
+        this.busStyle = busStyle;
+    }
+
+    public String getTerms() {
+        return terms;
+    }
+
+    public void setTerms(String terms) {
+        this.terms = terms;
+    }
 
     public String getName() {
         return name;

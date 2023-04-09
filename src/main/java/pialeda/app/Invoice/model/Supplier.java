@@ -26,16 +26,16 @@ public class Supplier {
     private String tin;
 
     @Column(name="supplier_secNum")
-    private int secNum;
+    private String secNum;
 
     @Column(name="supplier_secYear")
-    private int secYear;
+    private String secYear;
 
     @Column(name="supplier_atp")
     private String atp;
 
     @Column( name="supplier_corNum")
-    private int corNum;
+    private String corNum;
 
     @Column( name="supplier_corDate")
     private String corDate;
@@ -44,7 +44,7 @@ public class Supplier {
     private double limit;
 
     public Supplier(){}
-    public Supplier(String name, String address, String cityAddress, String tin, int secNum, int secYear, String atp, int corNum, String corDate, double limit) {
+    public Supplier(String name, String address, String cityAddress, String tin, String secNum, String secYear, String atp, String corNum, String corDate, double limit) {
         this.name = name;
         this.address = address;
         this.cityAddress = cityAddress;
@@ -63,7 +63,7 @@ public class Supplier {
         this.cityAddress = cityAddress;
         this.tin = tin;
     }
-
+    
     public double getLimit() {
         return limit;
     }
@@ -112,19 +112,19 @@ public class Supplier {
         this.tin = tin;
     }
 
-    public int getSecNum() {
+    public String getSecNum() {
         return secNum;
     }
 
-    public void setSecNum(int secNum) {
+    public void setSecNum(String secNum) {
         this.secNum = secNum;
     }
 
-    public int getSecYear() {
+    public String getSecYear() {
         return secYear;
     }
 
-    public void setSecYear(int secYear) {
+    public void setSecYear(String secYear) {
         this.secYear = secYear;
     }
 
@@ -136,11 +136,11 @@ public class Supplier {
         this.atp = atp;
     }
 
-    public int getCorNum() {
+    public String getCorNum() {
         return corNum;
     }
 
-    public void setCorNum(int corNum) {
+    public void setCorNum(String corNum) {
         this.corNum = corNum;
     }
 

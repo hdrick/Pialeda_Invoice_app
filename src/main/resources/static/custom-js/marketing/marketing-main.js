@@ -1,4 +1,3 @@
-
 const invoiceNum = document.getElementById('invoice-number');
 const invoiceNumInput = document.getElementById('invoice-number-input');
 
@@ -61,6 +60,12 @@ function getClientInfo() {
 
             $('#client-date').text(formattedDate);
             $('#client-date-input').val(formattedDate);
+
+            $('#client-busStyle').text(data.busStyle);
+            $('#client-busStyle-input').val(data.busStyle);
+
+            $('#client-terms').text(data.terms);
+            $('#client-terms-input').val(data.terms);
         }
     });
 }
@@ -111,26 +116,25 @@ const addRowBtn = document.getElementById('add-row-btn');
 const deleteRowBtn = document.getElementById('delete-row-btn');
 let rowCounter = 0;
 
-// Define a function to update the amount based on the quantity and unit price values
-// Add row
 addRowBtn.addEventListener('click', () => {
-  if (rowCounter < 30) {
+  if (rowCounter < 40) {
     const newRow = document.createElement('tr');
+    const index = rowCounter; // Get the index for this row
     newRow.innerHTML = `
       <td>
-        <input id="qty" type="number" class="compute_qty" onfocus="if (this.value == '0') { this.value = ''; }" onblur="if (this.value == '') { this.value = '0'; }" required>
+        <input name="qty" type="number" class="compute_qty" onfocus="if (this.value == '0') { this.value = ''; }" onblur="if (this.value == '') { this.value = '0'; }" required>
       </td>
       <td>
-        <input id="unit" type="text" required>
+        <input name="unit" type="text" required>
       </td>
       <td>
-        <input id="article" type="text" required>
+        <input name="article" type="text" required>
       </td>
       <td>
-        <input id="unitPrice" type="number" class="compute_unit_price" onfocus="if (this.value == '0.0') { this.value = ''; }" required>
+        <input name="unitPrice" type="number" class="compute_unit_price" onfocus="if (this.value == '0.0') { this.value = ''; }" required>
       </td>
       <td>
-        <input id="amount" type="text" class="compute_amount" readonly>
+        <input name="amount" type="text" class="compute_amount" readonly>
       </td>
     `;
     tableBody.appendChild(newRow);
@@ -139,14 +143,14 @@ addRowBtn.addEventListener('click', () => {
       input.addEventListener('input', () => {
         updateAmount(newRow);
       });
-    }); // <-- added closing curly brace here
+    });
     rowCounter++;
-    computeInvoiceTotals(); // Call updateTotalAmount function here
+    computeInvoiceTotals();
   } else {
     alert('Maximum row limit reached!');
   }
+  
 });
-
 
 function updateAmount(row) {
   const qty = row.querySelector('.compute_qty').value;
@@ -232,71 +236,37 @@ cashierNameInput.value = cashierName.textContent;
       cashierNameInput.value = cashierName.textContent;
     });
 
+// generateInvNum();
 
+  // Invoice number pair
+  const invoiceSpan = document.getElementById('invoice-number');
+  const invoiceInput = document.getElementById('invoice-number-input');
+  invoiceInput.value = invoiceSpan.innerText;
 
-function getAllData() {
-  const rows = document.querySelectorAll('table tbody tr');
-  const data = [];
-
-  rows.forEach(row => {
-    const qty = row.querySelector('#qty')?.value;
-    const unit = row.querySelector('#unit')?.value;
-    const article = row.querySelector('#article')?.value;
-    const unitPrice = row.querySelector('#unitPrice')?.value;
-    const amount = row.querySelector('#amount')?.value;
-
-    if (qty || unit || article || unitPrice || amount) {
-      data.push({ qty, unit, article, unitPrice, amount });
+  const invoiceObserver = new MutationObserver(function(mutationsList) {
+    for(let mutation of mutationsList) {
+      if (mutation.type === 'childList') {
+        invoiceInput.value = invoiceSpan.innerText;
+      }
     }
   });
-  return data; // add return statement
-}
 
-//function submitForm(event) {
-//  event.preventDefault(); // prevent form submission
-//  const data = getAllData(); // get data from table
-//  const form = document.getElementById('myForm');
-//  const formData = new FormData(form);
-//  formData.append('data', JSON.stringify(data)); // append data to form data
-//  const xhr = new XMLHttpRequest();
-//  xhr.open('POST', form.action);
-//  xhr.send(formData); // send AJAX request
-//}
+  invoiceObserver.observe(invoiceSpan, {childList: true});
 
-//function getAllData() {
-//  const rows = document.querySelectorAll('table tbody tr');
-//  const data = [];
-//
-//  rows.forEach(row => {
-//    const qty = row.querySelector('#qty')?.value;
-//    const unit = row.querySelector('#unit')?.value;
-//    const article = row.querySelector('#article')?.value;
-//    const unitPrice = row.querySelector('#unitPrice')?.value;
-//    const amount = row.querySelector('#amount')?.value;
-//
-//    if (qty || unit || article || unitPrice || amount) {
-//      data.push({ qty, unit, article, unitPrice, amount });
-//    }
-//  });
-//
-//  // Send an AJAX request to the server with the data
-//  const xhr = new XMLHttpRequest();
-//  xhr.open('POST', '/createInvoice');
-//  xhr.setRequestHeader('Content-Type', 'application/json');
-//  xhr.onreadystatechange = function() {
-//    if (xhr.readyState === XMLHttpRequest.DONE) {
-//      if (xhr.status === 200) {
-//        console.log(xhr.responseText);
-//      } else {
-//        console.error('Failed to send data to server');
-//      }
-//    }
-//  };
-//  xhr.send(JSON.stringify(data));
-//}
+  // PO number pair
+  const poLabel = document.getElementById('client-poNumber');
+  const poInput = document.getElementById('client-poNumber-input');
+  poInput.value = poLabel.innerText;
 
+  const poObserver = new MutationObserver(function(mutationsList) {
+    for(let mutation of mutationsList) {
+      if (mutation.type === 'childList') {
+        poInput.value = poLabel.innerText;
+      }
+    }
+  });
 
-generateInvNum();
+  poObserver.observe(poLabel, {childList: true});
 
 
 

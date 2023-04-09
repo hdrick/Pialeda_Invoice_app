@@ -22,6 +22,18 @@ public class ClientService {
         client.setCityAddress(clientInfo.getCityAddress());
         client.setTin(clientInfo.getTin());
         client.setAgent(clientInfo.getAgent());
+        if(clientInfo.getBusStyle() == null || clientInfo.getBusStyle().isEmpty()){
+            client.setBusStyle("NA");
+        }else{
+            client.setBusStyle(clientInfo.getBusStyle());
+        }
+
+        if(clientInfo.getTerms() == null || clientInfo.getTerms().isEmpty()){
+            client.setTerms("NA");
+        }else{
+            client.setTerms(clientInfo.getTerms());
+        }
+
         clientRepository.save(client);
     }
 
