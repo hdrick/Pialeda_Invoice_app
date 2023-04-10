@@ -48,8 +48,8 @@ public class ClientService {
         return clientRepository.findByName(name);
     }
 
-    public List<Client> filterClient(String name)
-    {
-        return (List<Client>) clientRepository.findByName(name);
-    }
+    // public List<Client> filterClient(String name)
+    // {
+    //     return (List<Client>) clientRepository.findByName(name);
+    // }
 }
