@@ -1,20 +1,28 @@
 package pialeda.app.Invoice.controller;
 
+import java.time.LocalDate;
+import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
-import pialeda.app.Invoice.dto.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import pialeda.app.Invoice.config.DateUtils;
+import pialeda.app.Invoice.dto.ClientInfo;
+import pialeda.app.Invoice.dto.GlobalUser;
+import pialeda.app.Invoice.dto.InvoiceInfo;
+import pialeda.app.Invoice.dto.Login;
+import pialeda.app.Invoice.dto.SupplierInfo;
 import pialeda.app.Invoice.model.User;
 import pialeda.app.Invoice.service.ClientService;
 import pialeda.app.Invoice.service.InvoiceService;
 import pialeda.app.Invoice.service.SupplierService;
 import pialeda.app.Invoice.service.UserService;
-import pialeda.app.Invoice.dto.GlobalUser;
-import java.time.LocalDate;
-import java.util.Random;
-
-
 
 @Controller
 public class LoginController {
@@ -119,6 +127,8 @@ public class LoginController {
     public String getAllPages(Model model, @RequestParam(name="client", required = false) String client,
                               @RequestParam(name="supplier", required = false) String supplier,
                               @RequestParam(name="sortBy", required = false) String month,
+                              @RequestParam(name="startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                              @RequestParam(name="endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
                               @RequestParam(name="page", required = false, defaultValue = "1") int currentPage) {
         String role = GlobalUser.getUserRole();
         String userFname = GlobalUser.getUserFirstName();
@@ -143,7 +153,7 @@ public class LoginController {
                 }
                 else
                 {
-                    return vrController.filterSortClientSupplierPage(model, client, supplier, month, currentPage, fullName);
+                    return vrController.filterSortClientSupplierPage(model, client, supplier, currentPage, fullName);
                 }
             }
             else if(client == null && supplier == null && month != null)
@@ -152,13 +162,33 @@ public class LoginController {
             }
             else if (client != null && supplier == null)
             {
+                System.out.println(startDate+"------------"+endDate);
                 if (month != null)
                 {
                     return vrController.filterClientSortPage(model, client, month, currentPage, fullName);
                 }
+                else if (startDate != null && endDate != null)
+                {
+                    String message = null;
+                    if (!DateUtils.isValidLocalDate(DateUtils.parseDateToString(startDate)) || !DateUtils.isValidLocalDate(DateUtils.parseDateToString(endDate)))
+                    {
+                        message = "Invalid start or end date format";
+                        return vrController.invalidDateFormat(model, message);
+                    }
+                    else if (startDate.isAfter(endDate))
+                    {
+                        message = "The start date cannot be later than the finish date.";
+                        return vrController.invalidDateFormat(model, message);
+                    }
+                    else
+                    {
+                        return vrController.filterClientSortByDateRange(model, client, startDate, endDate, currentPage, fullName);
+                    }
+
+                }
                 else
                 {
-                    return vrController.filterPageClient(model, client, month, currentPage, fullName);
+                    return vrController.filterPageClient(model, client, currentPage, fullName);
                 }
             }
             else if (client == null && supplier != null)
@@ -166,6 +196,24 @@ public class LoginController {
                 if (month != null)
                 {
                     return vrController.filterSupplierSortPage(model, supplier, month, currentPage, fullName);
+                }
+                else if (startDate != null && endDate != null)
+                {
+                    String message = null;
+                    if (!DateUtils.isValidLocalDate(DateUtils.parseDateToString(startDate)) || !DateUtils.isValidLocalDate(DateUtils.parseDateToString(endDate)))
+                    {
+                        message = "Invalid start or end date format";
+                        return vrController.invalidDateFormat(model, message);
+                    }
+                    else if (startDate.isAfter(endDate))
+                    {
+                        message = "The start date cannot be later than the finish date.";
+                        return vrController.invalidDateFormat(model, message);
+                    }
+                    else
+                    {
+                        return vrController.filterSupplierSortByDateRange(model, supplier, startDate, endDate, currentPage, fullName);
+                    }
                 }
                 else
                 {

@@ -71,7 +71,7 @@ public class MarketingController {
     }
 
     @PostMapping("/createSupplier")
-    public String createSupplier(@ModelAttribute("supplierInfo") SupplierInfo supplierInfo, Model model) {
+    public String createSupplier(@ModelAttribute("supplierInfo") OfficialReceiptInfo.SupplierInfo supplierInfo, Model model) {
         supplierService.createSupplier(supplierInfo);
         return "redirect:/marketing-invoice";
     }
@@ -193,7 +193,7 @@ public class MarketingController {
     @PostMapping("/submit-form")
     public String handleSubmitForm(
             @RequestParam("inv-num") String invoiceNumber,
-            @RequestParam("date-created") String dateCreated,
+            @RequestParam("date-created") LocalDate dateCreated,
             @RequestParam("supp-name") String supplierName,
             @RequestParam("client-name") String clientName,
             @RequestParam("client-cp") String clientContactPerson,

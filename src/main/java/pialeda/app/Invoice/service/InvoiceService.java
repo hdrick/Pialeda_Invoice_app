@@ -6,6 +6,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.DateUtils;
+
 import pialeda.app.Invoice.model.Client;
 import pialeda.app.Invoice.model.Invoice;
 import pialeda.app.Invoice.model.InvoiceProductInfo;
@@ -17,6 +19,8 @@ import pialeda.app.Invoice.dto.InvoiceInfo;
 import pialeda.app.Invoice.repository.SupplierRepository;
 
 import javax.persistence.EntityNotFoundException;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -156,7 +160,7 @@ public class InvoiceService {
 
     public Page<Invoice> findPage(int pageNumber)
     {
-        Pageable pageable = PageRequest.of(pageNumber -1, 7);
+        Pageable pageable = PageRequest.of(pageNumber -1, 2);
         return invoiceRepository.findAll(pageable);
     }
     public Page<Invoice> searchPageByKeyword(String keyword, int pageNumber)
@@ -209,7 +213,20 @@ public class InvoiceService {
         Pageable pageable = PageRequest.of(pageNumber -1, 7, sort);
         return invoiceRepository.findByDateCreatedContainingIgnoreCase(month, pageable);
     }
-
+    public Page<Invoice> filterPageByClientSortByDateRange(String name, LocalDate startDate, LocalDate endDate, int pageNumber)
+    {
+        Sort sort = Sort.by("dateCreated");
+        sort = sort.ascending();
+        Pageable pageable = PageRequest.of(pageNumber -1, 7, sort);
+        return invoiceRepository.findByClientNameAndDateCreatedBetween(name, startDate, endDate, pageable);
+    }
+    public Page<Invoice> filterPageBySuppliertSortByDateRange(String name, LocalDate startDate, LocalDate endDate, int pageNumber)
+    {
+        Sort sort = Sort.by("dateCreated");
+        sort = sort.ascending();
+        Pageable pageable = PageRequest.of(pageNumber -1, 7, sort);
+        return invoiceRepository.findBySupplierNameAndDateCreatedBetween(name, startDate, endDate, pageable);
+    }
 
 //    DRICKS...
     public Page<Invoice> getInvoicesPaginated(int currentPage, int size){
@@ -225,10 +242,10 @@ public class InvoiceService {
         return invoiceProdInfoRepository.findByInvoiceNumber(invNum);
     }
 
-    public boolean updateInvoices(String invoiceNumber, String dateCreated,
-                                 String supplierName, String clientName, String clientContactPerson,
-                                 String totalAmt, List<String> qtyList, List<String> unitList, List<String> articlesList,
-                                 List<String> unitPriceList, List<String> amountList, List<String> prodIdList){
+    public boolean updateInvoices(String invoiceNumber, LocalDate dateCreated,
+                                  String supplierName, String clientName, String clientContactPerson,
+                                  String totalAmt, List<String> qtyList, List<String> unitList, List<String> articlesList,
+                                  List<String> unitPriceList, List<String> amountList, List<String> prodIdList){
 
        try {
            Invoice invDb = invoiceRepository.findByInvoiceNum(invoiceNumber);
@@ -274,14 +291,5 @@ public class InvoiceService {
        }
     }
 
-//    public Page<Invoice> findAllWithSort(String field, String direction, int pageNumber)
-//    {
-//        Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name())?
-//                Sort.by(field).ascending(): Sort.by(field).descending();
-//
-//        Pageable pageable = PageRequest.of(pageNumber -1, 7, sort);
-//
-//        return invoiceRepository.findAll(pageable);
-//    }
 
 }
