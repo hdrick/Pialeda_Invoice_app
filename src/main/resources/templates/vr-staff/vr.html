@@ -145,11 +145,6 @@
           <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 left-panel">
             <select class="form-select" id="filterByClient">
               <option value="default" selected>Filter by Client</option>
-              <!--              <option th:each="client : ${clients}" th:value="${client.name}" th:text="${client.name}"-->
-              <!--                      th:href="@{'/vr/user/invoices/' + ${currentPage} + '/filter-by-Client/'}"></option>-->
-              <!--                <option th:each="client : ${clients}" th:value="${client.name}" th:text="${client.name}"-->
-              <!--                        th:href="@{/vr/user/invoices(client=${client.name},page=${1})}" th:selected="${selectedClient == client.name}">-->
-              <!--                </option>-->
               <option th:each="client : ${clients}" th:value="${client.name}" th:text="${client.name}"
                       th:selected="${selectedClient == client.name}">
               </option>
@@ -186,7 +181,7 @@
 
 
         <div class="view-panel">
-          <table class="table table-sm table-bordered" id="my-table">
+          <table class="table table-sm table-bordered" id="my-table" th:value="${'invoices-'+selectedClient+'-'+selectedSupplier+'-'+selectedMonth+'-page-'+currentPage}">
             <thead class="table-dark">
             <tr>
 
@@ -226,42 +221,175 @@
                      th:unless="${totalPages > 0 || totalItems > 0}" style="display: flex; justify-content: center; font-size: 13px">
                   <strong>Total Items:  [[${totalItems}]] </strong>
                 </div>
-                <div th:if="${selectedClient != null}">
-                  <ul class="pagination" th:if="${totalPages > 0 || totalItems > 0}">
-                    <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
-                      <a class="page-link" th:href="@{'/vr/user/invoices?client='+${selectedClient}+'&page=1'}">First</a>
-                    </li>
-                    <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
-                      <a class="page-link" th:href="@{'/vr/user/invoices?client=' + ${selectedClient} + '&page=' + ${currentPage - 1}}">Prev</a>
-                    </li>
-                    <li th:each="i: ${#numbers.sequence(1, totalPages)}" th:class="${i == currentPage} ? 'page-item active' : 'page-item'" th:if="${i <= 5}">
-                      <a th:href="@{'/vr/user/invoices?client=' + ${selectedClient} + '&page=' + ${i}}" th:text="${i}"></a>
-                    </li>
-                    <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
-                      <a class="page-link" th:href="@{'/vr/user/invoices?client=' + ${selectedClient} + '&page=' + ${currentPage + 1}}">Next</a>
-                    </li>
-                    <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
-                      <a class="page-link" th:href="@{'/vr/user/invoices?client=' + ${selectedClient} + '&page=' + ${totalPages}}">Last</a>
-                    </li>
-                  </ul></div>
-                <div th:unless="${selectedClient != null}">
+
+                <div th:if="${(!isClientPresent) && (!isSupplierPresent) && (!isMonthPresent)}">
                 <ul class="pagination" th:if="${totalPages > 0 || totalItems > 0}">
                   <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
-                    <a class="page-link" th:href="@{/vr/user/invoices?page=1}">First</a>
+                    <a class="page-link" th:href="@{/vr/user/invoices(page=1)}">First</a>
                   </li>
                   <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
-                    <a class="page-link" th:href="@{'/vr/user/invoices?page=' + ${currentPage - 1}}">Prev</a>
+                    <a class="page-link" th:href="@{/vr/user/invoices(page=${currentPage - 1})}">Prev</a>
                   </li>
-                  <li th:each="i: ${#numbers.sequence(1, totalPages)}" th:class="${i == currentPage} ? 'page-item active' : 'page-item'" th:if="${i <= 5}">
-                    <a th:href="@{'/vr/user/invoices?page=' + ${i}}" th:text="${i}"></a>
-                  </li>
-                  <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
-                    <a class="page-link" th:href="@{'/vr/user/invoices?page=' + ${currentPage + 1}}">Next</a>
+                  <li th:each="pageNumber : ${pageNumbers}"
+                      th:class="${pageNumber+1 == currentPage ? 'page-item active' : 'page-item'}">
+                    <a th:href="@{/vr/user/invoices(page=${pageNumber+1})}" th:text="${pageNumber+1}"></a>
                   </li>
                   <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
-                    <a class="page-link" th:href="@{'/vr/user/invoices?page=' + ${totalPages}}">Last</a>
+                    <a class="page-link" th:href="@{/vr/user/invoices(page=${currentPage + 1})}">Next</a>
                   </li>
-                </ul></div>
+                  <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
+                    <a class="page-link" th:href="@{/vr/user/invoices(page=${totalPages})}">Last</a>
+                  </li>
+                </ul>
+                </div>
+
+                <div th:if="${(isClientPresent) && (isSupplierPresent) && (isMonthPresent)}">
+                  <ul class="pagination" th:if="${totalPages > 0 || totalItems > 0}">
+                    <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(client=${selectedClient}, supplier=${selectedSupplier}, sortBy=${selectedMonth}, page=1)}">First</a>
+                    </li>
+                    <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(client=${selectedClient}, supplier=${selectedSupplier}, sortBy=${selectedMonth}, page=${currentPage - 1})}">Prev</a>
+                    </li>
+                    <li th:each="pageNumber : ${pageNumbers}"
+                        th:class="${pageNumber+1 == currentPage ? 'page-item active' : 'page-item'}">
+                      <a th:href="@{/vr/user/invoices(client=${selectedClient}, supplier=${selectedSupplier}, sortBy=${selectedMonth}, page=${pageNumber+1})}" th:text="${pageNumber+1}"></a>
+                    </li>
+                    <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(client=${selectedClient}, supplier=${selectedSupplier}, sortBy=${selectedMonth}, page=${currentPage + 1})}">Next</a>
+                    </li>
+                    <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(client=${selectedClient}, supplier=${selectedSupplier}, sortBy=${selectedMonth}, page=${totalPages})}">Last</a>
+                    </li>
+                  </ul>
+                </div>
+
+                <div th:if="${(isClientPresent) && (!isSupplierPresent) && (!isMonthPresent)}">
+                  <ul class="pagination" th:if="${totalPages > 0 || totalItems > 0}">
+                    <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(client=${selectedClient}, page=1)}">First</a>
+                    </li>
+                    <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(client=${selectedClient}, page=${currentPage - 1})}">Prev</a>
+                    </li>
+                    <li th:each="pageNumber : ${pageNumbers}"
+                        th:class="${pageNumber+1 == currentPage ? 'page-item active' : 'page-item'}">
+                      <a th:href="@{/vr/user/invoices(client=${selectedClient}, page=${pageNumber+1})}" th:text="${pageNumber+1}"></a>
+                    </li>
+                    <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(client=${selectedClient}, page=${currentPage + 1})}">Next</a>
+                    </li>
+                    <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(client=${selectedClient}, page=${totalPages})}">Last</a>
+                    </li>
+                  </ul>
+                </div>
+
+                <div th:if="${(isClientPresent) && (isSupplierPresent) && (!isMonthPresent)}">
+                  <ul class="pagination" th:if="${totalPages > 0 || totalItems > 0}">
+                    <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(client=${selectedClient}, supplier=${selectedSupplier}, page=1)}">First</a>
+                    </li>
+                    <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(client=${selectedClient}, supplier=${selectedSupplier}, page=${currentPage - 1})}">Prev</a>
+                    </li>
+                    <li th:each="pageNumber : ${pageNumbers}"
+                        th:class="${pageNumber+1 == currentPage ? 'page-item active' : 'page-item'}">
+                      <a th:href="@{/vr/user/invoices(client=${selectedClient}, supplier=${selectedSupplier}, page=${pageNumber+1})}" th:text="${pageNumber+1}"></a>
+                    </li>
+                    <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(client=${selectedClient}, supplier=${selectedSupplier}, page=${currentPage + 1})}">Next</a>
+                    </li>
+                    <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(client=${selectedClient}, supplier=${selectedSupplier}, page=${totalPages})}">Last</a>
+                    </li>
+                  </ul>
+                </div>
+
+                <div th:if="${(isClientPresent) && (!isSupplierPresent) && (isMonthPresent)}">
+                  <ul class="pagination" th:if="${totalPages > 0 || totalItems > 0}">
+                    <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(client=${selectedClient}, sortBy=${selectedMonth}, page=1)}">First</a>
+                    </li>
+                    <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(client=${selectedClient}, sortBy=${selectedMonth}, page=${currentPage - 1})}">Prev</a>
+                    </li>
+                    <li th:each="pageNumber : ${pageNumbers}"
+                        th:class="${pageNumber+1 == currentPage ? 'page-item active' : 'page-item'}">
+                      <a th:href="@{/vr/user/invoices(client=${selectedClient}, sortBy=${selectedMonth}, page=${pageNumber+1})}" th:text="${pageNumber+1}"></a>
+                    </li>
+                    <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(client=${selectedClient}, sortBy=${selectedMonth}, page=${currentPage + 1})}">Next</a>
+                    </li>
+                    <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(client=${selectedClient}, sortBy=${selectedMonth}, page=${totalPages})}">Last</a>
+                    </li>
+                  </ul>
+                </div>
+
+                <div th:if="${(!isClientPresent) && (isSupplierPresent) && (!isMonthPresent)}">
+                  <ul class="pagination" th:if="${totalPages > 0 || totalItems > 0}">
+                    <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(supplier=${selectedSupplier}, page=1)}">First</a>
+                    </li>
+                    <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(supplier=${selectedSupplier}, page=${currentPage - 1})}">Prev</a>
+                    </li>
+                    <li th:each="pageNumber : ${pageNumbers}"
+                        th:class="${pageNumber+1 == currentPage ? 'page-item active' : 'page-item'}">
+                      <a th:href="@{/vr/user/invoices(supplier=${selectedSupplier}, page=${pageNumber+1})}" th:text="${pageNumber+1}"></a>
+                    </li>
+                    <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(supplier=${selectedSupplier}, page=${currentPage + 1})}">Next</a>
+                    </li>
+                    <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(supplier=${selectedSupplier}, page=${totalPages})}">Last</a>
+                    </li>
+                  </ul>
+                </div>
+
+                <div th:if="${(!isClientPresent) && (isSupplierPresent) && (isMonthPresent)}">
+                  <ul class="pagination" th:if="${totalPages > 0 || totalItems > 0}">
+                    <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(supplier=${selectedSupplier}, sortBy=${selectedMonth}, page=1)}">First</a>
+                    </li>
+                    <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(supplier=${selectedSupplier}, sortBy=${selectedMonth}, page=${currentPage - 1})}">Prev</a>
+                    </li>
+                    <li th:each="pageNumber : ${pageNumbers}"
+                        th:class="${pageNumber+1 == currentPage ? 'page-item active' : 'page-item'}">
+                      <a th:href="@{/vr/user/invoices(supplier=${selectedSupplier}, sortBy=${selectedMonth}, page=${pageNumber+1})}" th:text="${pageNumber+1}"></a>
+                    </li>
+                    <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(supplier=${selectedSupplier}, sortBy=${selectedMonth}, page=${currentPage + 1})}">Next</a>
+                    </li>
+                    <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(supplier=${selectedSupplier}, sortBy=${selectedMonth}, page=${totalPages})}">Last</a>
+                    </li>
+                  </ul>
+                </div>
+
+                <div th:if="${(!isClientPresent) && (!isSupplierPresent) && (isMonthPresent)}">
+                  <ul class="pagination" th:if="${totalPages > 0 || totalItems > 0}">
+                    <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(sortBy=${selectedMonth}, page=1)}">First</a>
+                    </li>
+                    <li th:class="${currentPage <= 1} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(sortBy=${selectedMonth}, page=${currentPage - 1})}">Prev</a>
+                    </li>
+                    <li th:each="pageNumber : ${pageNumbers}"
+                        th:class="${pageNumber+1 == currentPage ? 'page-item active' : 'page-item'}">
+                      <a th:href="@{/vr/user/invoices(sortBy=${selectedMonth}, page=${pageNumber+1})}" th:text="${pageNumber+1}"></a>
+                    </li>
+                    <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(sortBy=${selectedMonth}, page=${currentPage + 1})}">Next</a>
+                    </li>
+                    <li th:class="${totalPages == currentPage} ? 'page-item disabled' : 'page-item'">
+                      <a class="page-link" th:href="@{/vr/user/invoices(sortBy=${selectedMonth}, page=${totalPages})}">Last</a>
+                    </li>
+                  </ul>
+                </div>
+
               </div>
             </div>
           </div>
