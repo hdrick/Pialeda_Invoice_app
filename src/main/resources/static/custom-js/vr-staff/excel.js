@@ -4,24 +4,24 @@
   };
 })(jQuery);
 
-  $(document).ready(function() {
-    // Export table data as Excel on button click
-    $('#exportButton').click(function() {
-      // Get table data
-      var table = $('#myTable').get(0);
-      var data = XLSX.utils.table_to_sheet(table);
-
-      // Create a new workbook and worksheet using SheetJS
-      var wb = XLSX.utils.book_new();
-      var ws = XLSX.utils.aoa_to_sheet(data);
-
-      // Add the worksheet to the workbook
-      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-
-      // Export the workbook to an Excel file
-      XLSX.writeFile(wb, 'example.xlsx');
-    });
-  });
+//  $(document).ready(function() {
+//    // Export table data as Excel on button click
+//    $('#exportButton').click(function() {
+//      // Get table data
+//      var table = $('#myTable').get(0);
+//      var data = XLSX.utils.table_to_sheet(table);
+//
+//      // Create a new workbook and worksheet using SheetJS
+//      var wb = XLSX.utils.book_new();
+//      var ws = XLSX.utils.aoa_to_sheet(data);
+//
+//      // Add the worksheet to the workbook
+//      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+//
+//      // Export the workbook to an Excel file
+//      XLSX.writeFile(wb, 'example.xlsx');
+//    });
+//  });
 
   $(document).ready(function() {
   $('#download-btn').click(function() {
@@ -34,8 +34,16 @@
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
     // Convert the workbook to a binary string
     var binaryString = XLSX.write(workbook, { bookType: 'xlsx', type: 'binary' });
+
+    let sentence = table.getAttribute("value");
+    let wordToReplace = /null/g;
+    let replacementWord = "-";
+    console.log(sentence);
+    sentence = sentence.replace(wordToReplace, replacementWord);
+    console.log(sentence);
+    var excelName = sentence+'.xlsx';
     // Save the file
-    saveAs(new Blob([s2ab(binaryString)], {type:"application/octet-stream"}), 'my-table.xlsx');
+    saveAs(new Blob([s2ab(binaryString)], {type:"application/octet-stream"}), excelName);
   });
 });
 

@@ -143,7 +143,7 @@ public class LoginController {
                 }
                 else
                 {
-                    return vrController.filterSortClientSupplierPage(model, client, supplier, month, currentPage, fullName);
+                    return vrController.filterSortClientSupplierPage(model, client, supplier, currentPage, fullName);
                 }
             }
             else if(client == null && supplier == null && month != null)
@@ -158,7 +158,7 @@ public class LoginController {
                 }
                 else
                 {
-                    return vrController.filterPageClient(model, client, month, currentPage, fullName);
+                    return vrController.filterPageClient(model, client, currentPage, fullName);
                 }
             }
             else if (client == null && supplier != null)
@@ -199,7 +199,7 @@ public class LoginController {
             model.addAttribute("supplierList", supplierService.getAllSupplier());
 
             model.addAttribute("clientInfo", new ClientInfo());
-            model.addAttribute("supplierInfo", new SupplierInfo());
+            model.addAttribute("supplierInfo", new OfficialReceiptInfo.SupplierInfo());
 
             model.addAttribute("invoiceInfo", new InvoiceInfo());
             model.addAttribute("fullName",fullName);
