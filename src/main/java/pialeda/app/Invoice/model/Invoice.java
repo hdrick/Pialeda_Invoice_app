@@ -6,6 +6,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.GenerationType;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name="invoice")
@@ -19,8 +21,8 @@ public class Invoice {
     private String invoiceNum;
     @Column(nullable = false, name="invoice_purchase_order_number")
     private String poNum;
-    @Column(nullable = false, name="invoice_date_created")
-    private String dateCreated;
+    @Column(columnDefinition = "DATE", nullable = false, name="invoice_date_created")
+    private LocalDate dateCreated;
     @Column(nullable = false, name="invoice_client_contact_person")
     private String clientContactPerson;
 
@@ -38,7 +40,7 @@ public class Invoice {
     private String cashier;
 
     public Invoice(){}
-    public Invoice(String invoiceNum, String poNum, String dateCreated, String clientContactPerson, String supplierName, String supplierAddress, String supplierTin, String clientName, String clientTin, String clientAddress, String clientBusStyle, String clientTerms, double grandTotal, String cashier) {
+    public Invoice(String invoiceNum, String poNum, LocalDate dateCreated, String clientContactPerson, String supplierName, String supplierAddress, String supplierTin, String clientName, String clientTin, String clientAddress, String clientBusStyle, String clientTerms, double grandTotal, String cashier) {
         this.invoiceNum = invoiceNum;
         this.poNum = poNum;
         this.dateCreated = dateCreated;
@@ -58,7 +60,7 @@ public class Invoice {
     public Invoice(String invoiceNum) {
     }
 
-    public Invoice(String invoiceNum, String poNum, String dateCreated, String supplierName, String clientName, String clientContactPerson) {
+    public Invoice(String invoiceNum, String poNum, LocalDate dateCreated, String supplierName, String clientName, String clientContactPerson) {
         this.invoiceNum = invoiceNum;
         this.poNum = poNum;
         this.dateCreated = dateCreated;
@@ -91,11 +93,11 @@ public class Invoice {
         this.poNum = poNum;
     }
 
-    public String getDateCreated() {
+    public LocalDate getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(String dateCreated) {
+    public void setDateCreated(LocalDate dateCreated) {
         this.dateCreated = dateCreated;
     }
 
@@ -186,6 +188,7 @@ public class Invoice {
     public void setCashier(String cashier) {
         this.cashier = cashier;
     }
+
 }
 
 

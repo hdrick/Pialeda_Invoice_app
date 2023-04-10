@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import pialeda.app.Invoice.config.DateUtils;
 import pialeda.app.Invoice.model.Client;
 import pialeda.app.Invoice.model.Invoice;
 import pialeda.app.Invoice.service.ClientService;
@@ -12,6 +13,7 @@ import pialeda.app.Invoice.service.InvoiceService;
 import pialeda.app.Invoice.service.SupplierService;
 import pialeda.app.Invoice.dto.GlobalUser;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -451,6 +453,130 @@ public class VRController {
         model.addAttribute("isMonthPresent", false);
         model.addAttribute("isClientPresent", false);
         model.addAttribute("isSupplierPresent", true);
+        return "vr-staff/vr";
+    }
+
+    public String invalidDateFormat(Model model, String message)
+    {
+        List<Client> clients = clientService.getAllClient();
+        List<String> suppliers = supplierService.getAllSupplierName();
+
+        model.addAttribute("clients", clients);
+        model.addAttribute("suppliers", suppliers);
+        model.addAttribute("isMonthPresent", false);
+        model.addAttribute("isClientPresent", true);
+        model.addAttribute("isSupplierPresent", false);
+        model.addAttribute("isInvalidDate", true);
+        model.addAttribute("errorMessage", message);
+        return "vr-staff/vr";
+    }
+    public String filterClientSortByDateRange(Model model, String client, LocalDate startDate, LocalDate endDate, int currentPage, String fullName)
+    {
+        Page<Invoice> page = invoiceService.filterPageByClientSortByDateRange(client, startDate, endDate, currentPage);
+        List<Client> clients = clientService.getAllClient();
+        List<String> suppliers = supplierService.getAllSupplierName();
+        List<Invoice> invoices = page.getContent();
+
+        String dateStartString = DateUtils.parseDateToString(startDate);
+        String dateEndString = DateUtils.parseDateToString(endDate);
+
+        int totalPages = page.getTotalPages();
+        long totalItems = page.getTotalElements();
+
+        int startPage = Math.max(0, currentPage - 2);
+        int endPage = Math.min(totalPages - 1, startPage + 4);
+
+        if (currentPage > 2 && currentPage + 2 < totalPages) {
+            startPage = currentPage - 2;
+            endPage = currentPage + 2;
+        } else if (currentPage + 2 >= totalPages) {
+            endPage = totalPages - 1;
+            startPage = Math.max(0, endPage - 4);
+        }
+
+        List<Integer> pageNumbers = new ArrayList<>();
+        for (int i = startPage; i <= endPage; i++) {
+            pageNumbers.add(i);
+        }
+
+        model.addAttribute("fullName",fullName);
+
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("pageNumbers", pageNumbers);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalItems", totalItems);
+        model.addAttribute("invoices", invoices);
+
+        model.addAttribute("clients", clients);
+        model.addAttribute("suppliers", suppliers);
+
+        model.addAttribute("selectedMonth", null);
+        model.addAttribute("selectedClient", client);
+        model.addAttribute("selectedSupplier", null);
+
+        model.addAttribute("isMonthPresent", false);
+        model.addAttribute("isClientPresent", true);
+        model.addAttribute("isSupplierPresent", false);
+
+        model.addAttribute("startDate", dateStartString);
+        model.addAttribute("endDate", dateEndString);
+
+        return "vr-staff/vr";
+    }
+
+
+
+    public String filterSupplierSortByDateRange(Model model, String supplier, LocalDate startDate, LocalDate endDate, int currentPage, String fullName)
+    {
+        Page<Invoice> page = invoiceService.filterPageBySuppliertSortByDateRange(supplier, startDate, endDate, currentPage);
+        List<Client> clients = clientService.getAllClient();
+        List<String> suppliers = supplierService.getAllSupplierName();
+        List<Invoice> invoices = page.getContent();
+
+        String dateStartString = DateUtils.parseDateToString(startDate);
+        String dateEndString = DateUtils.parseDateToString(endDate);
+
+        int totalPages = page.getTotalPages();
+        long totalItems = page.getTotalElements();
+
+        int startPage = Math.max(0, currentPage - 2);
+        int endPage = Math.min(totalPages - 1, startPage + 4);
+
+        if (currentPage > 2 && currentPage + 2 < totalPages) {
+            startPage = currentPage - 2;
+            endPage = currentPage + 2;
+        } else if (currentPage + 2 >= totalPages) {
+            endPage = totalPages - 1;
+            startPage = Math.max(0, endPage - 4);
+        }
+
+        List<Integer> pageNumbers = new ArrayList<>();
+        for (int i = startPage; i <= endPage; i++) {
+            pageNumbers.add(i);
+        }
+
+        model.addAttribute("fullName",fullName);
+
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("pageNumbers", pageNumbers);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalItems", totalItems);
+        model.addAttribute("invoices", invoices);
+
+        model.addAttribute("clients", clients);
+        model.addAttribute("suppliers", suppliers);
+
+        model.addAttribute("selectedMonth", null);
+        model.addAttribute("selectedClient", null);
+        model.addAttribute("selectedSupplier", supplier);
+
+        model.addAttribute("isMonthPresent", false);
+        model.addAttribute("isClientPresent", false);
+        model.addAttribute("isSupplierPresent", true);
+
+        model.addAttribute("startDate", dateStartString);
+        model.addAttribute("endDate", dateEndString);
+
         return "vr-staff/vr";
     }
 }
