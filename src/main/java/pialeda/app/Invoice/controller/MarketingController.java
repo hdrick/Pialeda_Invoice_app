@@ -13,9 +13,7 @@ import pialeda.app.Invoice.service.OfficialRecptService;
 import pialeda.app.Invoice.service.SupplierService;
 import pialeda.app.Invoice.service.InvoiceService;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,7 +100,7 @@ public class MarketingController {
     }
 
     @PostMapping("/createSupplier")
-    public String createSupplier(@ModelAttribute("supplierInfo") SupplierInfo supplierInfo, Model model) {
+    public String createSupplier(@ModelAttribute("supplierInfo") OfficialReceiptInfo.SupplierInfo supplierInfo, Model model) {
         supplierService.createSupplier(supplierInfo);
         return "redirect:/marketing-invoice";
     }

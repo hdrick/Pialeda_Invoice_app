@@ -3,9 +3,7 @@ package pialeda.app.Invoice.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import pialeda.app.Invoice.dto.ClientInfo;
-import pialeda.app.Invoice.dto.SupplierInfo;
-import pialeda.app.Invoice.model.Client;
+import pialeda.app.Invoice.dto.OfficialReceiptInfo;
 import pialeda.app.Invoice.model.Supplier;
 import pialeda.app.Invoice.repository.SupplierRepository;
 
@@ -16,7 +14,7 @@ public class SupplierService {
     @Autowired
     private SupplierRepository supplierRepository;
 
-    public void createSupplier(SupplierInfo supplierInfo){
+    public void createSupplier(OfficialReceiptInfo.SupplierInfo supplierInfo){
         Supplier supplier = new Supplier();
 
         supplier.setName(supplierInfo.getName());
