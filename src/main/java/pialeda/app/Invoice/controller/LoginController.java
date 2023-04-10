@@ -1,10 +1,6 @@
 package pialeda.app.Invoice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-<<<<<<< HEAD
-=======
-
->>>>>>> daniel-test/main-3
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
@@ -18,12 +14,6 @@ import pialeda.app.Invoice.dto.GlobalUser;
 import java.time.LocalDate;
 import java.util.Random;
 
-<<<<<<< HEAD
-=======
-import java.math.BigInteger;
-import java.security.SecureRandom;
-
->>>>>>> daniel-test/main-3
 
 
 @Controller
