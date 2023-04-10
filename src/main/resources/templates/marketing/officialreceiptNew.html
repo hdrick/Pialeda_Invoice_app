@@ -175,15 +175,15 @@
               <div id="supp-details">
                 <!-- Supplier Name-->
 <!--                <h5 id="supp-name" class="mt-2 mx-4" contenteditable="true">SUPPLIER NAME</h5>-->
-                <input type="text"  class="h-input"  id="supp-name"  placeholder="SUPPLIER NAME">
+                <input type="text"  class="h-input" th:field="*{supplierName}" id="supp-name"  placeholder="SUPPLIER NAME">
 
                 <!-- Supplier Address-->
 <!--                <span id="supp-addrs">Supplier address and city address</span>-->
-                <input type="text" class="h-input"  id="supp-addrs" placeholder="SUPPLIER Address and City">
+                <input type="text" class="h-input"  th:field="*{supplierAddress}" id="supp-addrs" placeholder="SUPPLIER Address and City">
 
                 <!-- Supplier TIN-->
 <!--                <span id="supp-tin" >Supplier TIN</span>-->
-                <input type="text" class="h-input"  id="supp-tin" placeholder="SUPPLIER TIN">
+                <input type="text" class="h-input" th:field="*{supplierTin}" id="supp-tin" placeholder="SUPPLIER TIN">
               </div>
               <div style="font-weight: bolder;">
                 <div id="s-invo-con">
@@ -194,16 +194,16 @@
             </div>
           </div>
           <div class="r2-body">
-            <div id="hdate" class="con"><h5>OFFICIAL RECEIPT</h5> <div><label>Date</label><input type="date" id="orDate" name="orDate" required></div></div>
-            <div class="con"><label >Received from</label><input id="c-name" name="c-name"  required></div>
-            <div class="con"><label>and Address at</label><input  id="c-address" name="c-address" required></div>
-            <div class="con"><label>with TIN</label><input id="tin" name="tin"><label>engaged in the</label></div>
-            <div class="con"><label>Bus. Style of from</label><input id="busStyle" name="busStyle"><label>,the sum of</label></div>
-            <div class="con"><input  id="sumOf" name="sumOf" required><label>Pesos</label></div>
-            <div class="con"><label>(₱<input   id="clientPayment" name="clientPayment" step="0.01" style="color: red;" onchange="formatNumber()" required>) in full/partial payment for</label> <input id="paymentFor" name="paymentFor" required></div>
+            <div id="hdate" class="con"><h5>OFFICIAL RECEIPT</h5> <div><label>Date</label><input type="date" id="orDate" th:field="*{officialReceiptDate}" name="orDate" required></div></div>
+            <div class="con"><label >Received from</label><input th:field="*{recvFrom}" id="c-name" name="c-name"  required></div>
+            <div class="con"><label>and Address at</label><input th:field="*{clientAddress}" id="c-address" name="c-address" required></div>
+            <div class="con"><label>with TIN</label><input th:field="*{clientTin}" id="tin" name="tin"><label>engaged in the</label></div>
+            <div class="con"><label>Bus. Style of from</label><input th:field="*{clientBus}" id="busStyle" name="busStyle"><label>,the sum of</label></div>
+            <div class="con"><input  th:field="*{clientSumOf}" id="sumOf" name="sumOf" required><label>Pesos</label></div>
+            <div class="con"><label>(₱<input th:field="*{clientPayment}" type="text" id="clientPayment" name="clientPayment" step="0.01" style="color: red;" onchange="formatNumber(this)" required>) in full/partial payment for</label> <input th:field="*{partialPaymentFor}" id="paymentFor" name="paymentFor" required></div>
           </div>
           <div class="r2-footer">
-              <input type="text"  id="cashier-name-input">
+              <input type="text" th:field="*{cashierName}" id="cashier-name-input">
               <label style="font-size: 10px; margin-right: 25px; text-align: center;">Cashier/Authorized Representative</label>
           </div>
         </div>

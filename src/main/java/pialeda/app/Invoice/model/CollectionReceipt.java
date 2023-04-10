@@ -1,34 +1,32 @@
 package pialeda.app.Invoice.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-@Table(name="official_receipt")
-public class OfficialReceipt {
+@Table(name="collection_receipt")
+public class CollectionReceipt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-
     private String supplierName;
     private String supplierAddress;
-    private int officialReceiptNum;
+    private int collectionReceiptNum;
     private String supplierTin;
 
-    private double totalSales;
-    private double addVat;
-    private double lessWithHoldTax;
     private double amountDue;
-
     private double ewt;
     private double total;
-
 
     private String cash;
     private String checkNo;
     private double amount;
 
-    private String officialReceiptDate;
+    private String collectionReceiptDate;
     private String recvFrom;
     private String clientAddress;
     private String clientTin;
@@ -63,12 +61,12 @@ public class OfficialReceipt {
         this.supplierAddress = supplierAddress;
     }
 
-    public int getOfficialReceiptNum() {
-        return officialReceiptNum;
+    public int getCollectionReceiptNum() {
+        return collectionReceiptNum;
     }
 
-    public void setOfficialReceiptNum(int officialReceiptNum) {
-        this.officialReceiptNum = officialReceiptNum;
+    public void setCollectionReceiptNum(int collectionReceiptNum) {
+        this.collectionReceiptNum = collectionReceiptNum;
     }
 
     public String getSupplierTin() {
@@ -77,30 +75,6 @@ public class OfficialReceipt {
 
     public void setSupplierTin(String supplierTin) {
         this.supplierTin = supplierTin;
-    }
-
-    public double getTotalSales() {
-        return totalSales;
-    }
-
-    public void setTotalSales(double totalSales) {
-        this.totalSales = totalSales;
-    }
-
-    public double getAddVat() {
-        return addVat;
-    }
-
-    public void setAddVat(double addVat) {
-        this.addVat = addVat;
-    }
-
-    public double getLessWithHoldTax() {
-        return lessWithHoldTax;
-    }
-
-    public void setLessWithHoldTax(double lessWithHoldTax) {
-        this.lessWithHoldTax = lessWithHoldTax;
     }
 
     public double getAmountDue() {
@@ -151,12 +125,12 @@ public class OfficialReceipt {
         this.amount = amount;
     }
 
-    public String getOfficialReceiptDate() {
-        return officialReceiptDate;
+    public String getCollectionReceiptDate() {
+        return collectionReceiptDate;
     }
 
-    public void setOfficialReceiptDate(String officialReceiptDate) {
-        this.officialReceiptDate = officialReceiptDate;
+    public void setCollectionReceiptDate(String collectionReceiptDate) {
+        this.collectionReceiptDate = collectionReceiptDate;
     }
 
     public String getRecvFrom() {

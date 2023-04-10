@@ -59,32 +59,12 @@ function formatNumber(input) {
     let totalAmountNoComma = valueWithCommas.replace(/,/g, ''); // e.g. "1200.00"
     console.log("totalAmount: "+totalAmountNoComma);
 
-    let result = (totalAmountNoComma/1.12)*0.02;
+    let result = (totalAmountNoComma/1.12)*0.01;
     let ewt = result;
     
     ewtInput.value = ewt.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
     let newTotal = totalAmountNoComma - ewt; 
     totalInput.value = newTotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-  }
-
-  function computeVat(){
-    let totalAmount = getTotalAmount();
-    // const totalSales = document.getElementById("total-sales");
-
-    const addVatInput = document.getElementById("add-vat");
-    const lwTaxInput = document.getElementById("lw-tax");
-    const totalInput = document.getElementById("total");
-    const amtDueInput = document.getElementById("amt-due");
-
-    let addVat = 0.12 * totalAmount;
-    let lwTax = totalAmount * 0.02;
-
-    let totalResult = (totalAmount + addVat) -lwTax;
-
-    addVatInput.value = addVat.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});;
-    lwTaxInput.value = lwTax.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});;
-    totalInput.value = totalResult.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});;
-    amtDueInput.value = totalResult.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});;
   }
 
   function clearFields(){

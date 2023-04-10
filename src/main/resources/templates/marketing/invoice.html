@@ -54,7 +54,11 @@
                 <!--Client button  -->
                 <a id="btn-addClient" class="btn btn-success" data-toggle="modal" data-target="#clientModal">Add Client</a>
                 <!--button for create Official receipt  -->
-                <a id="btn-OR" class="btn btn-success" th:href="@{/marketing-officialreceipt}">Create OR</a>
+                <div>
+                    <a id="btn-OR" class="btn btn-warning" th:href="@{/marketing-officialreceipt}">Create OR</a>
+                    <a id="btn-CR" class="btn btn-dark" th:href="@{/marketing-collectionreceipt}">Create CR</a>
+                </div>
+
                 <div>
                     <a id="add-row-btn" class="btn">Add Item</a>
                     <a id="delete-row-btn" class="btn">Delete Item</a>
@@ -119,8 +123,8 @@
                         <div class="col-6 text-right">
                             <div id="d-con">
                                 <div id="d-title" style="font-weight: bolder; margin-right: 15%; color:green;">Date:</div>
-                                <div id="d-value"><span  id="client-date" contenteditable="true"></span></div>
-                                <input type="hidden" th:field="*{dateCreated}" id="client-date-input">
+                                <!-- <div id="d-value"><span  id="client-date" contenteditable="true"></span></div> -->
+                                <input  type="date" th:field="*{dateCreated}" id="client-date-input" required>
                             </div>
                             <div id="tm-con">
                                 <div id="tm-title" style="font-weight: bolder; margin-right: 13%; color:green;">Terms:</div>

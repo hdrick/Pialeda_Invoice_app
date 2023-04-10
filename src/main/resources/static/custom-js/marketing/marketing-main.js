@@ -58,8 +58,8 @@ function getClientInfo() {
             $('#client-conPerson-input').val(data.agent);
             $('#client-conPerson').text(data.agent);
 
-            $('#client-date').text(formattedDate);
-            $('#client-date-input').val(formattedDate);
+            // $('#client-date').text(formattedDate);
+            // $('#client-date-input').val(formattedDate);
 
             $('#client-busStyle').text(data.busStyle);
             $('#client-busStyle-input').val(data.busStyle);
@@ -137,7 +137,7 @@ addRowBtn.addEventListener('click', () => {
         <input name="article" type="text" required>
       </td>
       <td>
-        <input name="unitPrice" type="number" class="compute_unit_price" onfocus="if (this.value == '0.0') { this.value = ''; }" required>
+        <input name="unitPrice" type="text" class="compute_unit_price" required>
       </td>
       <td>
         <input name="amount" type="text" class="compute_amount" readonly>

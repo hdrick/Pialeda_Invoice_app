@@ -156,7 +156,7 @@
     width: 100%;
 }
 
- .main-bx1 #btn-addSupplier,#btn-addClient,#btn-OR{
+ .main-bx1 #btn-addSupplier,#btn-addClient{
     margin-top: 10px;
     align-items: start;
     width: 220px;
@@ -182,6 +182,25 @@
     margin-top:20px;
     cursor: pointer;
 }
+
+.main-bx1 #btn-OR{
+
+
+    font-weight: bolder;
+    font-size: 15px;
+    margin-top:20px;
+    cursor: pointer;
+}
+.main-bx1 #btn-CR{
+
+
+    font-weight: bolder;
+    font-size: 15px;
+    margin-top:20px;
+    cursor: pointer;
+}
+
+
 
  .main-bx2{
      display: flex;
@@ -249,4 +268,16 @@
     font-family: Open Sans;
     color: black;
     font-size: 15px;
+}
+
+#client-date-input{
+    align-items: center;
+    flex-grow: 1;
+    text-align: start;
+    outline: none;
+    box-shadow: none;
+    padding: 0 0 0 5px;
+    border: 0;
+    font-size: 12px;
+    font-weight: bolder;
 }

@@ -1,32 +1,9 @@
-package pialeda.app.Invoice.model;
+package pialeda.app.Invoice.dto;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name="official_receipt")
-public class OfficialReceipt {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-
+public class CollectionReceiptInfo {
     private String supplierName;
     private String supplierAddress;
-    private int officialReceiptNum;
     private String supplierTin;
-
-    private double totalSales;
-    private double addVat;
-    private double lessWithHoldTax;
-    private double amountDue;
-
-    private double ewt;
-    private double total;
-
-
-    private String cash;
-    private String checkNo;
-    private double amount;
 
     private String officialReceiptDate;
     private String recvFrom;
@@ -34,18 +11,10 @@ public class OfficialReceipt {
     private String clientTin;
     private String clientBus;
     private String clientSumOf;
-    private double clientPayment;
+    private String clientPayment;
     private String partialPaymentFor;
 
     private String cashierName;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getSupplierName() {
         return supplierName;
@@ -63,92 +32,12 @@ public class OfficialReceipt {
         this.supplierAddress = supplierAddress;
     }
 
-    public int getOfficialReceiptNum() {
-        return officialReceiptNum;
-    }
-
-    public void setOfficialReceiptNum(int officialReceiptNum) {
-        this.officialReceiptNum = officialReceiptNum;
-    }
-
     public String getSupplierTin() {
         return supplierTin;
     }
 
     public void setSupplierTin(String supplierTin) {
         this.supplierTin = supplierTin;
-    }
-
-    public double getTotalSales() {
-        return totalSales;
-    }
-
-    public void setTotalSales(double totalSales) {
-        this.totalSales = totalSales;
-    }
-
-    public double getAddVat() {
-        return addVat;
-    }
-
-    public void setAddVat(double addVat) {
-        this.addVat = addVat;
-    }
-
-    public double getLessWithHoldTax() {
-        return lessWithHoldTax;
-    }
-
-    public void setLessWithHoldTax(double lessWithHoldTax) {
-        this.lessWithHoldTax = lessWithHoldTax;
-    }
-
-    public double getAmountDue() {
-        return amountDue;
-    }
-
-    public void setAmountDue(double amountDue) {
-        this.amountDue = amountDue;
-    }
-
-    public double getEwt() {
-        return ewt;
-    }
-
-    public void setEwt(double ewt) {
-        this.ewt = ewt;
-    }
-
-    public double getTotal() {
-        return total;
-    }
-
-    public void setTotal(double total) {
-        this.total = total;
-    }
-
-    public String getCash() {
-        return cash;
-    }
-
-    public void setCash(String cash) {
-        this.cash = cash;
-    }
-
-    public String getCheckNo() {
-        return checkNo;
-    }
-
-    public void setCheckNo(String checkNo) {
-        this.checkNo = checkNo;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
     }
 
     public String getOfficialReceiptDate() {
@@ -199,11 +88,11 @@ public class OfficialReceipt {
         this.clientSumOf = clientSumOf;
     }
 
-    public double getClientPayment() {
+    public String getClientPayment() {
         return clientPayment;
     }
 
-    public void setClientPayment(double clientPayment) {
+    public void setClientPayment(String clientPayment) {
         this.clientPayment = clientPayment;
     }
 

@@ -65,10 +65,10 @@ public class InvoiceService {
 
         invoice.setSupplierName(invoiceInfo.getSupplierName());
         invoice.setSupplierAddress(invoiceInfo.getSupplierAddress());
-        invoice.setSupplierTin(invoiceInfo.getSupplierTin());
+        invoice.setSupplierTin(formatTIN(invoiceInfo.getSupplierTin()));
 
         invoice.setClientName(invoiceInfo.getClientName());
-        invoice.setClientTin(invoiceInfo.getClientTin());
+        invoice.setClientTin(formatTIN(invoiceInfo.getClientTin()));
         invoice.setClientAddress(invoiceInfo.getClientAddress());
         invoice.setClientBusStyle(invoiceInfo.getClientBusStyle());
         invoice.setClientTerms(invoiceInfo.getClientTerms());
@@ -95,22 +95,35 @@ public class InvoiceService {
                 invoiceProdInfoRepository.saveAll(items);
             }
         }
-        if(savedInvoice != null){
-            List<InvoiceProductInfo> items = new ArrayList<>();
-            for(int i = 0; i < qtyList.size(); i++){
-                InvoiceProductInfo item = new InvoiceProductInfo();
-                item.setQty(Integer.parseInt(qtyList.get(i)));
-                item.setUnit(unitList.get(i));
-                item.setArticles(articlesList.get(i));
-                item.setUnitPrice(Double.parseDouble(unitPriceList.get(i)));
-                item.setAmount(Double.parseDouble(amountList.get(i)));
-                item.setInvoiceNumber(invoiceInfo.getInvoiceNum());
-                item.setPurchaseOrderNumber(invoiceInfo.getPoNum());
-                items.add(item);
-                invoiceProdInfoRepository.saveAll(items);
-            }
-        }
+        // if(savedInvoice != null){
+        //     List<InvoiceProductInfo> items = new ArrayList<>();
+        //     for(int i = 0; i < qtyList.size(); i++){
+        //         InvoiceProductInfo item = new InvoiceProductInfo();
+        //         item.setQty(Integer.parseInt(qtyList.get(i)));
+        //         item.setUnit(unitList.get(i));
+        //         item.setArticles(articlesList.get(i));
+        //         item.setUnitPrice(Double.parseDouble(unitPriceList.get(i)));
+        //         item.setAmount(Double.parseDouble(amountList.get(i)));
+        //         item.setInvoiceNumber(invoiceInfo.getInvoiceNum());
+        //         item.setPurchaseOrderNumber(invoiceInfo.getPoNum());
+        //         items.add(item);
+        //         invoiceProdInfoRepository.saveAll(items);
+        //     }
+        // }
     }
+
+    public String formatTIN(String tin) {
+        String formattedTIN = "";
+        int length = tin.length();
+        if (length == 9) {
+            formattedTIN = tin.substring(0, 3) + "-" + tin.substring(3, 6) + "-" + tin.substring(6);
+        } else if (length == 12) {
+            formattedTIN = tin.substring(0, 3) + "-" + tin.substring(3, 6) + "-" + tin.substring(6, 9) + "-" + tin.substring(9);
+        }
+        return formattedTIN;
+    }
+    
+
 
     public void insertNotNullItem(int qty, String unit, String articles, double unitPrice, double amount,String invNum, String poNum){
         InvoiceProductInfo invoiceProduct = new InvoiceProductInfo();

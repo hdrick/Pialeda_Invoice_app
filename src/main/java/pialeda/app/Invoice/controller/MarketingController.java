@@ -9,14 +9,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pialeda.app.Invoice.dto.*;
 import pialeda.app.Invoice.model.*;
 import pialeda.app.Invoice.service.ClientService;
+import pialeda.app.Invoice.service.CollectionService;
 import pialeda.app.Invoice.service.OfficialRecptService;
 import pialeda.app.Invoice.service.SupplierService;
 import pialeda.app.Invoice.service.InvoiceService;
+import pialeda.app.Invoice.dto.GlobalUser;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 @Controller
 public class MarketingController {
@@ -28,43 +30,8 @@ public class MarketingController {
     private InvoiceService invoiceService;
     @Autowired
     private OfficialRecptService officialRecptService;
-
-
-    @GetMapping("marketing-officialreceipt")
-    public String test(Model model){
-        String role = GlobalUser.getUserRole();
-        String destination=null;
-        if(role == null){
-            return destination = "redirect:/login";
-        } else if (role.equals("vr-staff")) {
-            return destination = "redirect:/vr/user/invoices";
-        } else if (role.equals(("marketing"))) {
-            // get the current date
-            LocalDate currentDate = LocalDate.now();
-
-            // get the current day and month
-            int currentDay = currentDate.getDayOfMonth();
-            int  currentMonth = currentDate.getMonthValue();
-            int generateORNumber = (int) officialRecptService.getOrCount();
-
-            if(generateORNumber == 0 || generateORNumber < 0){
-                generateORNumber += 1;
-            }else {
-                generateORNumber += 1;
-            }
-            // format generateORNumber with a leading zero
-            String generateORNumberStr = String.format("%02d", generateORNumber);
-            String resultStr = String.format("%d%d%s", currentMonth, currentDay, generateORNumberStr);
-            int result = Integer.parseInt(resultStr);
-
-            model.addAttribute("generateORNumber", result);
-            model.addAttribute("officialReceiptInfo", new OfficialReceiptInfo());
-            return destination = "marketing/officialreceipt";
-        } else if (role.equals("admin")) {
-            return destination = "redirect:/admin-dashboard";
-        }
-        return destination;
-    }
+    @Autowired
+    private CollectionService collectionService;
 
     @GetMapping("marketing-view/invoices")
     public String viewInvoices(Model model){
@@ -109,16 +76,6 @@ public class MarketingController {
         return "redirect:/marketing-invoice";
     }
 
-    // @PostMapping("/createOfficialReceipt")
-    // public String createOfficialReceipt(@RequestParam("orNumber") int orNumber,
-    //                                     @ModelAttribute("officialReceiptInfo") OfficialReceiptInfo officialReceiptInfo,
-    //                                     Model model) {
-
-    //     System.out.println(officialReceiptInfo.getRecvFrom());
-    //     officialRecptService.createOR(orNumber,officialReceiptInfo);
-    //     return "redirect:/marketing-invoice";
-    // }
-
     @PostMapping("/createOfficialReceipt")
     public String createOfficialReceipt(@RequestParam("orNumber") int orNumber,
                                         @RequestParam("totalSales") String totalSales,
@@ -130,37 +87,38 @@ public class MarketingController {
                                         @RequestParam("cash") String cash,
                                         @RequestParam("chckNo") String chckNo,
                                         @RequestParam("orAmount") String orAmount,
+                                        @RequestParam("cashierName") String cashierName,
                                         @RequestParam Map<String, String> requestParams,
-                                        @ModelAttribute("officialReceiptInfo") OfficialReceiptInfo officialReceiptInfo
+                                        @ModelAttribute("officialReceiptInfo") OfficialReceiptInfo officialReceiptInfo,
+                                        RedirectAttributes redirectAttributes
         ) {
-      List<String> invoices = new ArrayList<>();
-      List<String> amounts = new ArrayList<>();
-      for (int i = 1; i <= 8; i++) {
-        String invoice = requestParams.get("inv" + i);
-        String amount = requestParams.get("inv" + i + "-amt");
-        if (invoice != null && !invoice.isEmpty()) {
-          invoices.add(invoice);
-          if (amount != null && !amount.isEmpty()) {
-            amounts.add(amount);
-          }
-        }
-      }
-      System.out.println(invoices);
-      System.out.println(amounts);
-
-      System.out.println("orNumber:"+orNumber);
-      System.out.println("totalSales: "+totalSales);
-      System.out.println("addVat: "+addVat);
-      System.out.println("lwTax: "+lwTax);
-      System.out.println("amtDue: "+amtDue);
-      System.out.println("ewt: "+ewt);
-      System.out.println("total: "+total);
-      System.out.println("cash: "+cash);
-      System.out.println("chckNo: "+chckNo);
-      System.out.println("orAmount: "+orAmount);
-      return "redirect:/marketing-invoice";
+      officialRecptService.createOR(orNumber, totalSales, addVat, lwTax, amtDue, ewt, total, cash, chckNo, orAmount, cashierName, requestParams, officialReceiptInfo);
+      boolean hideDivSuccessOR = true;
+      redirectAttributes.addFlashAttribute("hideDivSuccessOR", hideDivSuccessOR);
+      return "redirect:/marketing-officialreceipt";
     }
-    
+
+
+
+    @PostMapping("/createCollectionReceipt")
+    public String createCollectionReceipt(@RequestParam("orNumber") int orNumber,
+                                        @RequestParam("amtDue") String amtDue,
+                                        @RequestParam("ewt") String ewt,
+                                        @RequestParam("total") String total,
+                                        @RequestParam("cash") String cash,
+                                        @RequestParam("chckNo") String chckNo,
+                                        @RequestParam("crAmount") String crAmount,
+                                        @RequestParam("cashierName") String cashierName,
+                                        @RequestParam Map<String, String> requestParams,
+                                        @ModelAttribute("collectionReceiptInfo") CollectionReceiptInfo collectionReceiptInfo,
+                                        RedirectAttributes redirectAttributes
+        ) {
+      collectionService.createCR(orNumber, amtDue, ewt, total, cash, chckNo, crAmount, cashierName, requestParams, collectionReceiptInfo);
+      boolean hideDivSuccessOR = true;
+      redirectAttributes.addFlashAttribute("hideDivSuccessOR", hideDivSuccessOR);
+      return "redirect:/marketing-collectionreceipt";
+    }
+      
 
 
 
@@ -263,31 +221,121 @@ public class MarketingController {
          }
     }
 
-    @GetMapping("/create-or")
-    public String viewOfficialReceipt(Model model){
-        // get the current date
-        LocalDate currentDate = LocalDate.now();
+    // @GetMapping("/create-or")
+    // public String viewOfficialReceipt(Model model){
+    //     // get the current date
+    //     LocalDate currentDate = LocalDate.now();
+    //     Random random = new Random();
+    //     // get the current day and month
+    //     int currentDay = currentDate.getDayOfMonth();
+    //     int  currentMonth = currentDate.getMonthValue();
+    //     int generateORNumber = (int) officialRecptService.getOrCount();
+    //     // generate two random two-digit numbers between 10 and 99
+    //     int randomNum = random.nextInt(90) + 10;
+    //     if(generateORNumber == 0 || generateORNumber < 0){
+    //         generateORNumber += 1;
+    //     }else {
+    //         generateORNumber += 1;
+    //     }
+    //     // format generateORNumber with a leading zero
+    //     String generateORNumberStr = String.format("%02d", generateORNumber);
+    //     String resultStr = String.format("%d%d%s", currentMonth, currentDay, generateORNumberStr);
+    //     String orGeneratedNum = resultStr + randomNum;
+    //     int result = Integer.parseInt(orGeneratedNum);
 
-        // get the current day and month
-        int currentDay = currentDate.getDayOfMonth();
-        int  currentMonth = currentDate.getMonthValue();
-        int generateORNumber = (int) officialRecptService.getOrCount();
+    //     model.addAttribute("generateORNumber", result);
+    //     model.addAttribute("clientList", clientService.getAllClient());
+    //     model.addAttribute("supplierList", supplierService.getAllSupplier());
+    //     model.addAttribute("officialReceiptInfo", new OfficialReceiptInfo());
+    //     // return destination = "marketing/officialreceipt";
+    //     return "marketing/officialreceiptNew";
+    // }
 
-        if(generateORNumber == 0 || generateORNumber < 0){
-            generateORNumber += 1;
-        }else {
-            generateORNumber += 1;
+    @GetMapping("marketing-officialreceipt")
+    public String marketingR(Model model){
+        String role = GlobalUser.getUserRole();
+        String userFname = GlobalUser.getUserFirstName();
+        String userLname = GlobalUser.getUserLastName();
+        String fullName = userLname+", "+userFname;
+        String destination=null;
+        if(role == null){
+            return destination = "redirect:/login";
+        } else if (role.equals("vr-staff")) {
+            return destination = "redirect:/vr/user/invoices";
+        } else if (role.equals(("marketing"))) {
+            // get the current date
+            LocalDate currentDate = LocalDate.now();
+            Random random = new Random();
+            // get the current day and month
+            int currentDay = currentDate.getDayOfMonth();
+            int  currentMonth = currentDate.getMonthValue();
+            int generateORNumber = (int) officialRecptService.getOrCount();
+            // generate two random two-digit numbers between 10 and 99
+            int randomNum = random.nextInt(90) + 10;
+            if(generateORNumber == 0 || generateORNumber < 0){
+                generateORNumber += 1;
+            }else {
+                generateORNumber += 1;
+            }
+            // format generateORNumber with a leading zero
+            String generateORNumberStr = String.format("%02d", generateORNumber);
+            String resultStr = String.format("%d%d%s", currentMonth, currentDay, generateORNumberStr);
+            String orGeneratedNum = resultStr + randomNum;
+            int result = Integer.parseInt(orGeneratedNum);
+
+            model.addAttribute("generateORNumber", result);
+            model.addAttribute("fullName",fullName);
+            model.addAttribute("clientList", clientService.getAllClient());
+            model.addAttribute("supplierList", supplierService.getAllSupplier());
+            model.addAttribute("officialReceiptInfo", new OfficialReceiptInfo());
+            return destination = "marketing/officialreceipt";
+        } else if (role.equals("admin")) {
+            return destination = "redirect:/admin-dashboard";
         }
-        // format generateORNumber with a leading zero
-        String generateORNumberStr = String.format("%02d", generateORNumber);
-        String resultStr = String.format("%d%d%s", currentMonth, currentDay, generateORNumberStr);
-        int result = Integer.parseInt(resultStr);
+        return destination;
+    }
 
-        model.addAttribute("generateORNumber", result);
-        model.addAttribute("clientList", clientService.getAllClient());
-        model.addAttribute("supplierList", supplierService.getAllSupplier());
-        model.addAttribute("officialReceiptInfo", new OfficialReceiptInfo());
-        // return destination = "marketing/officialreceipt";
-        return "marketing/officialreceiptNew";
+    @GetMapping("marketing-collectionreceipt")
+    public String collectionR(Model model){
+        String role = GlobalUser.getUserRole();
+        String userFname = GlobalUser.getUserFirstName();
+        String userLname = GlobalUser.getUserLastName();
+        String fullName = userLname+", "+userFname;
+        String destination=null;
+        if(role == null){
+            return destination = "redirect:/login";
+        } else if (role.equals("vr-staff")) {
+            return destination = "redirect:/vr/user/invoices";
+        } else if (role.equals(("marketing"))) {
+            // get the current date
+            LocalDate currentDate = LocalDate.now();
+            Random random = new Random();
+            // get the current day and month
+            int currentDay = currentDate.getDayOfMonth();
+            int  currentMonth = currentDate.getMonthValue();
+            int generateORNumber = (int) collectionService.getCrCount();
+            // generate two random two-digit numbers between 10 and 99
+            int randomNum = random.nextInt(90) + 10;
+            if(generateORNumber == 0 || generateORNumber < 0){
+                generateORNumber += 1;
+            }else {
+                generateORNumber += 1;
+            }
+            // format generateORNumber with a leading zero
+            String generateORNumberStr = String.format("%02d", generateORNumber);
+            String resultStr = String.format("%d%d%s", currentMonth, currentDay, generateORNumberStr);
+            String orGeneratedNum = resultStr + randomNum;
+            int result = Integer.parseInt(orGeneratedNum);
+
+            model.addAttribute("generateORNumber", result);
+            model.addAttribute("fullName",fullName);
+            model.addAttribute("clientList", clientService.getAllClient());
+            model.addAttribute("supplierList", supplierService.getAllSupplier());
+            model.addAttribute("collectionReceiptInfo", new CollectionReceiptInfo());
+            return destination = "marketing/collectionreceipt";
+        } else if (role.equals("admin")) {
+            return destination = "redirect:/admin-dashboard";
+        }
+        return destination;
     }
 }
