@@ -12,9 +12,15 @@ public class DateUtils {
         LocalDate currentDate = LocalDate.now();
         return currentDate;
     }
-    public static String parseDateToString(LocalDate localDateObject)
+    public static String parseDateToString2(LocalDate localDateObject)
     {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String formattedDate = localDateObject.format(formatter);
+        return formattedDate;
+    }
+    public static String parseDateToString(LocalDate localDateObject)
+    {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedDate = localDateObject.format(formatter);
         return formattedDate;
     }

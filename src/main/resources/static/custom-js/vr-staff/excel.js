@@ -27,7 +27,16 @@
     // Convert the workbook to a binary string
     var binaryString = XLSX.write(workbook, { bookType: 'xlsx', type: 'binary' });
 
-    var cleanName = params.client+params.supplier+params.page+'.xlsx';
+    var today = new Date();
+    var day = today.getDate();
+    var month = today.getMonth() + 1;
+    var year = today.getFullYear();
+
+    var time = today.toLocaleTimeString('en-US', {hour12: false});
+
+    var cleanName = day + '/' + month + '/' + year+'/'+time+'.xlsx';
+
+
     // Save the file
     saveAs(new Blob([s2ab(binaryString)], {type:"application/octet-stream"}), cleanName);
   });

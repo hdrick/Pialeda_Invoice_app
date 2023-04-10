@@ -124,7 +124,6 @@ public class LoginController {
     @GetMapping("vr/user/invoices")
     public String getAllPages(Model model, @RequestParam(name="client", required = false) String client,
                               @RequestParam(name="supplier", required = false) String supplier,
-                              @RequestParam(name="sortBy", required = false) String month,
                               @RequestParam(name="startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                               @RequestParam(name="endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
                               @RequestParam(name="page", required = false, defaultValue = "1") int currentPage) {
@@ -145,30 +144,36 @@ public class LoginController {
 
             if (client != null && supplier != null)
             {
-                if (month != null)
+                if (startDate != null && endDate != null)
                 {
-                    return vrController.filterSortPage(model, client, supplier, month, currentPage, fullName);
+                    String message = null;
+                    if (!DateUtils.isValidLocalDate(DateUtils.parseDateToString2(startDate)) || !DateUtils.isValidLocalDate(DateUtils.parseDateToString2(endDate)))
+                    {
+                        message = "Invalid start or end date format";
+                        return vrController.invalidDateFormat(model, message);
+                    }
+                    else if (startDate.isAfter(endDate))
+                    {
+                        message = "The start date cannot be later than the finish date.";
+                        return vrController.invalidDateFormat(model, message);
+                    }
+                    else
+                    {
+                        return vrController.filterClientSupplierSortByDateRange(model, client, supplier, startDate, endDate, currentPage, fullName);
+                    }
+
                 }
                 else
                 {
                     return vrController.filterSortClientSupplierPage(model, client, supplier, currentPage, fullName);
                 }
             }
-            else if(client == null && supplier == null && month != null)
-            {
-                return vrController.sortPageByMonth(model, month, currentPage, fullName);
-            }
             else if (client != null && supplier == null)
             {
-                System.out.println(startDate+"------------"+endDate);
-                if (month != null)
-                {
-                    return vrController.filterClientSortPage(model, client, month, currentPage, fullName);
-                }
-                else if (startDate != null && endDate != null)
+                if (startDate != null && endDate != null)
                 {
                     String message = null;
-                    if (!DateUtils.isValidLocalDate(DateUtils.parseDateToString(startDate)) || !DateUtils.isValidLocalDate(DateUtils.parseDateToString(endDate)))
+                    if (!DateUtils.isValidLocalDate(DateUtils.parseDateToString2(startDate)) || !DateUtils.isValidLocalDate(DateUtils.parseDateToString2(endDate)))
                     {
                         message = "Invalid start or end date format";
                         return vrController.invalidDateFormat(model, message);
@@ -191,14 +196,10 @@ public class LoginController {
             }
             else if (client == null && supplier != null)
             {
-                if (month != null)
-                {
-                    return vrController.filterSupplierSortPage(model, supplier, month, currentPage, fullName);
-                }
-                else if (startDate != null && endDate != null)
+                if (startDate != null && endDate != null)
                 {
                     String message = null;
-                    if (!DateUtils.isValidLocalDate(DateUtils.parseDateToString(startDate)) || !DateUtils.isValidLocalDate(DateUtils.parseDateToString(endDate)))
+                    if (!DateUtils.isValidLocalDate(DateUtils.parseDateToString2(startDate)) || !DateUtils.isValidLocalDate(DateUtils.parseDateToString2(endDate)))
                     {
                         message = "Invalid start or end date format";
                         return vrController.invalidDateFormat(model, message);

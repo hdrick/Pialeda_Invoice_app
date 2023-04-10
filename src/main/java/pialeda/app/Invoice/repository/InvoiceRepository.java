@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pialeda.app.Invoice.model.Invoice;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -39,4 +40,21 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
     Page<Invoice> findByClientNameAndDateCreatedBetween(String clientName, LocalDate startDate, LocalDate endDate, Pageable pageable);
 
     Page<Invoice> findBySupplierNameAndDateCreatedBetween(String name, LocalDate startDate, LocalDate endDate, Pageable pageable);
+
+    Page<Invoice> findByClientNameAndSupplierNameAndDateCreatedBetween(String client, String supplier, LocalDate startDate, LocalDate endDate, Pageable pageable);
+
+    @Query("SELECT COALESCE(SUM(i.grandTotal), 0) FROM Invoice i WHERE i.supplierName = :supplierName")
+    BigDecimal getSumOfAllInvoiceAmountsBySupplierName(@Param("supplierName") String supplierName);
+
+    @Query("SELECT COALESCE(SUM(i.grandTotal), 0) FROM Invoice i WHERE i.clientName = :clientName AND i.supplierName = :supplierName")
+    BigDecimal getSumOfAllInvoiceAmountsByClientNameAndSupplierName(@Param("clientName") String clientName, @Param("supplierName") String supplierName);
+
+    @Query("SELECT COALESCE(SUM(i.grandTotal), 0) FROM Invoice i WHERE i.supplierName = :supplierName AND i.dateCreated BETWEEN :startDate AND :endDate")
+    BigDecimal sumOfGrandTotalBySupplierNameBetweenDateCreated(@Param("supplierName") String supplierName, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+    @Query("SELECT COALESCE(SUM(i.grandTotal), 0) FROM Invoice i WHERE i.clientName = :clientName AND  i.supplierName = :supplierName AND i.dateCreated BETWEEN :startDate AND :endDate")
+    BigDecimal sumOfGrandTotalByClientNameAndSupplierNameBetweenDateCreated(@Param("clientName") String clientName, @Param("supplierName") String supplierName, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+    @Query("SELECT i FROM Invoice i WHERE CONCAT(i.clientName, i.supplierName, i.clientAddress, i.supplierAddress, i.clientBusStyle, i.cashier) LIKE %:keyword%")
+    Page<Invoice> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 }

@@ -20,6 +20,7 @@ import pialeda.app.Invoice.dto.InvoiceInfo;
 import pialeda.app.Invoice.repository.SupplierRepository;
 
 import javax.persistence.EntityNotFoundException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -159,6 +160,11 @@ public class InvoiceService {
         Pageable pageable = PageRequest.of(pageNumber -1, 7);
         return invoiceRepository.findByKeyword(keyword, pageable);
     }
+    public Page<Invoice> getPageByKeyword(String keyword, int pageNumber)
+    {
+        Pageable pageable = PageRequest.of(pageNumber -1, 7);
+        return invoiceRepository.searchByKeyword(keyword, pageable);
+    }
     public Page<Invoice> filterPageByClient(String name, int pageNumber)
     {
         Pageable pageable = PageRequest.of(pageNumber -1, 7);
@@ -170,13 +176,6 @@ public class InvoiceService {
         sort = sort.ascending();
         Pageable pageable = PageRequest.of(pageNumber -1, 7, sort);
         return invoiceRepository.findByClientNameAndDateCreatedContainingIgnoreCase(name, month, pageable);
-    }
-    public Page<Invoice> filterPageBySupplierSortByMonth(String name, String month, int pageNumber)
-    {
-        Sort sort = Sort.by("dateCreated");
-        sort = sort.ascending();
-        Pageable pageable = PageRequest.of(pageNumber -1, 7, sort);
-        return invoiceRepository.findBySupplierNameAndDateCreatedContainingIgnoreCase(name, month, pageable);
     }
     public Page<Invoice> filterPageBySupplier(String name, int pageNumber)
     {
@@ -211,12 +210,31 @@ public class InvoiceService {
         Pageable pageable = PageRequest.of(pageNumber -1, 7, sort);
         return invoiceRepository.findByClientNameAndDateCreatedBetween(name, startDate, endDate, pageable);
     }
-    public Page<Invoice> filterPageBySuppliertSortByDateRange(String name, LocalDate startDate, LocalDate endDate, int pageNumber)
+    public Page<Invoice> filterPageBySupplierSortByDateRange(String name, LocalDate startDate, LocalDate endDate, int pageNumber)
     {
         Sort sort = Sort.by("dateCreated");
         sort = sort.ascending();
         Pageable pageable = PageRequest.of(pageNumber -1, 7, sort);
         return invoiceRepository.findBySupplierNameAndDateCreatedBetween(name, startDate, endDate, pageable);
+    }
+    public Page<Invoice> filterPageByClientAndSupplierSortByDateRange(String client, String supplier, LocalDate startDate, LocalDate endDate, int pageNumber)
+    {
+        Sort sort = Sort.by("dateCreated");
+        sort = sort.ascending();
+        Pageable pageable = PageRequest.of(pageNumber -1, 7, sort);
+        return invoiceRepository.findByClientNameAndSupplierNameAndDateCreatedBetween(client, supplier, startDate, endDate, pageable);
+    }
+    public BigDecimal getTotalAmountBySupplierName(String supplierName) {
+        return invoiceRepository.getSumOfAllInvoiceAmountsBySupplierName(supplierName);
+    }
+    public BigDecimal getTotalAmountByClientNameAndSupplierName(String clientName, String supplierName) {
+        return invoiceRepository.getSumOfAllInvoiceAmountsByClientNameAndSupplierName(clientName, supplierName);
+    }
+    public BigDecimal getTotalAmountBySupplierNameBetweenDateRange(String supplierName, LocalDate startDate, LocalDate endDate) {
+        return invoiceRepository.sumOfGrandTotalBySupplierNameBetweenDateCreated(supplierName, startDate, endDate);
+    }
+    public BigDecimal getTotalAmountByClientNameAndSupplierNameBetweenDateRange(String clientName, String supplierName, LocalDate startDate, LocalDate endDate) {
+        return invoiceRepository.sumOfGrandTotalByClientNameAndSupplierNameBetweenDateCreated(clientName, supplierName, startDate, endDate);
     }
 
 //    DRICKS...
@@ -281,6 +299,7 @@ public class InvoiceService {
            return false;
        }
     }
+
 
 
 }
