@@ -36,7 +36,7 @@ background-color: #ddd;
 .officialReceipt-btn{
     margin-top: 10px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     gap:20px;
 }
 
@@ -184,6 +184,23 @@ table td input{
     padding:0;
     border: 0;
 }
+
+/* For Actions button */
+.btn-actions{
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  gap: 400px;
+}
+
+.selection{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* END For Actions button */
+
 
 @media print {
   button, a {

@@ -13,6 +13,7 @@ import pialeda.app.Invoice.service.OfficialRecptService;
 import pialeda.app.Invoice.service.SupplierService;
 import pialeda.app.Invoice.service.InvoiceService;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,15 +109,60 @@ public class MarketingController {
         return "redirect:/marketing-invoice";
     }
 
+    // @PostMapping("/createOfficialReceipt")
+    // public String createOfficialReceipt(@RequestParam("orNumber") int orNumber,
+    //                                     @ModelAttribute("officialReceiptInfo") OfficialReceiptInfo officialReceiptInfo,
+    //                                     Model model) {
+
+    //     System.out.println(officialReceiptInfo.getRecvFrom());
+    //     officialRecptService.createOR(orNumber,officialReceiptInfo);
+    //     return "redirect:/marketing-invoice";
+    // }
+
     @PostMapping("/createOfficialReceipt")
     public String createOfficialReceipt(@RequestParam("orNumber") int orNumber,
-                                        @ModelAttribute("officialReceiptInfo") OfficialReceiptInfo officialReceiptInfo,
-                                        Model model) {
+                                        @RequestParam("totalSales") String totalSales,
+                                        @RequestParam("addVat") String addVat,
+                                        @RequestParam("lwTax") String lwTax,
+                                        @RequestParam("amtDue") String amtDue,
+                                        @RequestParam("ewt") String ewt,
+                                        @RequestParam("total") String total,
+                                        @RequestParam("cash") String cash,
+                                        @RequestParam("chckNo") String chckNo,
+                                        @RequestParam("orAmount") String orAmount,
+                                        @RequestParam Map<String, String> requestParams,
+                                        @ModelAttribute("officialReceiptInfo") OfficialReceiptInfo officialReceiptInfo
+        ) {
+      List<String> invoices = new ArrayList<>();
+      List<String> amounts = new ArrayList<>();
+      for (int i = 1; i <= 8; i++) {
+        String invoice = requestParams.get("inv" + i);
+        String amount = requestParams.get("inv" + i + "-amt");
+        if (invoice != null && !invoice.isEmpty()) {
+          invoices.add(invoice);
+          if (amount != null && !amount.isEmpty()) {
+            amounts.add(amount);
+          }
+        }
+      }
+      System.out.println(invoices);
+      System.out.println(amounts);
 
-        System.out.println(officialReceiptInfo.getRecvFrom());
-        officialRecptService.createOR(orNumber,officialReceiptInfo);
-        return "redirect:/marketing-invoice";
+      System.out.println("orNumber:"+orNumber);
+      System.out.println("totalSales: "+totalSales);
+      System.out.println("addVat: "+addVat);
+      System.out.println("lwTax: "+lwTax);
+      System.out.println("amtDue: "+amtDue);
+      System.out.println("ewt: "+ewt);
+      System.out.println("total: "+total);
+      System.out.println("cash: "+cash);
+      System.out.println("chckNo: "+chckNo);
+      System.out.println("orAmount: "+orAmount);
+      return "redirect:/marketing-invoice";
     }
+    
+
+
 
     @GetMapping("/getClientInfo")
     @ResponseBody
@@ -215,5 +261,33 @@ public class MarketingController {
              redirectAttributes.addFlashAttribute("hideDivError", hideDivError);
              return "redirect:/invoice-view";
          }
+    }
+
+    @GetMapping("/create-or")
+    public String viewOfficialReceipt(Model model){
+        // get the current date
+        LocalDate currentDate = LocalDate.now();
+
+        // get the current day and month
+        int currentDay = currentDate.getDayOfMonth();
+        int  currentMonth = currentDate.getMonthValue();
+        int generateORNumber = (int) officialRecptService.getOrCount();
+
+        if(generateORNumber == 0 || generateORNumber < 0){
+            generateORNumber += 1;
+        }else {
+            generateORNumber += 1;
+        }
+        // format generateORNumber with a leading zero
+        String generateORNumberStr = String.format("%02d", generateORNumber);
+        String resultStr = String.format("%d%d%s", currentMonth, currentDay, generateORNumberStr);
+        int result = Integer.parseInt(resultStr);
+
+        model.addAttribute("generateORNumber", result);
+        model.addAttribute("clientList", clientService.getAllClient());
+        model.addAttribute("supplierList", supplierService.getAllSupplier());
+        model.addAttribute("officialReceiptInfo", new OfficialReceiptInfo());
+        // return destination = "marketing/officialreceipt";
+        return "marketing/officialreceiptNew";
     }
 }

@@ -49,7 +49,7 @@ function getClientInfo() {
             $('#client-name').text(data.name);
             $('#client-name-input').val(data.name);
 
-            $('#client-tin').text(data.tin);
+            $('#client-tin').text(formatTIN(data.tin));
             $('#client-tin-input').val(data.tin);
 
             $('#client-address').text(data.address+", "+data.cityAddress);
@@ -89,10 +89,16 @@ function getSupplierInfo(){
             $('#supp-addrs').text(data.address+", "+data.cityAddress);
 
             $('#supp-tin-input').val(data.tin);
-            $('#supp-tin').text("VAT Reg. TIN "+data.tin);
+            $('#supp-tin').text("VAT Reg. TIN "+formatTIN(data.tin));
         }
     });
 }
+function formatTIN(tin) {
+  var formattedTIN = tin.toString().replace(/[^0-9]/g, ''); // remove any non-digit characters
+  formattedTIN = formattedTIN.replace(/^(\d{3})(\d{3})(\d{3})$/, "$1-$2-$3-000");
+  return formattedTIN;
+}
+
 function generatePONumber() {
     const poNum = document.getElementById('client-poNumber');
     const poNumInput = document.getElementById('client-poNumber-input');
