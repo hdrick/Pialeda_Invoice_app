@@ -14,6 +14,8 @@ import pialeda.app.Invoice.service.OfficialRecptService;
 import pialeda.app.Invoice.service.SupplierService;
 import pialeda.app.Invoice.service.InvoiceService;
 import pialeda.app.Invoice.dto.GlobalUser;
+
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +49,7 @@ public class MarketingController {
                                 @RequestParam("unitPrice") List<String> unitPriceList,
                                 @RequestParam("amount") List<String> amountList,
                                 RedirectAttributes redirectAttributes
-                                 ){
+                                 ) throws ParseException{
         double sumOfGrandTotal = invoiceService.getSuppTotalLimit(invoiceInfo.getSupplierName());
         double supplierLimit = supplierService.findLimitByName(invoiceInfo.getSupplierName());
         double remainingLimit = supplierLimit - sumOfGrandTotal;
@@ -71,7 +73,7 @@ public class MarketingController {
     }
 
     @PostMapping("/createSupplier")
-    public String createSupplier(@ModelAttribute("supplierInfo") OfficialReceiptInfo.SupplierInfo supplierInfo, Model model) {
+    public String createSupplier(@ModelAttribute("supplierInfo") SupplierInfo supplierInfo, Model model) {
         supplierService.createSupplier(supplierInfo);
         return "redirect:/marketing-invoice";
     }

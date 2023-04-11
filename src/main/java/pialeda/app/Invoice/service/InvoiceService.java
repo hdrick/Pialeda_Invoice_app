@@ -20,8 +20,12 @@ import pialeda.app.Invoice.repository.SupplierRepository;
 
 import javax.persistence.EntityNotFoundException;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,12 +63,16 @@ public class InvoiceService {
     }
 
     public void createInvoice(InvoiceInfo invoiceInfo, List<String> qtyList, List<String> unitList,
-                            List<String> articlesList, List<String> unitPriceList, List<String> amountList){
+                            List<String> articlesList, List<String> unitPriceList, List<String> amountList) throws ParseException{
                                 Invoice invoice = new Invoice();     
         //Insert invoice info
         invoice.setInvoiceNum(invoiceInfo.getInvoiceNum());
         invoice.setPoNum(invoiceInfo.getPoNum());
-        invoice.setDateCreated(invoiceInfo.getDateCreated());
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(invoiceInfo.getDateCreated());
+        invoice.setDateCreated(date);
+        // invoice.setDateCreated(invoiceInfo.getDateCreated());
         invoice.setClientContactPerson(invoiceInfo.getClientContactPerson());
 
         invoice.setSupplierName(invoiceInfo.getSupplierName());
@@ -242,7 +250,7 @@ public class InvoiceService {
         return invoiceProdInfoRepository.findByInvoiceNumber(invNum);
     }
 
-    public boolean updateInvoices(String invoiceNumber, LocalDate dateCreated,
+    public boolean updateInvoices(String invoiceNumber, CharSequence dateCreated,
                                   String supplierName, String clientName, String clientContactPerson,
                                   String totalAmt, List<String> qtyList, List<String> unitList, List<String> articlesList,
                                   List<String> unitPriceList, List<String> amountList, List<String> prodIdList){
@@ -252,8 +260,10 @@ public class InvoiceService {
            Supplier supplier = supplierRepository.findByName(supplierName);
            Client client = clientRepository.findByName(clientName);
            List<InvoiceProductInfo> productInfo = invoiceProdInfoRepository.findByInvoiceNumber(invoiceNumber);
-
-           invDb.setDateCreated(dateCreated);
+           
+           SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+           LocalDate date = LocalDate.parse(dateCreated);
+           invDb.setDateCreated(date);
 
            invDb.setSupplierName(supplier.getName());
            invDb.setSupplierAddress(supplier.getAddress());
@@ -289,6 +299,11 @@ public class InvoiceService {
            e.printStackTrace();
            return false;
        }
+    }
+    public boolean updateInvoices(String invoiceNumber, LocalDate dateCreated, String supplierName, String clientName,
+            String clientContactPerson, String totalAmt, List<String> qtyList, List<String> unitList,
+            List<String> articlesList, List<String> unitPriceList, List<String> amountList, List<String> prodIdList) {
+        return false;
     }
 
 

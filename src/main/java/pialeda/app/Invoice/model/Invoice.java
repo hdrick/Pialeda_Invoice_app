@@ -60,7 +60,7 @@ public class Invoice {
         this.cashier = cashier;
     }
 
-    public Invoice(String invoiceNum, String poNum, String dateCreated, String clientContactPerson, String supplierName, String supplierAddress, String supplierTin, String clientName, String clientTin, String clientAddress, String clientBusStyle, String clientTerms, double grandTotal, double addVat, double amountNetOfVat, double totalSalesVatInc, String cashier) {
+    public Invoice(String invoiceNum, String poNum, LocalDate dateCreated, String clientContactPerson, String supplierName, String supplierAddress, String supplierTin, String clientName, String clientTin, String clientAddress, String clientBusStyle, String clientTerms, double grandTotal, double addVat, double amountNetOfVat, double totalSalesVatInc, String cashier) {
         this.invoiceNum = invoiceNum;
         this.poNum = poNum;
         this.dateCreated = dateCreated;
@@ -144,8 +144,8 @@ public class Invoice {
         return dateCreated;
     }
 
-    public void setDateCreated(LocalDate dateCreated) {
-        this.dateCreated = dateCreated;
+    public void setDateCreated(LocalDate date) {
+        this.dateCreated = date;
     }
 
     public String getClientContactPerson() {

@@ -1,11 +1,12 @@
 package pialeda.app.Invoice.dto;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class InvoiceInfo {
     private String invoiceNum;
     private String poNum;
-    private Date dateCreated;
+    private String dateCreated;
     private String clientContactPerson;
     private String supplierName;
     private String supplierAddress;
@@ -39,11 +40,11 @@ public class InvoiceInfo {
         this.poNum = poNum;
     }
 
-    public Date getDateCreated() {
+    public String getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(Date dateCreated) {
+    public void setDateCreated(String dateCreated) {
         this.dateCreated = dateCreated;
     }
 
