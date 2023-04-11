@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import pialeda.app.Invoice.dto.GlobalUser;
 import pialeda.app.Invoice.model.User;
 import pialeda.app.Invoice.service.UserService;
@@ -51,8 +53,8 @@ public class AdminController {
     }
 
     @PostMapping("/updateUser")
-    public String updateUser(@ModelAttribute("user") User user) {
-        userService.updateUser(user);
+    public String updateUser(@RequestParam(value = "uPassword", required = false) String uPassword, @ModelAttribute("user") User user) {
+        userService.updateUser(user, uPassword);
         return "redirect:/admin-users";
     }
 

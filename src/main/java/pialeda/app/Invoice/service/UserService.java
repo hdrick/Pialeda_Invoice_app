@@ -27,13 +27,17 @@ public class UserService {
         this.userRepo.save(user);
     }
 
-    public void updateUser(User updateUser){
+    public void updateUser(User updateUser, String uPassword){
         User user = userRepo.findById(updateUser.getId());
 
         user.setFirstName(updateUser.getFirstName());
         user.setLastName(updateUser.getLastName());
         user.setEmail(updateUser.getEmail());
         user.setRole(updateUser.getRole());
+        if(!uPassword.equals(null)){
+            String encodedPassword = bCryptPasswordEncoder.encode(uPassword);
+            user.setPassword(encodedPassword);
+        }
         this.userRepo.save(user);
     }
 

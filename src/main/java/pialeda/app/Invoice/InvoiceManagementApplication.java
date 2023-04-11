@@ -7,6 +7,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pialeda.app.Invoice.model.User;
 import pialeda.app.Invoice.repository.UserRepository;
 
+import java.awt.Desktop;
+import java.net.URI;
+
 import javax.annotation.PostConstruct;
 
 @SpringBootApplication
@@ -18,6 +21,14 @@ public class InvoiceManagementApplication {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	public static void main(String[] args) {
 		SpringApplication.run(InvoiceManagementApplication.class, args);
+				        // Open the default browser and navigate to the login page
+						try {
+							Desktop.getDesktop().browse(new URI("http://pialeda.com:8088/login"));
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+		
+
 	}
 	@PostConstruct
 	public void init() {
