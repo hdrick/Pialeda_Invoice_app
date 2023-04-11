@@ -4,29 +4,21 @@
   };
 })(jQuery);
 
-  $(document).ready(function() {
-    // Export table data as Excel on button click
-    $('#exportButton').click(function() {
-      // Get table data
-      var table = $('#myTable').get(0);
-      var data = XLSX.utils.table_to_sheet(table);
-
-      // Create a new workbook and worksheet using SheetJS
-      var wb = XLSX.utils.book_new();
-      var ws = XLSX.utils.aoa_to_sheet(data);
-
-      // Add the worksheet to the workbook
-      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-
-      // Export the workbook to an Excel file
-      XLSX.writeFile(wb, 'example.xlsx');
-    });
-  });
 
   $(document).ready(function() {
   $('#download-btn').click(function() {
     // Get the table element
     var table = document.getElementById('my-table');
+    // Get the values of all dynamic parameters from the URL
+    var urlParams = new URLSearchParams(window.location.search);
+    var params = {};
+
+    // Loop through all parameter names
+    urlParams.forEach(function(value, name) {
+      // Add the parameter value to the "params" object
+      params[name] = value+"_";
+    });
+
     // Convert the table to a worksheet object
     var worksheet = XLSX.utils.table_to_sheet(table);
     // Create a workbook with the worksheet
@@ -34,8 +26,19 @@
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
     // Convert the workbook to a binary string
     var binaryString = XLSX.write(workbook, { bookType: 'xlsx', type: 'binary' });
+
+    var today = new Date();
+    var day = today.getDate();
+    var month = today.getMonth() + 1;
+    var year = today.getFullYear();
+
+    var time = today.toLocaleTimeString('en-US', {hour12: false});
+
+    var cleanName = day + '/' + month + '/' + year+'/'+time+'.xlsx';
+
+
     // Save the file
-    saveAs(new Blob([s2ab(binaryString)], {type:"application/octet-stream"}), 'my-table.xlsx');
+    saveAs(new Blob([s2ab(binaryString)], {type:"application/octet-stream"}), cleanName);
   });
 });
 

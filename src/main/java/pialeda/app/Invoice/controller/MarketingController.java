@@ -2,6 +2,7 @@ package pialeda.app.Invoice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +42,7 @@ public class MarketingController {
 
     @PostMapping("/createInvoice")
     public String createInvoice(@ModelAttribute("invoiceInfo") InvoiceInfo invoiceInfo,
+                                @RequestParam("invDate") String date,
                                 @RequestParam("qty") List<String> qtyList,
                                 @RequestParam("unit") List<String> unitList,
                                 @RequestParam("article") List<String> articlesList,
@@ -53,7 +55,7 @@ public class MarketingController {
         double remainingLimit = supplierLimit - sumOfGrandTotal;
 
         if(invoiceInfo.getGrandTotal() <= remainingLimit){
-            invoiceService.createInvoice(invoiceInfo, qtyList, unitList,articlesList,unitPriceList,amountList);
+            invoiceService.createInvoice(invoiceInfo, date, qtyList, unitList,articlesList,unitPriceList,amountList);
             boolean hideDivSuccess = true;
             redirectAttributes.addFlashAttribute("hideDivSuccess", hideDivSuccess);
             return "redirect:/marketing-invoice";
@@ -193,7 +195,7 @@ public class MarketingController {
     @PostMapping("/submit-form")
     public String handleSubmitForm(
             @RequestParam("inv-num") String invoiceNumber,
-            @RequestParam("date-created") String dateCreated,
+            @RequestParam("date-created")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateCreated,
             @RequestParam("supp-name") String supplierName,
             @RequestParam("client-name") String clientName,
             @RequestParam("client-cp") String clientContactPerson,
