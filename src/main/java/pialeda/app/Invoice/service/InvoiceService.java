@@ -65,10 +65,9 @@ public class InvoiceService {
 
         invoice.setSupplierName(invoiceInfo.getSupplierName());
         invoice.setSupplierAddress(invoiceInfo.getSupplierAddress());
-        invoice.setSupplierTin(formatTIN(invoiceInfo.getSupplierTin()));
-
+        invoice.setSupplierTin(invoiceInfo.getSupplierTin());
         invoice.setClientName(invoiceInfo.getClientName());
-        invoice.setClientTin(formatTIN(invoiceInfo.getClientTin()));
+        invoice.setClientTin(invoiceInfo.getClientTin());
         invoice.setClientAddress(invoiceInfo.getClientAddress());
         invoice.setClientBusStyle(invoiceInfo.getClientBusStyle());
         invoice.setClientTerms(invoiceInfo.getClientTerms());
