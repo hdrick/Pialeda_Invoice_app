@@ -281,3 +281,11 @@
     font-size: 12px;
     font-weight: bolder;
 }
+
+tr.highlight {
+    background-color: #ffcccc;
+  }
+input.highlight {
+background-color: green;
+color: aliceblue;
+}

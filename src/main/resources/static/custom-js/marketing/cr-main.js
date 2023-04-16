@@ -51,7 +51,10 @@ function formatNumber(input) {
   function computeEWT(){
     const ewtInput = document.getElementById("ewt");
     const totalInput = document.getElementById("total");
-    
+    // Get the input element
+    var inputElement = document.getElementById("ewtInput");
+    // Get the value of the input
+    var ewtPercentage = inputElement.value/100;
 
     // let totalAmount = getTotalAmount();
     const totalAmount = document.getElementById("amt-due").value;
@@ -59,7 +62,7 @@ function formatNumber(input) {
     let totalAmountNoComma = valueWithCommas.replace(/,/g, ''); // e.g. "1200.00"
     console.log("totalAmount: "+totalAmountNoComma);
 
-    let result = (totalAmountNoComma/1.12)*0.01;
+    let result = (totalAmountNoComma/1.12)*ewtPercentage;
     let ewt = result;
     
     ewtInput.value = ewt.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});

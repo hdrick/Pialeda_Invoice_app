@@ -116,6 +116,50 @@ function generatePONumber() {
     poNumInput.value = poNumber;
 }
 
+function checkForDuplicateRows() {
+  const rows = document.querySelectorAll('#table-body tr');
+  const uniqueRows = new Map(); // store unique rows here
+  const duplicateRows = new Set(); // store duplicate rows here
+
+  rows.forEach(row => {
+    const cells = row.querySelectorAll('td input');
+    const rowValues = [...cells].map(cell => cell.value).join('|'); // combine all input values for this row with '|' separator
+    if (uniqueRows.has(rowValues)) { // if this row is already in uniqueRows, it's a duplicate
+      duplicateRows.add(row);
+      uniqueRows.get(rowValues).forEach(duplicateRow => duplicateRows.add(duplicateRow));
+      duplicateRows.add(row);
+    } else { // otherwise, add this row to uniqueRows
+      uniqueRows.set(rowValues, [row]);
+    }
+  });
+
+  if (duplicateRows.size > 0) {
+    alert('Found duplicate items!');
+    // highlight duplicate rows
+    duplicateRows.forEach(row => {
+      row.querySelectorAll('input').forEach(input => {
+        input.classList.add('highlight');
+      });
+    });
+    return true; // indicate that there are duplicate rows
+  } else {
+    return false; // indicate that there are no duplicate rows
+  }
+}
+
+const form = document.querySelector('#myForm');
+
+form.addEventListener('submit', event => {
+  if (checkForDuplicateRows()) {
+    event.preventDefault(); // prevent form submission
+    return false;
+  } else {
+    return true;
+  }
+});
+
+
+
 //////////////////// table
 const tableBody = document.getElementById('table-body');
 const addRowBtn = document.getElementById('add-row-btn');
@@ -275,5 +319,5 @@ cashierNameInput.value = cashierName.textContent;
   poObserver.observe(poLabel, {childList: true});
 
 
-
+  
 

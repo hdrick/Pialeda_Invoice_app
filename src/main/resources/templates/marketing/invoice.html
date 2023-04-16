@@ -148,7 +148,7 @@
                 <div id="body">
                     <div class="row">
                         <div class="col-12 table-responsive" style="height: 650px;">
-                            <table class="table table-bordered">
+                            <table id="myTable" class="table table-bordered">
                                 <thead>
                                 <tr>
                                     <th style="font-size: 12px; width: 10%; text-align: center; color: white;">QTY</th>
@@ -207,7 +207,6 @@
                 <!--            <a id="btn-Gen" class="btn btn-success" onclick="generateInvNum()">Generate</a>-->
                 <input id="btn-Create" type="submit" class="btn btn-success" value="Save Invoice">
                 <a id="btn-invoices" class="btn btn-success" th:href="@{/invoice-view}">List of Invoice</a>
-
             </div>
         </div>
     </form>
