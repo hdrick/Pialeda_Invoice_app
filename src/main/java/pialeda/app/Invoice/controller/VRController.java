@@ -490,4 +490,11 @@ public class VRController {
 
         return "vr-staff/vr";
     }
+
+    @GetMapping("/vr/user/invoice/getinvoice")
+    public String viewInvoice(){
+        String role = GlobalUser.getUserRole();
+        String newRole = GlobalUser.setUserRole(null);
+        return "vr-staff/vr-invoice";
+    }
 }

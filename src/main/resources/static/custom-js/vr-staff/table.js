@@ -72,20 +72,11 @@ function paginateTable(table, itemsPerPage) {
         $(this).addClass('active');
     });
 
-    $('td').click(function() {
-      var value = $(this).text();
-      $.ajax({
-          url: "/vr/1 ",
-          type: "GET",
-          dataType: "json",
-          success: function(data) {
-              // handle the response data
-              alert(data.clientName);
-              console.log("Success");
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-              console.log("Error: " + textStatus, errorThrown);
-          }
-      });
+    $('td').on('click', function() {
+      setTimeout(function() {
+            var newTab = window.open('', 'myNewTab', 'width=800,height=600');
+            newTab.location.href = '/vr/user/invoice/getinvoice';
+         }, 500);
+
     });
 });
